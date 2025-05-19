@@ -12,8 +12,8 @@ localhost
 - Formulir User
 - Menu Kasir
 ## Teknologi
--Html
--CSS
--Javascript
--Php
--Mysql
+- Html
+- CSS
+- Javascript
+- Php
+- Mysql
