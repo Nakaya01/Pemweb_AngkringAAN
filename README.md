@@ -5,5 +5,15 @@ AngkringAan merupakan solusi digital inovatif yang dirancang untuk mendukung per
 ## Alamat Website
 localhost
 ## Menu Utama
-
+-Menu Makanan
+-Menu Minuman
+-Menu Snack
+-Keranjang Pemesanan
+-Formulir User
+-Menu Kasir
 ## Teknologi
+-Html
+-CSS
+-Javascript
+-Php
+-Mysql
