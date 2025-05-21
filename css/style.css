@@ -1,0 +1,185 @@
+:root {
+  --bg: #12372a;
+  --primary: #fbfada;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+body {
+  font-family: "Lexend Zetta", sans-serif;
+  background-color: var(--bg);
+  color: var(--primary-color);
+}
+/* navigasi bar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 7%;
+  /* background-color: var(--bg);
+	border-bottom: 1px solid #0f2d23; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+}
+
+.navbar .logo {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.navbar .logo span {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav a {
+  font-family: "Sansita Swashed", cursive;
+  display: inline-block;
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 1rem;
+}
+
+.navbar .navbar-nav a:hover {
+  color: #61fac4;
+}
+
+/* efek garis pada saat hover */
+.navbar .navbar-nav a::after {
+  content: "";
+  display: block;
+  padding-bottom: 0.1rem;
+  border-bottom: 0.1rem solid #d2ffef;
+  transform: scaleX(0);
+  transition: 0.1s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.9);
+}
+
+.navbar .navbar-extra a {
+  color: var(--primary);
+  margin: 0 0.7rem;
+}
+
+.navbar .navbar-extra a:hover {
+  color: #61fac4;
+}
+
+/* section untuk makanan, minuman, dan snack */
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 7%;
+}
+
+footer {
+  background-color: #000000;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 0.4rem;
+}
+
+.footer-links {
+  margin-bottom: 1.5rem;
+}
+
+.footer-links a {
+  color: #a2a2a2;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.social-media {
+  margin-bottom: 1rem;
+}
+
+.social-media a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  color: #a2a2a2;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-media a:hover {
+  background-color: #ffffff;
+  color: #00ff2f;
+  transform: translateY(-3px);
+}
+
+.social-media a.fb:hover {
+  color: #3b5998;
+}
+
+.social-media a.ig:hover {
+  color: #e1306c;
+}
+
+.social-media a.wa:hover {
+  color: #25d366;
+}
+
+footer p {
+  font-size: 0.8rem;
+  color: #a2a2a2;
+  margin-top: 1rem;
+}
+
+.social-media i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+/* media query */
+/* pada laptop */
+@media (min-width: 901px) {
+  html {
+    font-size: 110%;
+  }
+}
+/* tablet */
+@media (max-width: 900px) {
+  html {
+    font-size: 70%;
+  }
+  .navbar .logo {
+    font-size: 1.6rem;
+  }
+}
+/* hp */
+@media (max-width: 600px) {
+  html {
+    font-size: 70%;
+  }
+  .navbar .logo {
+    font-size: 1rem;
+  }
+}
