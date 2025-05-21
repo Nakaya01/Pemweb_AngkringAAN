@@ -23,8 +23,6 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 7%;
-  /* background-color: var(--bg);
-	border-bottom: 1px solid #0f2d23; */
   position: fixed;
   top: 0;
   left: 0;
@@ -59,7 +57,7 @@ body {
   content: "";
   display: block;
   padding-bottom: 0.1rem;
-  border-bottom: 0.1rem solid #d2ffef;
+  border-bottom: 0.1rem solid #61fac4;
   transform: scaleX(0);
   transition: 0.1s linear;
 }
@@ -79,14 +77,99 @@ body {
 
 /* section untuk makanan, minuman, dan snack */
 section {
+  color: var(--primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 2rem 7%;
 }
 
+.makanan .makanan-main,
+.minuman .minuman-main,
+.snack .snack-main {
+  max-width: 120rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.makanan .makanan-main .row,
+.minuman .minuman-main .row,
+.snack .snack-main .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.makanan .makanan-main h1,
+.minuman .minuman-main h1,
+.snack .snack-main h1 {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-checkout,
+.btn-checkout:hover {
+  font-family: "Sansita Swashed", cursive;
+  font-size: 1rem;
+}
+
+.makanan-card,
+.minuman-card,
+.snack-card {
+  display: inline-block;
+  width: 22rem; /* tambahkan lebar tetap */
+  min-height: 20rem; /* tambahkan tinggi agar seragam */
+  background-color: #133d2f;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.makanan-card img,
+.minuman-card img,
+.snack-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.quantity-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.btn-increase svg {
+  width: 12px;
+  height: 12px;
+}
+
+.btn-decrease,
+.btn-increase,
+.btn-checkout {
+  background-color: #fbfada;
+  border: 1px solid #12372a;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin: 0 0.7rem;
+}
+
+.btn-decrease:hover,
+.btn-increase:hover,
+.btn-checkout:hover {
+  background-color: #d2d0a0;
+}
+
+/* bagian footer */
 footer {
   background-color: #000000;
   padding: 0.5rem 0;
@@ -173,13 +256,51 @@ footer p {
   .navbar .logo {
     font-size: 1.6rem;
   }
+  .makanan-card img,
+  .minuman-card img,
+  .snack-card img {
+    width: 80%;
+  }
 }
 /* hp */
 @media (max-width: 600px) {
   html {
-    font-size: 70%;
+    font-size: 50%;
   }
   .navbar .logo {
     font-size: 1rem;
   }
+  .makanan-card,
+  .minuman-card,
+  .snack-card {
+    width: 47%;
+    margin: 1.5%;
+    box-sizing: border-box;
+  }
+
+  .makanan-card img,
+  .minuman-card img,
+  .snack-card img {
+    width: 80%;
+  }
+}
+
+/* Navbar hilang dengan transisi mulus */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  transition: top 0.3s;
+  z-index: 1000;
+}
+
+nav.hide {
+  top: -100px; /* Sembunyikan navbar dengan naik ke atas */
+}
+
+
+
+/* untuk menyembunyikan section yang tidak di klik */
+.hidden {
+  display: none;
 }
