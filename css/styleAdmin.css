@@ -13,7 +13,7 @@
 }
 
 body {
-  font-family: 'Sansita Swashed', cursive;
+  font-family: "Sansita Swashed", cursive;
   min-height: 100dvh;
   padding-top: 50px;
   display: flex;
@@ -52,7 +52,7 @@ body {
   opacity: 0;
   transform: translateX(-20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  font-family: 'Poppins', cursive;
+  font-family: "Poppins", cursive;
   font-size: 1.5rem;
   white-space: nowrap;
   color: var(--primary);
@@ -75,23 +75,26 @@ body {
 
 /* Section Login */
 .login {
+  display: flex;
   width: 100%;
-  max-width: 25rem;
   min-height: auto;
   padding: 1.2rem;
   margin: 0 auto;
+  justify-content: center;
 }
 
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: var(--primary);
   border-radius: 16px;
+  flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   flex-wrap: wrap;
   padding: 20px;
+  width: 100%;
+  max-width: 30rem;
 }
 
 .login-form {
@@ -101,7 +104,7 @@ body {
 }
 
 .container h1 {
-  font-family: 'Sansita Swashed', cursive;
+  font-family: "Sansita Swashed", cursive;
   font-size: 2rem;
   margin-bottom: 24px;
   color: #333;
@@ -128,7 +131,7 @@ body {
 }
 
 .login-form button {
-  font-family: 'poppins', sans-serif;
+  font-family: "poppins", sans-serif;
   margin-top: 24px;
   width: 100%;
   padding: 14px;
@@ -168,6 +171,12 @@ body {
     padding: 30px 16px;
   }
 
+  .container {
+    padding: 20px;
+    width: 100%;
+    max-width: 30rem;
+  }
+
   .container h1 {
     font-size: 1.8rem;
   }
@@ -191,6 +200,16 @@ body {
 
   .login-form {
     padding: 24px 12px;
+  }
+
+  .container {
+    padding: 20px;
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  .container h1 {
+    font-size: 1.5rem;
   }
 
   .feather {

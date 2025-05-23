@@ -146,6 +146,7 @@ window.addEventListener("scroll", function () {
 
   lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
+
 // Fungsi untuk menampilkan popup
 function showPopup(message, isSuccess = true) {
   const popup = document.getElementById("popup");
@@ -156,14 +157,14 @@ function showPopup(message, isSuccess = true) {
 
   // Sesuaikan isi popup
   if (isSuccess) {
-    title.textContent = "Message Sent Successfully!";
-    icon.textContent = "✅";
-    button.textContent = "Close";
+    title.textContent = "Pesanan anda berhasil!";
+    icon.innerHTML = `<img src="logo/Succses.png" alt="Success" style="width:120px;height:120px;">`;
+    button.textContent = "Tutup";
     popup.className = "popup success show";
   } else {
-    title.textContent = "Something Went Wrong!";
-    icon.textContent = "❌";
-    button.textContent = "Try Again";
+    title.textContent = "Pesanan anda dibatalkan!";
+    icon.innerHTML = `<img src="logo/Failed.png" alt="Error" style="width:120px;height:120px;">`;
+    button.textContent = "Tutup";
     popup.className = "popup error show";
   }
 
