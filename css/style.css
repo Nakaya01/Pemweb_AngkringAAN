@@ -28,6 +28,7 @@ body {
   left: 0;
   right: 0;
   z-index: 10000;
+  transition: top 0.3s;
 }
 
 .navbar .logo {
@@ -71,19 +72,40 @@ body {
   margin: 0 0.7rem;
 }
 
+/* mengatur ukuran semua logo feather */
+.navbar-extra .feather {
+  width: 2rem;
+  height: 2rem;
+}
+
+.makanan-card img,
+.minuman-card img,
+.snack-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 .navbar .navbar-extra a:hover {
   color: #61fac4;
 }
 
 /* section untuk makanan, minuman, dan snack */
 section {
-  color: var(--primary);
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 2rem 7%;
+}
+
+.makanan .makanan-main h1,
+.minuman .minuman-main h1,
+.snack .snack-main h1 {
+  text-align: center;
+  color: var(--primary);
+  margin-top: 2.9rem;
 }
 
 .makanan .makanan-main,
@@ -104,13 +126,6 @@ section {
   justify-content: center;
   text-align: center;
   margin-top: 1rem;
-}
-
-.makanan .makanan-main h1,
-.minuman .minuman-main h1,
-.snack .snack-main h1 {
-  text-align: center;
-  margin-top: 2rem;
 }
 
 .btn-checkout,
@@ -148,16 +163,30 @@ section {
   margin: 1rem 0;
 }
 
-.btn-increase svg {
-  width: 12px;
-  height: 12px;
+.quantity-controls .quantity {
+  width: 3rem;
+  height: 2.42rem;
+  text-align: center;
+  padding-left: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #12372a;
+  border-radius: 5px;
+  margin: 0 0.5rem;
+  background-color: #fbfada;
 }
 
 .btn-decrease,
-.btn-increase,
+.btn-increase {
+  background-color: #fbfada;
+  border: 1px solid #113327;
+  border-radius: 5px;
+  padding: 0.4rem 0.5rem 0.5rem;
+  margin: 0 0.7rem;
+}
+
 .btn-checkout {
   background-color: #fbfada;
-  border: 1px solid #12372a;
+  border: 1px solid #113327;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   margin: 0 0.7rem;
@@ -235,12 +264,6 @@ footer p {
   margin-top: 1rem;
 }
 
-.social-media i {
-  width: 18px;
-  height: 18px;
-  stroke-width: 2;
-}
-
 /* media query */
 /* pada laptop */
 @media (min-width: 901px) {
@@ -261,6 +284,10 @@ footer p {
   .snack-card img {
     width: 80%;
   }
+  .feather {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
 }
 /* hp */
 @media (max-width: 600px) {
@@ -277,28 +304,20 @@ footer p {
     margin: 1.5%;
     box-sizing: border-box;
   }
-
   .makanan-card img,
   .minuman-card img,
   .snack-card img {
     width: 80%;
   }
-}
-
-/* Navbar hilang dengan transisi mulus */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  transition: top 0.3s;
-  z-index: 1000;
+  .feather {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
 }
 
 nav.hide {
   top: -100px; /* Sembunyikan navbar dengan naik ke atas */
 }
-
-
 
 /* untuk menyembunyikan section yang tidak di klik */
 .hidden {

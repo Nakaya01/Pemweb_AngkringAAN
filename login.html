@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KasirAan</title>
+    <!-- icon -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- style -->
+    <link rel="stylesheet" href="css/styleAdmin.css" />
+    <!--font--->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="index.html" id="index" class="navbar-logo">
+        <i data-feather="arrow-left"></i>
+      </a>
+    </nav>
+    <section class="login">
+      <div class="container">
+        <div class="login-form">
+          <h1>Log in</h1>
+          <form action="prosesLogin.php" method="POST">
+            <p>Username</p>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+            />
+            <p>Password</p>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+:root {
+  --bg: #12372a;
+  --primary: #fbfada;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+body {
+  font-family: 'Sansita Swashed', cursive;
+  min-height: 100dvh;
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg);
+  background-image: url("../Assets/background.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+}
+.navbar .a{
+  color: var(--primary);
+  height: 40px; 
+  width: 40px;
+}
+/* Section Login */
+.login {
+  width: 100%;
+  max-width: 450px; /* Ukuran tetap */
+  padding: 20px;
+  margin: auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  margin: auto;
+  background-color: var(--primary);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+/* Form */
+.login-form {
+  flex: 1;
+  padding: 40px;
+}
+
+.container h1 {
+  font-family: 'Sansita Swashed', cursive;
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.login-form p {
+  margin: 12px 0 4px;
+  font-size: 16px;
+  color: #555;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.login-form input:focus {
+  border-color: var(--bg);
+}
+
+.login-form button {
+  margin-top: 24px;
+  width: 100%;
+  padding: 14px;
+  background-color: var(--bg);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.feather {
+  color: var(--primary);
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* media query */
+/* pada laptop */
+@media (min-width: 901px) {
+  html {
+    font-size: 110%;
+  }
+}
+/* tablet */
+@media (max-width: 900px) {
+  html {
+    font-size: 70%;
+  }
+  .login {
+    max-width: 400px;
+  }
+  .feather {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+}
+/* hp */
+@media (max-width: 600px) {
+  html {
+    font-size: 50%;
+  }
+  .login {
+    max-width: 400px;
+  }
+  .feather {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}

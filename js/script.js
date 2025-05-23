@@ -52,3 +52,39 @@ window.addEventListener("scroll", function () {
 
   lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Hindari nilai negatif
 });
+
+// Fungsi untuk menampilkan increase dan decrease pada card
+document.addEventListener("DOMContentLoaded", () => {
+  // Handle semua card quantity
+  document.querySelectorAll(".makanan-card, .minuman-card, .snack-card").forEach(card => {
+    const quantityInput = card.querySelector(".quantity");
+    const plusBtn = card.querySelectorAll(".btn-increase")[1]; // tombol plus (kedua)
+    const minusBtn = card.querySelectorAll(".btn-increase")[0]; // tombol minus (pertama)
+
+    plusBtn.addEventListener("click", () => {
+      let value = parseInt(quantityInput.value);
+      quantityInput.value = value + 1;
+    });
+
+    minusBtn.addEventListener("click", () => {
+      let value = parseInt(quantityInput.value);
+      if (value > 0) quantityInput.value = value - 1;
+    });
+
+    // Event untuk tombol Tambah
+    const tambahBtn = card.querySelector(".btn-checkout");
+    tambahBtn.addEventListener("click", () => {
+      const itemName = card.querySelector("h5").innerText;
+      const qty = parseInt(quantityInput.value);
+      if (qty > 0) {
+        alert(`Menambahkan ${qty} x ${itemName} ke keranjang`);
+        // Reset quantity jika mau
+        quantityInput.value = 0;
+
+        // Di sini kamu bisa simpan ke localStorage, atau kirim via fetch() ke server
+      } else {
+        alert("Jumlah harus lebih dari 0");
+      }
+    });
+  });
+});
