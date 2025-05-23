@@ -78,13 +78,6 @@ body {
   height: 2rem;
 }
 
-.makanan-card img,
-.minuman-card img,
-.snack-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
 
 .navbar .navbar-extra a:hover {
   color: #61fac4;
@@ -100,14 +93,6 @@ section {
   padding: 2rem 7%;
 }
 
-.makanan .makanan-main h1,
-.minuman .minuman-main h1,
-.snack .snack-main h1 {
-  text-align: center;
-  color: var(--primary);
-  margin-top: 2.9rem;
-}
-
 .makanan .makanan-main,
 .minuman .minuman-main,
 .snack .snack-main {
@@ -116,6 +101,27 @@ section {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
+}
+
+.makanan .makanan-main h1,
+.minuman .minuman-main h1,
+.snack .snack-main h1 {
+  text-align: center;
+  color: var(--primary);
+  margin-top: 2.9rem;
+}
+
+.makanan .makanan-main h5,
+.minuman .minuman-main h5,
+.snack .snack-main h5 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.makanan .makanan-main p,
+.minuman .minuman-main p,
+.snack .snack-main p {
+  color: var(--primary);
 }
 
 .makanan .makanan-main .row,
@@ -319,7 +325,70 @@ nav.hide {
   top: -100px; /* Sembunyikan navbar dengan naik ke atas */
 }
 
-/* untuk menyembunyikan section yang tidak di klik */
+/* Notifikasi Pop-up */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.popup-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.popup-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.popup.success {
+  background-color: rgba(50, 205, 86, 0.500); /* Hijau untuk sukses */
+}
+
+.popup.error {
+  background-color: hsla(354, 70%, 54%, 0.500); /* Merah untuk gagal */
+}
+
+.popup.success .popup-button {
+  background: green;
+  color: white;
+}
+
+.popup.error .popup-button {
+  background: red;
+  color: rgb(255, 255, 255);
+}
+
+.popup.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* untuk menyembunyikan suatu tampilan */
 .hidden {
   display: none;
 }

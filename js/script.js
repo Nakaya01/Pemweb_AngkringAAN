@@ -1,3 +1,67 @@
+document.addEventListener("DOMContentLoaded", () => {
+const menuData = {
+	// List makanan
+	makanan: [
+		{ name: "Nasi Goreng", price: "Rp 20.000", image: "Assets/makanan.png" },
+		{ name: "Ayam Bakar", price: "Rp 25.000", image: "Assets/makanan.png" },
+		{ name: "Sate Ayam", price: "Rp 22.000", image: "Assets/makanan.png" },
+		{ name: "Mie Goreng", price: "Rp 18.000", image: "Assets/makanan.png" },
+		{ name: "Soto Ayam", price: "Rp 19.000", image: "Assets/makanan.png" },
+		{ name: "Bakso", price: "Rp 21.000", image: "Assets/makanan.png" },
+		{ name: "Rendang", price: "Rp 30.000", image: "Assets/makanan.png" },
+		{ name: "Gado-Gado", price: "Rp 17.000", image: "Assets/makanan.png" },
+	],
+	// List minuman
+	minuman: [
+		{ name: "Es Teh", price: "Rp 5.000", image: "Assets/minuman.png" },
+		{ name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/minuman.png" },
+		{ name: "Kopi Hitam", price: "Rp 7.000", image: "Assets/minuman.png" },
+		{ name: "Susu Coklat", price: "Rp 9.000", image: "Assets/minuman.png" },
+		{ name: "Air Mineral", price: "Rp 4.000", image: "Assets/minuman.png" },
+		{ name: "Teh Tarik", price: "Rp 10.000", image: "Assets/minuman.png" },
+		{ name: "Jus Alpukat", price: "Rp 12.000", image: "Assets/minuman.png" },
+		{ name: "Soda Gembira", price: "Rp 11.000", image: "Assets/minuman.png" },
+	],
+	// List snack
+	snack: [
+		{ name: "Kentang Goreng", price: "Rp 10.000", image: "Assets/snack.png" },
+		{ name: "Tahu Crispy", price: "Rp 8.000", image: "Assets/snack.png" },
+		{ name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/snack.png" },
+		{ name: "Risoles", price: "Rp 7.000", image: "Assets/snack.png" },
+		{ name: "Singkong Keju", price: "Rp 11.000", image: "Assets/snack.png" },
+		{ name: "Cireng", price: "Rp 8.000", image: "Assets/snack.png" },
+		{ name: "Bakwan", price: "Rp 7.000", image: "Assets/snack.png" },
+		{ name: "Lumpia", price: "Rp 10.000", image: "Assets/snack.png" },
+	],
+};
+
+  const createCard = (item, category) => {
+    const card = document.createElement("div");
+    card.className = `${category}-card`;
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <h5>${item.name}</h5>
+      <p>${item.price}</p>
+      <div class="quantity-controls">
+        <button class="btn-decrease"><i data-feather="minus"></i></button>
+        <input type="number" class="quantity" value="0" min="0" readonly>
+        <button class="btn-increase"><i data-feather="plus"></i></button>
+      </div>
+      <button class="btn-checkout">Tambah</button>
+    `;
+    return card;
+  };
+
+  Object.keys(menuData).forEach((category) => {
+    const container = document.getElementById(`${category}-list`);
+    menuData[category].forEach((item) => {
+      const card = createCard(item, category);
+      container.appendChild(card);
+    });
+  });
+  feather.replace();
+});
+
 // fungsi membuat tiap section tersembunyi
 document.addEventListener("DOMContentLoaded", function () {
   const navbarNav = document.querySelector(".navbar-nav");
@@ -11,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Fungsi untuk menyembunyikan semua section kecuali yang ditargetkan
+  // Fungsi menyembunyikan semua section kecuali target
   function hideAllSectionsExcept(targetId) {
     sections.forEach((section) => {
       if (section.id === targetId) {
@@ -22,20 +86,52 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Tampilkan default section saat halaman pertama dibuka
+  // Tampilkan default section (makanan)
   hideAllSectionsExcept("makanan");
 
-  // Tangani klik pada link navbar
+  // Navigasi antar section
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
-      e.preventDefault(); // Hindari scroll default
-      const targetId = this.getAttribute("href").substring(1); // Ambil id tanpa #
+      e.preventDefault();
+      const targetId = this.getAttribute("href").substring(1);
       hideAllSectionsExcept(targetId);
+    });
+  });
+
+  // Logika kuantitas dan tombol checkout
+  document.querySelectorAll(".makanan-card, .minuman-card, .snack-card").forEach(card => {
+    const quantityInput = card.querySelector(".quantity");
+    const plusBtn = card.querySelector(".btn-increase");
+    const minusBtn = card.querySelector(".btn-decrease");
+    const tambahBtn = card.querySelector(".btn-checkout");
+
+    // Tombol tambah
+    plusBtn.addEventListener("click", () => {
+      let value = parseInt(quantityInput.value) || 0;
+      quantityInput.value = value + 1;
+    });
+
+    // Tombol kurang
+    minusBtn.addEventListener("click", () => {
+      let value = parseInt(quantityInput.value) || 0;
+      if (value > 0) quantityInput.value = value - 1;
+    });
+
+    // Tombol checkout
+    tambahBtn.addEventListener("click", () => {
+      const itemName = card.querySelector("h5").innerText;
+      const qty = parseInt(quantityInput.value);
+      if (qty > 0) {
+        showPopup(`Berhasil menambahkan ${qty} ${itemName} ke keranjang`, true);
+        quantityInput.value = 0;
+      } else {
+        showPopup("Jumlah harus lebih dari 0", false);
+      }
     });
   });
 });
 
-// Fungsi untuk menyembunyikan menu navbar saat di scroll
+// Sembunyikan navbar saat scroll ke bawah, munculkan saat scroll ke atas
 let lastScrollTop = 0;
 const navbar = document.querySelector("nav");
 
@@ -43,48 +139,39 @@ window.addEventListener("scroll", function () {
   let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
   if (currentScroll > lastScrollTop) {
-    // Scroll ke bawah
     navbar.classList.add("hide");
   } else {
-    // Scroll ke atas
     navbar.classList.remove("hide");
   }
 
-  lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Hindari nilai negatif
+  lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
+// Fungsi untuk menampilkan popup
+function showPopup(message, isSuccess = true) {
+  const popup = document.getElementById("popup");
+  const title = document.getElementById("popup-title");
+  const messageText = document.getElementById("popup-message");
+  const button = document.getElementById("popup-button");
+  const icon = popup.querySelector(".popup-icon");
 
-// Fungsi untuk menampilkan increase dan decrease pada card
-document.addEventListener("DOMContentLoaded", () => {
-  // Handle semua card quantity
-  document.querySelectorAll(".makanan-card, .minuman-card, .snack-card").forEach(card => {
-    const quantityInput = card.querySelector(".quantity");
-    const plusBtn = card.querySelectorAll(".btn-increase")[1]; // tombol plus (kedua)
-    const minusBtn = card.querySelectorAll(".btn-increase")[0]; // tombol minus (pertama)
+  // Sesuaikan isi popup
+  if (isSuccess) {
+    title.textContent = "Message Sent Successfully!";
+    icon.textContent = "✅";
+    button.textContent = "Close";
+    popup.className = "popup success show";
+  } else {
+    title.textContent = "Something Went Wrong!";
+    icon.textContent = "❌";
+    button.textContent = "Try Again";
+    popup.className = "popup error show";
+  }
 
-    plusBtn.addEventListener("click", () => {
-      let value = parseInt(quantityInput.value);
-      quantityInput.value = value + 1;
-    });
+  messageText.textContent = message;
 
-    minusBtn.addEventListener("click", () => {
-      let value = parseInt(quantityInput.value);
-      if (value > 0) quantityInput.value = value - 1;
-    });
+  // Tombol untuk menutup popup
+  button.onclick = () => {
+    popup.classList.remove("show");
+  };
+}
 
-    // Event untuk tombol Tambah
-    const tambahBtn = card.querySelector(".btn-checkout");
-    tambahBtn.addEventListener("click", () => {
-      const itemName = card.querySelector("h5").innerText;
-      const qty = parseInt(quantityInput.value);
-      if (qty > 0) {
-        alert(`Menambahkan ${qty} x ${itemName} ke keranjang`);
-        // Reset quantity jika mau
-        quantityInput.value = 0;
-
-        // Di sini kamu bisa simpan ke localStorage, atau kirim via fetch() ke server
-      } else {
-        alert("Jumlah harus lebih dari 0");
-      }
-    });
-  });
-});
