@@ -67,10 +67,6 @@ body {
   transform: scaleX(0.9);
 }
 
-.navbar .navbar-extra a {
-  color: var(--primary);
-  margin: 0 0.7rem;
-}
 
 /* mengatur ukuran semua logo feather */
 .navbar-extra .feather {
@@ -157,8 +153,9 @@ section {
 .makanan-card img,
 .minuman-card img,
 .snack-card img {
-  width: 100%;
-  height: auto;
+  width: 20rem;
+  height: 20rem;
+  object-fit: cover;
   border-radius: 8px;
 }
 
@@ -173,7 +170,7 @@ section {
   width: 3rem;
   height: 2.42rem;
   text-align: center;
-  padding-left: 0.8rem;
+  /* padding-left: 0.8rem; */
   font-size: 1rem;
   border: 1px solid #12372a;
   border-radius: 5px;

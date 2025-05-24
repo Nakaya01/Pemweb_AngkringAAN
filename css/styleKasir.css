@@ -1,0 +1,67 @@
+:root {
+  --primary: #12372a;
+  --bg: #fbfada;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+body {
+  font-family: "Lexend Zetta", sans-serif;
+  background-color: var(--bg);
+  color: var(--primary);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 7%;
+  position: fixed;
+  background-color: var(--primary); /* fix transparansi */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* sedikit bayangan */
+  transition: top 0.3s;
+}
+
+/* Bagian ikon */
+.navbar-icons .feather {
+  margin: 0 0.5rem;
+  color: var(--bg);
+  font-size: 1.4rem;
+}
+
+.navbar-icons a:hover {
+  color: #4a7760; /* warna hover opsional */
+}
+
+/* Bagian user info */
+.navbar-user {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.navbar-user h6 {
+  font-family: "Lexend Zetta", sans-serif;
+  color: var(--bg);
+  font-size: 1.2rem;
+  margin-right: 2rem;
+}
+
+.navbar-user img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}

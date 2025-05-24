@@ -1,39 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
-const menuData = {
-	// List makanan
-	makanan: [
-		{ name: "Nasi Goreng", price: "Rp 20.000", image: "Assets/makanan.png" },
-		{ name: "Ayam Bakar", price: "Rp 25.000", image: "Assets/makanan.png" },
-		{ name: "Sate Ayam", price: "Rp 22.000", image: "Assets/makanan.png" },
-		{ name: "Mie Goreng", price: "Rp 18.000", image: "Assets/makanan.png" },
-		{ name: "Soto Ayam", price: "Rp 19.000", image: "Assets/makanan.png" },
-		{ name: "Bakso", price: "Rp 21.000", image: "Assets/makanan.png" },
-		{ name: "Rendang", price: "Rp 30.000", image: "Assets/makanan.png" },
-		{ name: "Gado-Gado", price: "Rp 17.000", image: "Assets/makanan.png" },
-	],
-	// List minuman
-	minuman: [
-		{ name: "Es Teh", price: "Rp 5.000", image: "Assets/minuman.png" },
-		{ name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/minuman.png" },
-		{ name: "Kopi Hitam", price: "Rp 7.000", image: "Assets/minuman.png" },
-		{ name: "Susu Coklat", price: "Rp 9.000", image: "Assets/minuman.png" },
-		{ name: "Air Mineral", price: "Rp 4.000", image: "Assets/minuman.png" },
-		{ name: "Teh Tarik", price: "Rp 10.000", image: "Assets/minuman.png" },
-		{ name: "Jus Alpukat", price: "Rp 12.000", image: "Assets/minuman.png" },
-		{ name: "Soda Gembira", price: "Rp 11.000", image: "Assets/minuman.png" },
-	],
-	// List snack
-	snack: [
-		{ name: "Kentang Goreng", price: "Rp 10.000", image: "Assets/snack.png" },
-		{ name: "Tahu Crispy", price: "Rp 8.000", image: "Assets/snack.png" },
-		{ name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/snack.png" },
-		{ name: "Risoles", price: "Rp 7.000", image: "Assets/snack.png" },
-		{ name: "Singkong Keju", price: "Rp 11.000", image: "Assets/snack.png" },
-		{ name: "Cireng", price: "Rp 8.000", image: "Assets/snack.png" },
-		{ name: "Bakwan", price: "Rp 7.000", image: "Assets/snack.png" },
-		{ name: "Lumpia", price: "Rp 10.000", image: "Assets/snack.png" },
-	],
-};
+  const menuData = {
+    
+    // List makanan
+    makanan: [
+      { name: "Nasi Goreng", price: "Rp 13.000", image: "Assets/nasgor.png" },
+      { name: "Ayam Bakar", price: "Rp 20.000", image: "Assets/ayam bakar.png" },
+      { name: "Mie Goreng", price: "Rp 8.000", image: "Assets/miegoreng.png" },
+      { name: "Soto Ayam", price: "Rp 15.000", image: "Assets/soto.png" },
+      { name: "Bakso", price: "Rp 12.000", image: "Assets/bakso.png" },
+      { name: "Rendang", price: "Rp 22.000", image: "Assets/rendang.png" },
+      { name: "Gado-Gado", price: "Rp 10.000", image: "Assets/gado.png" },
+    ],
+    // List minuman
+    minuman: [
+      { name: "Jus Alpukat", price: "Rp 6.000", image: "Assets/alpukat.png" },
+      { name: "Es Teh", price: "Rp 5.000", image: "Assets/esteh.png" },
+      { name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/jeruk.png" },
+      { name: "Kopi Hitam", price: "Rp 7.000", image: "Assets/kopi.png" },
+      { name: "Susu Coklat", price: "Rp 9.000", image: "Assets/susu_coklat.png" },
+      { name: "Air Mineral", price: "Rp 5.000", image: "Assets/mineral.png" },
+      { name: "Teh Tarik", price: "Rp 10.000", image: "Assets/teh tarik.png" },
+      { name: "Soda Gembira", price: "Rp 11.000", image: "Assets/soda gembira.png" },
+    ],
+    // List snack
+    snack: [
+      { name: "Kentang Goreng", price: "Rp 15.000", image: "Assets/kentang.png" },
+      { name: "Sate Ayam", price: "Rp 6.000", image: "Assets/sate top.png" },
+      { name: "Sate Taichan", price: "Rp 6.000", image: "Assets/taichan.png" },
+      { name: "Tahu Crispy", price: "Rp 8.000", image: "Assets/tahu_crispyB.png" },
+      { name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/pisgor2.png" },
+      { name: "Risoles", price: "Rp 7.000", image: "Assets/risol.png" },
+      { name: "Singkong Keju", price: "Rp 11.000", image: "Assets/singkong_keju.png" },
+      { name: "Cireng", price: "Rp 10.000", image: "Assets/cireng.png" },
+      { name: "Bakwan", price: "Rp 5.000", image: "Assets/bakwan.png" },
+      { name: "Lumpia", price: "Rp 12.000", image: "Assets/lumpia.png" },
+    ],
+  };
 
   const createCard = (item, category) => {
     const card = document.createElement("div");
@@ -99,36 +101,41 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Logika kuantitas dan tombol checkout
-  document.querySelectorAll(".makanan-card, .minuman-card, .snack-card").forEach(card => {
-    const quantityInput = card.querySelector(".quantity");
-    const plusBtn = card.querySelector(".btn-increase");
-    const minusBtn = card.querySelector(".btn-decrease");
-    const tambahBtn = card.querySelector(".btn-checkout");
+  document
+    .querySelectorAll(".makanan-card, .minuman-card, .snack-card")
+    .forEach((card) => {
+      const quantityInput = card.querySelector(".quantity");
+      const plusBtn = card.querySelector(".btn-increase");
+      const minusBtn = card.querySelector(".btn-decrease");
+      const tambahBtn = card.querySelector(".btn-checkout");
 
-    // Tombol tambah
-    plusBtn.addEventListener("click", () => {
-      let value = parseInt(quantityInput.value) || 0;
-      quantityInput.value = value + 1;
-    });
+      // Tombol tambah
+      plusBtn.addEventListener("click", () => {
+        let value = parseInt(quantityInput.value) || 0;
+        quantityInput.value = value + 1;
+      });
 
-    // Tombol kurang
-    minusBtn.addEventListener("click", () => {
-      let value = parseInt(quantityInput.value) || 0;
-      if (value > 0) quantityInput.value = value - 1;
-    });
+      // Tombol kurang
+      minusBtn.addEventListener("click", () => {
+        let value = parseInt(quantityInput.value) || 0;
+        if (value > 0) quantityInput.value = value - 1;
+      });
 
-    // Tombol checkout
-    tambahBtn.addEventListener("click", () => {
-      const itemName = card.querySelector("h5").innerText;
-      const qty = parseInt(quantityInput.value);
-      if (qty > 0) {
-        showPopup(`Berhasil menambahkan ${qty} ${itemName} ke keranjang`, true);
-        quantityInput.value = 0;
-      } else {
-        showPopup("Jumlah harus lebih dari 0", false);
-      }
+      // Tombol checkout
+      tambahBtn.addEventListener("click", () => {
+        const itemName = card.querySelector("h5").innerText;
+        const qty = parseInt(quantityInput.value);
+        if (qty > 0) {
+          showPopup(
+            `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
+            true
+          );
+          quantityInput.value = 0;
+        } else {
+          showPopup("Jumlah harus lebih dari 0", false);
+        }
+      });
     });
-  });
 });
 
 // Sembunyikan navbar saat scroll ke bawah, munculkan saat scroll ke atas
@@ -175,4 +182,3 @@ function showPopup(message, isSuccess = true) {
     popup.classList.remove("show");
   };
 }
-
