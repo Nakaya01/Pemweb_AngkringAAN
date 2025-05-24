@@ -678,7 +678,7 @@ nav.hide {
   color: var(--primary);
 }
 
-.order-summary select {
+order-summary select {
   width: 100%;
   padding: 0.5rem 0.7rem;
   border-radius: 5px;
@@ -745,4 +745,12 @@ nav.hide {
 #btn-checkout,
 #total-harga {
   font-family: "Sansita Swashed", cursive;
+}
+
+.navbar .navbar-nav p {
+  font-family: "Lexend Zetta", sans-serif;
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 1rem;
+  font-weight: normal;
 }
