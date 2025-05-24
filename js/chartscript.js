@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     totalPriceDisplay.textContent = `Total: Rp ${total.toLocaleString()}`;
   }
 
-  window.updateQuantity = function(index, delta) {
+  window.updateQuantity = function (index, delta) {
     if (!cart[index]) return;
     cart[index].quantity += delta;
     if (cart[index].quantity <= 0) {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       meja,
       metode,
       cart,
-      waktu: new Date().toLocaleString()
+      waktu: new Date().toLocaleString(),
     };
 
     console.log("Pesanan dikirim:", order);

@@ -67,13 +67,11 @@ body {
   transform: scaleX(0.9);
 }
 
-
 /* mengatur ukuran semua logo feather */
 .navbar-extra .feather {
   width: 2rem;
   height: 2rem;
 }
-
 
 .navbar .navbar-extra a:hover {
   color: #61fac4;
@@ -368,11 +366,11 @@ nav.hide {
 }
 
 .popup.success {
-  background-color: rgba(50, 205, 86, 0.500); /* Hijau untuk sukses */
+  background-color: rgba(50, 205, 86, 0.5); /* Hijau untuk sukses */
 }
 
 .popup.error {
-  background-color: hsla(354, 70%, 54%, 0.500); /* Merah untuk gagal */
+  background-color: hsla(354, 70%, 54%, 0.5); /* Merah untuk gagal */
 }
 
 .popup.success .popup-button {
@@ -408,7 +406,7 @@ nav.hide {
   padding: 2rem 1rem;
   background: rgba(19, 61, 47, 0.1);
   border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
 /* Layout for order-list and order-form side by side */
@@ -443,7 +441,7 @@ nav.hide {
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1.2rem;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
   gap: 1.2rem;
 }
 
@@ -722,7 +720,6 @@ nav.hide {
   margin: 0 0.2rem;
   transition: background 0.2s;
 }
-
 
 .order-list button:hover,
 .order-list .aksi-btn:hover {
