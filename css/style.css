@@ -676,6 +676,13 @@ nav.hide {
   font-size: 1.1rem;
 }
 
+.order-summary td label,
+.order-summary td:first-child {
+  font-family: "Lexend Zetta", sans-serif;
+  font-size: 1rem;
+  color: var(--primary);
+}
+
 .order-summary select {
   width: 100%;
   padding: 0.5rem 0.7rem;
@@ -718,6 +725,7 @@ nav.hide {
   margin: 0 0.2rem;
   transition: background 0.2s;
 }
+
 
 .order-list button:hover,
 .order-list .aksi-btn:hover {
