@@ -732,3 +732,23 @@ nav.hide {
   background: #d2d0a0;
   color: #184c3a;
 }
+
+.order-list h2,
+.order-form h2,
+.order-summary h2,
+.order-list,
+.order-form,
+.order-summary,
+.order-list th,
+.order-list td,
+.order-form label,
+.order-form input[type="text"],
+.order-form input[type="number"],
+.order-summary td,
+.order-summary select,
+.order-summary td label,
+.order-summary td:first-child,
+#btn-checkout,
+#total-harga {
+  font-family: "Sansita Swashed", cursive;
+}
