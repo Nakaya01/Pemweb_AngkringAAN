@@ -17,6 +17,7 @@ body {
   background-color: var(--bg);
   color: var(--primary-color);
 }
+
 /* navigasi bar */
 .navbar {
   display: flex;
