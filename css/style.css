@@ -394,3 +394,358 @@ nav.hide {
 .hidden {
   display: none;
 }
+
+/* Chart (Keranjang) Page Styles */
+.chart-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 7rem auto 2rem auto;
+  padding: 2rem 1rem;
+  background: rgba(19, 61, 47, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* Layout for order-list and order-form side by side */
+.order-list {
+  flex: 2 1 0;
+  min-width: 320px;
+  max-width: 60%;
+  margin-bottom: 0;
+}
+
+.order-form {
+  flex: 1 1 0;
+  min-width: 260px;
+  max-width: 35%;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+.order-summary {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 0;
+  align-self: stretch;
+}
+
+/* Order Item Card Style */
+.order-list .order-item {
+  display: flex;
+  align-items: center;
+  background: #184c3a;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  gap: 1.2rem;
+}
+
+.order-list .order-item-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #fbfada33;
+  background: #fff;
+}
+
+.order-list .order-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.order-list .order-item-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.order-list .order-item-price {
+  font-size: 1rem;
+  color: #61fac4;
+}
+
+.order-list .order-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.order-list .btn-kurang,
+.order-list .btn-tambah,
+.order-list .btn-hapus {
+  background: #fbfada;
+  color: #133d2f;
+  border: 1px solid #113327;
+  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-list .btn-hapus {
+  padding: 0.3rem 0.5rem;
+  color: #e1306c;
+  border-color: #e1306c;
+  background: #fff0f4;
+}
+
+.order-list .btn-kurang:hover,
+.order-list .btn-tambah:hover {
+  background: #d2d0a0;
+  color: #184c3a;
+}
+
+.order-list .btn-hapus:hover {
+  background: #e1306c;
+  color: #fff;
+}
+
+.order-list .order-item-qty {
+  width: 2.5rem;
+  text-align: center;
+  border: 1px solid #12372a;
+  border-radius: 5px;
+  background: #fbfada;
+  color: #133d2f;
+  font-size: 1rem;
+  padding: 0.2rem 0;
+  margin: 0 0.2rem;
+}
+
+/* Responsive for order-item */
+@media (max-width: 900px) {
+  .chart-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    margin-top: 6rem;
+    padding: 1rem 0.5rem;
+  }
+  .order-list,
+  .order-form,
+  .order-summary {
+    max-width: 100%;
+    min-width: unset;
+    padding: 1.2rem 0.7rem;
+    margin-bottom: 1rem;
+  }
+  .order-list,
+  .order-form {
+    margin-bottom: 0;
+  }
+  .order-summary {
+    margin-top: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .chart-container {
+    flex-direction: column;
+    margin-top: 5rem;
+    padding: 0.5rem 0.2rem;
+    gap: 1rem;
+  }
+  .order-list,
+  .order-form,
+  .order-summary {
+    padding: 0.8rem 0.3rem;
+    font-size: 0.95rem;
+    max-width: 100%;
+    min-width: unset;
+    margin-bottom: 0.7rem;
+  }
+  .order-list th,
+  .order-list td {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .order-list h2,
+  .order-form h2,
+  .order-summary h2 {
+    font-size: 1.1rem;
+  }
+  .order-summary {
+    margin-top: 0.7rem;
+  }
+  .order-list .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.7rem;
+  }
+  .order-list .order-item-img {
+    width: 55px;
+    height: 55px;
+  }
+  .order-list .order-item-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.3rem;
+  }
+}
+
+.order-list h2,
+.order-form h2,
+.order-summary h2 {
+  font-family: "Lexend Zetta", sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+  color: var(--primary);
+  text-align: center;
+}
+
+.order-list table,
+.order-form table,
+.order-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.order-list th,
+.order-list td {
+  padding: 0.6rem 0.4rem;
+  text-align: center;
+  font-size: 1rem;
+  border-bottom: 1px solid #fbfada33;
+}
+
+.order-list th {
+  background: #184c3a;
+  color: #fbfada;
+  font-weight: 600;
+}
+
+.order-list td:last-child {
+  font-weight: bold;
+}
+
+.order-list tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.order-form label {
+  font-family: "Lexend Zetta", sans-serif;
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.order-form input[type="text"],
+.order-form input[type="number"] {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border-radius: 5px;
+  border: 1px solid #184c3a;
+  background: #fbfada;
+  color: #133d2f;
+  font-size: 1rem;
+  margin-top: 0.2rem;
+}
+
+.order-form td {
+  padding: 0.5rem 0.3rem;
+}
+
+.order-summary td {
+  padding: 0.7rem 0.3rem;
+  font-size: 1rem;
+}
+
+#total-harga {
+  font-weight: bold;
+  color: #61fac4;
+  font-size: 1.1rem;
+}
+
+.order-summary td label,
+.order-summary td:first-child {
+  font-family: "Lexend Zetta", sans-serif;
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.order-summary select {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border-radius: 5px;
+  border: 1px solid #184c3a;
+  background: #fbfada;
+  color: #133d2f;
+  font-size: 1rem;
+}
+
+#btn-checkout {
+  width: 100%;
+  background: #fbfada;
+  color: #133d2f;
+  border: 1px solid #113327;
+  border-radius: 6px;
+  padding: 0.7rem 0;
+  font-family: "Sansita Swashed", cursive;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#btn-checkout:hover {
+  background: #d2d0a0;
+  color: #184c3a;
+}
+
+.order-list button,
+.order-list .aksi-btn {
+  background: #fbfada;
+  color: #133d2f;
+  border: 1px solid #113327;
+  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0 0.2rem;
+  transition: background 0.2s;
+}
+
+
+.order-list button:hover,
+.order-list .aksi-btn:hover {
+  background: #d2d0a0;
+  color: #184c3a;
+}
+
+.order-list h2,
+.order-form h2,
+.order-summary h2,
+.order-list,
+.order-form,
+.order-summary,
+.order-list th,
+.order-list td,
+.order-form label,
+.order-form input[type="text"],
+.order-form input[type="number"],
+.order-summary td,
+.order-summary select,
+.order-summary td label,
+.order-summary td:first-child,
+#btn-checkout,
+#total-harga {
+  font-family: "Sansita Swashed", cursive;
+}

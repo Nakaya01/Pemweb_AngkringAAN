@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AngkringAan - Keranjang</title>
+    <!--font--->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap"
+      rel="stylesheet"
+    />
+    <!--icon-->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!--style-->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- script -->
+    <script src="js/chartscript.js" defer></script>
+  </head>
+<body>
+    <!-- menu navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">AngkringAan</a>
+        <div class="navbar-nav">
+            <a href="index.html#makanan" class="Makanan-nav">Makanan</a>
+            <a href="index.html#minuman" class="Minuman-nav">Minuman</a>
+            <a href="index.html#snack" class="Snack-nav">Snack</a>
+        </div>
+        <div class="navbar-extra">
+            <a href="#" id="search"><i data-feather="shopping-cart"></i></a>
+            <a href="login.html" id="kasir"><i data-feather="user"></i></a>
+        </div>
+    </nav>
+
+    <!-- Konten Keranjang -->
+    <main class="chart-container">
+        <!-- Class 1: Daftar barang dipesan -->
+        <div class="order-list" id="order-list">
+            <h2>Pesanan Anda</h2>
+            <div class="order-item">
+                <img src="img/makanan1.jpg" alt="Nama Makanan" class="order-item-img" />
+                <div class="order-item-info">
+                    <div class="order-item-name">Nasi Goreng</div>
+                    <div class="order-item-price">Rp 15.000</div>
+                </div>
+                <div class="order-item-actions">
+                    <button class="btn-kurang">-</button>
+                    <input type="number" class="order-item-qty" value="1" min="1" readonly />
+                    <button class="btn-tambah">+</button>
+                    <button class="btn-hapus"><i data-feather="trash-2"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Class 2: Form nama dan nomor meja -->
+        <div class="order-form">
+            <h2>Data Pemesan</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="nama">Nama:</label></td>
+                        <td><input type="text" id="nama" name="nama" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="meja">Nomor Meja:</label></td>
+                        <td><input type="number" id="meja" name="meja" min="1" required /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Class 3: Total dan metode pembayaran -->
+        <div class="order-summary">
+            <h2>Ringkasan</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Total Harga:</td>
+                        <td><span id="total-harga">Rp 0</span></td>
+                    </tr>
+                    <tr>
+                        <td><label for="pembayaran">Metode Pembayaran:</label></td>
+                        <td>
+                            <select id="pembayaran">
+                                <option value="cash">Cash</option>
+                                <option value="qris">QRIS</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btn-checkout">Checkout</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
+
