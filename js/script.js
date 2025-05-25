@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const menuData = {
-    
     // List makanan
     makanan: [
       { name: "Nasi Goreng", price: "Rp 13.000", image: "Assets/nasgor.png" },
@@ -37,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
+  // Fungsi membuat kartu menu
   const createCard = (item, category) => {
     const card = document.createElement("div");
     card.className = `${category}-card`;
@@ -54,30 +54,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return card;
   };
 
+  // Tampilkan kartu menu
   Object.keys(menuData).forEach((category) => {
     const container = document.getElementById(`${category}-list`);
-    menuData[category].forEach((item) => {
-      const card = createCard(item, category);
-      container.appendChild(card);
-    });
+      menuData[category].forEach((item) => {
+        const card = createCard(item, category);
+        container.appendChild(card);
+      });
   });
-  feather.replace();
-});
 
-// fungsi membuat tiap section tersembunyi
-document.addEventListener("DOMContentLoaded", function () {
+  // Ganti ikon feather
+  feather.replace();
+
+  // Navigasi antar section
   const navbarNav = document.querySelector(".navbar-nav");
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".navbar-nav a");
 
-  // Sembunyikan menu saat klik di luar menu
   document.addEventListener("click", function (e) {
     if (!navbarNav.contains(e.target)) {
       navbarNav.classList.remove("active");
     }
   });
 
-  // Fungsi menyembunyikan semua section kecuali target
   function hideAllSectionsExcept(targetId) {
     sections.forEach((section) => {
       if (section.id === targetId) {
@@ -88,10 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Tampilkan default section (makanan)
   hideAllSectionsExcept("makanan");
 
-  // Navigasi antar section
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault();
@@ -100,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Logika kuantitas dan tombol checkout
+  // Event tombol +, - dan Tambah
   document
     .querySelectorAll(".makanan-card, .minuman-card, .snack-card")
     .forEach((card) => {
@@ -109,28 +106,56 @@ document.addEventListener("DOMContentLoaded", function () {
       const minusBtn = card.querySelector(".btn-decrease");
       const tambahBtn = card.querySelector(".btn-checkout");
 
-      // Tombol tambah
+      // Tambah jumlah
       plusBtn.addEventListener("click", () => {
         let value = parseInt(quantityInput.value) || 0;
         quantityInput.value = value + 1;
       });
 
-      // Tombol kurang
+      // Kurangi jumlah
       minusBtn.addEventListener("click", () => {
         let value = parseInt(quantityInput.value) || 0;
         if (value > 0) quantityInput.value = value - 1;
       });
 
-      // Tombol checkout
+      // Tambah ke keranjang
       tambahBtn.addEventListener("click", () => {
-        const itemName = card.querySelector("h5").innerText;
         const qty = parseInt(quantityInput.value);
         if (qty > 0) {
-          showPopup(
-            `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
-            true
-          );
-          quantityInput.value = 0;
+          const itemName = card.querySelector("h5").innerText;
+          let category = "snack";
+          if (card.classList.contains("makanan-card")) category = "makanan";
+          else if (card.classList.contains("minuman-card"))
+            category = "minuman";
+
+          const cartData = [
+            {
+              name: itemName,
+              category: category,
+              quantity: qty,
+            },
+          ];
+
+          const formData = new FormData();
+          formData.append("cart", JSON.stringify(cartData));
+
+          fetch("index.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.status === "success") {
+                showPopup(
+                  `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
+                  true
+                );
+                quantityInput.value = 0;
+              } else {
+                showPopup("Gagal menambahkan ke keranjang", false);
+              }
+            })
+            .catch(() => showPopup("Terjadi kesalahan jaringan", false));
         } else {
           showPopup("Jumlah harus lebih dari 0", false);
         }
@@ -144,17 +169,15 @@ const navbar = document.querySelector("nav");
 
 window.addEventListener("scroll", function () {
   let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
   if (currentScroll > lastScrollTop) {
     navbar.classList.add("hide");
   } else {
     navbar.classList.remove("hide");
   }
-
   lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
 
-// Fungsi untuk menampilkan popup
+// Fungsi popup
 function showPopup(message, isSuccess = true) {
   const popup = document.getElementById("popup");
   const title = document.getElementById("popup-title");
@@ -162,22 +185,19 @@ function showPopup(message, isSuccess = true) {
   const button = document.getElementById("popup-button");
   const icon = popup.querySelector(".popup-icon");
 
-  // Sesuaikan isi popup
   if (isSuccess) {
     title.textContent = "Pesanan anda berhasil!";
     icon.innerHTML = `<img src="logo/Succses.png" alt="Success" style="width:120px;height:120px;">`;
-    button.textContent = "Tutup";
     popup.className = "popup success show";
   } else {
     title.textContent = "Pesanan anda dibatalkan!";
     icon.innerHTML = `<img src="logo/Failed.png" alt="Error" style="width:120px;height:120px;">`;
-    button.textContent = "Tutup";
     popup.className = "popup error show";
   }
 
   messageText.textContent = message;
 
-  // Tombol untuk menutup popup
+  button.textContent = "Tutup";
   button.onclick = () => {
     popup.classList.remove("show");
   };

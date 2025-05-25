@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+// Proses simpan data pesanan ke session
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
+    $cartData = json_decode($_POST['cart'], true);
+
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    foreach ($cartData as $item) {
+        $name = $item['name'];
+        $category = $item['category'];
+        $qty = (int)$item['quantity'];
+
+        if ($qty > 0) {
+            $_SESSION['cart'][] = [
+                'name' => $name,
+                'category' => $category,
+                'quantity' => $qty
+            ];
+        }
+    }
+
+    echo json_encode(['status' => 'success', 'message' => 'Pesanan disimpan di session.']);
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
   <head>

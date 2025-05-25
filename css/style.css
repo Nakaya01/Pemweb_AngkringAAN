@@ -13,9 +13,12 @@
 }
 
 body {
-  font-family: "Lexend Zetta", sans-serif;
   background-color: var(--bg);
-  color: var(--primary-color);
+  font-family: "Lexend Zetta", sans-serif;
+  background-image: url("../Assets/background.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
 }
 /* navigasi bar */
 .navbar {
@@ -71,9 +74,10 @@ body {
 .navbar-extra .feather {
   width: 2rem;
   height: 2rem;
+  color: var(--primary);
 }
 
-.navbar .navbar-extra a:hover {
+.navbar .navbar-extra .feather:hover {
   color: #61fac4;
 }
 
