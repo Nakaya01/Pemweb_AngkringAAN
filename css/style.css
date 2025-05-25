@@ -54,7 +54,7 @@ body {
 }
 
 .navbar .navbar-nav a:hover {
-  color: #61fac4;
+  color: #4a7760;
 }
 
 /* efek garis pada saat hover */
@@ -62,7 +62,7 @@ body {
   content: "";
   display: block;
   padding-bottom: 0.1rem;
-  border-bottom: 0.1rem solid #61fac4;
+  border-bottom: 0.1rem solid #4a7760;
   transform: scaleX(0);
   transition: 0.1s linear;
 }
@@ -79,7 +79,11 @@ body {
 }
 
 .navbar .navbar-extra .feather:hover {
-  color: #61fac4;
+  color: #4a7760;
+}
+
+.navbar-extra #chart {
+  margin: 0 2rem 0 2rem;
 }
 
 /* section untuk makanan, minuman, dan snack */
@@ -107,7 +111,7 @@ section {
 .snack .snack-main h1 {
   text-align: center;
   color: var(--primary);
-  margin-top: 2.9rem;
+  margin-top: 4rem;
 }
 
 .makanan .makanan-main h5,
@@ -272,13 +276,13 @@ footer p {
 
 /* media query */
 /* pada laptop */
-@media (min-width: 901px) {
+@media (max-width: 1368px) {
   html {
     font-size: 110%;
   }
 }
 /* tablet */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   html {
     font-size: 70%;
   }
@@ -289,6 +293,7 @@ footer p {
   .minuman-card img,
   .snack-card img {
     width: 80%;
+    height: 50%;
   }
   .feather {
     width: 1.7rem;
@@ -296,7 +301,7 @@ footer p {
   }
 }
 /* hp */
-@media (max-width: 600px) {
+@media (max-width: 450px) {
   html {
     font-size: 50%;
   }
@@ -314,6 +319,7 @@ footer p {
   .minuman-card img,
   .snack-card img {
     width: 80%;
+    height: 50%;
   }
   .feather {
     width: 1.3rem;

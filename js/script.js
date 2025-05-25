@@ -2,37 +2,61 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuData = {
     // List makanan
     makanan: [
-      { name: "Nasi Goreng", price: "Rp 13.000", image: "Assets/nasgor.png" },
-      { name: "Ayam Bakar", price: "Rp 20.000", image: "Assets/ayam bakar.png" },
       { name: "Mie Goreng", price: "Rp 8.000", image: "Assets/miegoreng.png" },
-      { name: "Soto Ayam", price: "Rp 15.000", image: "Assets/soto.png" },
-      { name: "Bakso", price: "Rp 12.000", image: "Assets/bakso.png" },
-      { name: "Rendang", price: "Rp 22.000", image: "Assets/rendang.png" },
       { name: "Gado-Gado", price: "Rp 10.000", image: "Assets/gado.png" },
+      { name: "Bakso", price: "Rp 12.000", image: "Assets/bakso.png" },
+      { name: "Nasi Goreng", price: "Rp 13.000", image: "Assets/nasgor.png" },
+      { name: "Soto Ayam", price: "Rp 15.000", image: "Assets/soto.png" },
+      {
+        name: "Ayam Bakar",
+        price: "Rp 20.000",
+        image: "Assets/ayam bakar.png",
+      },
+      { name: "Rendang", price: "Rp 22.000", image: "Assets/rendang.png" },
     ],
     // List minuman
     minuman: [
-      { name: "Jus Alpukat", price: "Rp 6.000", image: "Assets/alpukat.png" },
+      { name: "Air Mineral", price: "Rp 3.000", image: "Assets/mineral.png" },
       { name: "Es Teh", price: "Rp 5.000", image: "Assets/esteh.png" },
-      { name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/jeruk.png" },
+      { name: "Jus Alpukat", price: "Rp 6.000", image: "Assets/alpukat.png" },
       { name: "Kopi Hitam", price: "Rp 7.000", image: "Assets/kopi.png" },
-      { name: "Susu Coklat", price: "Rp 9.000", image: "Assets/susu_coklat.png" },
-      { name: "Air Mineral", price: "Rp 5.000", image: "Assets/mineral.png" },
+      { name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/jeruk.png" },
+      {
+        name: "Susu Coklat",
+        price: "Rp 9.000",
+        image: "Assets/susu_coklat.png",
+      },
       { name: "Teh Tarik", price: "Rp 10.000", image: "Assets/teh tarik.png" },
-      { name: "Soda Gembira", price: "Rp 11.000", image: "Assets/soda gembira.png" },
+      {
+        name: "Soda Gembira",
+        price: "Rp 11.000",
+        image: "Assets/soda gembira.png",
+      },
     ],
     // List snack
     snack: [
-      { name: "Kentang Goreng", price: "Rp 15.000", image: "Assets/kentang.png" },
-      { name: "Sate Ayam", price: "Rp 6.000", image: "Assets/sate top.png" },
-      { name: "Sate Taichan", price: "Rp 6.000", image: "Assets/taichan.png" },
-      { name: "Tahu Crispy", price: "Rp 8.000", image: "Assets/tahu_crispyB.png" },
-      { name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/pisgor2.png" },
-      { name: "Risoles", price: "Rp 7.000", image: "Assets/risol.png" },
-      { name: "Singkong Keju", price: "Rp 11.000", image: "Assets/singkong_keju.png" },
-      { name: "Cireng", price: "Rp 10.000", image: "Assets/cireng.png" },
       { name: "Bakwan", price: "Rp 5.000", image: "Assets/bakwan.png" },
+      { name: "Risoles", price: "Rp 7.000", image: "Assets/risol.png" },
+      {
+        name: "Tahu Crispy",
+        price: "Rp 8.000",
+        image: "Assets/tahu_crispyB.png",
+      },
+      { name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/pisgor2.png" },
+      { name: "Cireng", price: "Rp 10.000", image: "Assets/cireng.png" },
+      {
+        name: "Singkong Keju",
+        price: "Rp 11.000",
+        image: "Assets/singkong_keju.png",
+      },
       { name: "Lumpia", price: "Rp 12.000", image: "Assets/lumpia.png" },
+      {
+        name: "Kentang Goreng",
+        price: "Rp 15.000",
+        image: "Assets/kentang.png",
+      },
+      { name: "Sate Taichan", price: "Rp 16.000", image: "Assets/taichan.png" },
+      { name: "Sate Ayam", price: "Rp 16.000", image: "Assets/sate top.png" },
     ],
   };
 
@@ -57,10 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tampilkan kartu menu
   Object.keys(menuData).forEach((category) => {
     const container = document.getElementById(`${category}-list`);
-      menuData[category].forEach((item) => {
-        const card = createCard(item, category);
-        container.appendChild(card);
-      });
+    menuData[category].forEach((item) => {
+      const card = createCard(item, category);
+      container.appendChild(card);
+    });
   });
 
   // Ganti ikon feather

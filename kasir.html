@@ -19,22 +19,24 @@
   </head>
   <body>
     <nav class="navbar">
-    <div class="navbar-icons">
-      <a href="#" id="menu"><i data-feather="list"></i></a>
-      <a href="#" id="chart"><i data-feather="bar-chart-2"></i></a>
-      <a href="#" id="edit"><i data-feather="edit"></i></a>
-      <a href="#" id="archive"><i data-feather="archive"></i></a>
-      <a href="log-out.php" id="logout"><i data-feather="log-out"></i></a>
-    </div>
-    <div class="navbar-user">
-      <div class="greeting">
-        <h6>Selamat datang</h6>
+      <div class="navbar-menu">
+        <a href="#" id="menu"><i data-feather="list"></i></a>
+        <div class="navbar-extra">
+          <a href="#" id="chart"><i data-feather="bar-chart-2"></i>Laporan Penjualan</a>
+          <a href="#" id="edit"><i data-feather="edit"></i>Tambah Menu</a>
+          <a href="#" id="archive"><i data-feather="archive"></i>Histori Penjualan</a>
+          <a href="log-out.php" id="logout"><i data-feather="log-out"></i>Keluar</a>
+        </div>
+      </div>
+      <div class="navbar-user">
+        <h6>Selamat datang aan</h6>
       </div>
       <div class="user-image">
-        <img src="logo/user-#fbfada.png" alt="User Image" />
+        <img src="logo/user-cream.png" alt="User Image" />
       </div>
-    </div>
-
+    </nav>
+    <main class="list-pesanan"></main>
+    <aside class="rincian-pesanan"></aside>
     <script>
       feather.replace();
     </script>

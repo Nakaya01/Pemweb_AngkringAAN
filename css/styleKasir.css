@@ -22,7 +22,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.4rem 7%;
+  padding: 0.8rem 4%;
   position: fixed;
   background-color: var(--primary); /* fix transparansi */
   top: 0;
@@ -32,23 +32,44 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* sedikit bayangan */
   transition: top 0.3s;
 }
+.navbar-menu {
+  display: flex;
+
+}
+
+#chart,
+#edit,
+#archive,
+#logout {
+  display: flex;
+}
+
+.navbar-menu .navbar-extra {
+  position: absolute;
+  display: inline;
+  top:100%;
+  left: 0%;
+  background-color: rgba(0, 0, 0, 0.600);
+  width: 30rem;
+  height: 100dvh;
+}
+
+.navbar-menu .navbar-extra a {
+  margin: 2rem 2rem;
+  color: var(--bg);
+  font-size: 1rem;
+}
 
 /* Bagian ikon */
-.navbar-icons .feather {
+.navbar-menu .feather {
   margin: 0 0.5rem;
   color: var(--bg);
   font-size: 1.4rem;
 }
 
-.navbar-icons a:hover {
-  color: #4a7760; /* warna hover opsional */
-}
-
-/* Bagian user info */
-.navbar-user {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
+.navbar-menu .feather:hover,
+.navbar-menu .navbar-extra a:hover {
+  color: #4a7760; 
 }
 
 .navbar-user h6 {
@@ -58,9 +79,9 @@ body {
   margin-right: 2rem;
 }
 
-.navbar-user img {
-  width: 32px;
-  height: 32px;
+.user-image img {
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--primary);
