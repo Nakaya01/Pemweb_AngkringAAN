@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Redirect jika sudah login (opsional)
+if (isset($_SESSION['kasir_logged_in']) && $_SESSION['kasir_logged_in'] === true) {
+    header("Location: kasir.html"); // Ganti ke halaman setelah login
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -8,7 +17,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <!-- style -->
     <link rel="stylesheet" href="css/styleLogin.css" />
-    <!--font--->
+    <!--font-->
     <link
       href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap"
       rel="stylesheet"
@@ -20,7 +29,7 @@
   </head>
   <body>
     <nav class="navbar">
-      <a href="index.html" id="index" class="navbar-logo">
+      <a href="index.php" id="index" class="navbar-logo">
         <i data-feather="arrow-left"></i>
         <span class="back-text">Kembali</span>
       </a>

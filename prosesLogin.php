@@ -1,13 +1,20 @@
 <?php
 session_start();
-$koneksi = new mysqli("localhost", "root", "", "AngkringAan_db");
+$koneksi = new mysqli("localhost", "root", "", "angkringaan_db");
 
 if ($koneksi->connect_error) {
   die("Koneksi gagal: " . $koneksi->connect_error);
 }
 
+// ambil data dari form login
 $username = $_POST['username'];
 $password = $_POST['password'];
+
+// Validasi jika username dan password kosong
+if (empty($username) || empty($password)) {
+    header("Location: login.php?error=Username dan password harus diisi");
+    exit;
+}
 
 // Ambil data user dari database
 $sql = "SELECT * FROM kasir WHERE username = ?";
@@ -18,15 +25,13 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
   $user = $result->fetch_assoc();
-  if (password_verify($password, $user['password'])) {
+  if ($password === $user['password']) {
     $_SESSION['username'] = $username;
     header("Location: kasir.html");
     exit();
   }
 }
 
-echo "<script>
-  alert('Username atau password salah!');
-  window.location.href = 'login.html';
-</script>";
+header("Location: login.php?error=Username atau password salah!");
+exit;
 ?>

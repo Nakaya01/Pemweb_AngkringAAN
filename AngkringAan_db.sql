@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS kasir (
   password VARCHAR(255) NOT NULL
 );
 
+insert into kasir (username, password) values ('aan gagah', '078'), ('iqbal gooners', '080'), ('andra asix', '036');
+
 -- Tabel menu
 CREATE TABLE IF NOT EXISTS menu (
   id INT AUTO_INCREMENT PRIMARY KEY,
