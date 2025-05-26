@@ -3,30 +3,47 @@ session_start();
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "angkringaan";
+$db = "AngkringAan_db";
 $conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Ambil order aktif user (misal status 'cart')
+// Ambil pesanan aktif user (belum checkout, pembayaran NULL)
 $user_id = $_SESSION['user_id'] ?? 1; // Ganti sesuai implementasi login
-$order = $conn->query("SELECT * FROM orders WHERE user_id=$user_id AND status='cart' ORDER BY id DESC LIMIT 1")->fetch_assoc();
-$order_id = $order['id'] ?? 0;
+// Untuk demo, asumsikan satu pesanan aktif per user (bisa pakai session)
+$pesanan_id = $_SESSION['pesanan_id'] ?? null;
+if (!$pesanan_id) {
+    // Cari pesanan aktif (pembayaran NULL)
+    $pesanan = $conn->query("SELECT * FROM pesanan WHERE pembayaran IS NULL ORDER BY id DESC LIMIT 1")->fetch_assoc();
+    if ($pesanan) {
+        $pesanan_id = $pesanan['id'];
+        $_SESSION['pesanan_id'] = $pesanan_id;
+    }
+}
+if (!$pesanan_id) {
+    // Buat pesanan baru
+    $conn->query("INSERT INTO pesanan (no_meja, pembayaran) VALUES (0, NULL)");
+    $pesanan_id = $conn->insert_id;
+    $_SESSION['pesanan_id'] = $pesanan_id;
+    $pesanan = $conn->query("SELECT * FROM pesanan WHERE id=$pesanan_id")->fetch_assoc();
+} else {
+    $pesanan = $conn->query("SELECT * FROM pesanan WHERE id=$pesanan_id")->fetch_assoc();
+}
 
 // Ambil item makanan di keranjang
 $order_items = [];
 $total_harga = 0;
-if ($order_id) {
-    $sql = "SELECT oi.*, m.nama, m.harga, m.gambar 
-            FROM order_items oi 
-            JOIN makanan m ON oi.makanan_id = m.id 
-            WHERE oi.order_id = $order_id";
+if ($pesanan_id) {
+    $sql = "SELECT dp.*, m.nama, m.harga, m.gambar 
+            FROM detail_pesanan dp
+            JOIN menu m ON dp.menu_id = m.id
+            WHERE dp.pesanan_id = $pesanan_id";
     $result = $conn->query($sql);
     while ($row = $result->fetch_assoc()) {
         $order_items[] = $row;
-        $total_harga += $row['harga'] * $row['qty'];
+        $total_harga += $row['harga'] * $row['jumlah'];
     }
 }
 ?>
@@ -73,7 +90,7 @@ if ($order_id) {
                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
                             <button class="btn-kurang btn-decrease" type="submit" name="action" value="decrease">-</button>
                         </form>
-                        <input type="number" class="order-item-qty quantity" value="<?= $item['qty'] ?>" min="1" readonly />
+                        <input type="number" class="order-item-qty quantity" value="<?= $item['jumlah'] ?>" min="1" readonly />
                         <form method="post" action="update_cart.php" style="display:inline;">
                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
                             <button class="btn-tambah btn-increase" type="submit" name="action" value="increase">+</button>
@@ -98,11 +115,11 @@ if ($order_id) {
                 <tbody>
                     <tr>
                         <td><label for="nama">Nama:</label></td>
-                        <td><input type="text" id="nama" name="nama" required value="<?= htmlspecialchars($order['nama_pemesan'] ?? '') ?>" /></td>
+                        <td><input type="text" id="nama" name="nama" required value="<?= htmlspecialchars($pesanan['nama_pemesan'] ?? '') ?>" /></td>
                     </tr>
                     <tr>
                         <td><label for="meja">Nomor Meja:</label></td>
-                        <td><input type="number" id="meja" name="meja" min="1" required value="<?= htmlspecialchars($order['nomor_meja'] ?? '') ?>" /></td>
+                        <td><input type="number" id="meja" name="meja" min="1" required value="<?= htmlspecialchars($pesanan['no_meja'] ?? '') ?>" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -121,9 +138,9 @@ if ($order_id) {
                         <td><label for="pembayaran">Metode Pembayaran:</label></td>
                         <td>
                             <select id="pembayaran" name="pembayaran">
-                                <option value="cash">Cash</option>
-                                <option value="qris">QRIS</option>
-                                <option value="transfer">Transfer</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Qris">QRIS</option>
+                                <option value="Transfer">Transfer</option>
                             </select>
                         </td>
                     </tr>
@@ -134,7 +151,7 @@ if ($order_id) {
                     </tr>
                 </tbody>
             </table>
-            <input type="hidden" name="order_id" value="<?= $order_id ?>">
+            <input type="hidden" name="pesanan_id" value="<?= $pesanan_id ?>">
             </form>
         </div>
     </main>
