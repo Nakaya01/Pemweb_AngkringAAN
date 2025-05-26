@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS menu (
   gambar VARCHAR(255)
 );
 
+INSERT INTO `menu` (`id`, `nama`, `kategori`, `harga`, `gambar`) VALUES (NULL, 'Mie Goreng', 'makanan', '8000', NULL), (NULL, 'Gado-Gado', 'makanan', '10000', NULL), (NULL, 'Bakso', 'makanan', '12000', NULL), (NULL, 'Nasi Goreng', 'makanan', '13000', NULL), (NULL, 'Soto Ayam', 'makanan', '15000', NULL), (NULL, 'Ayam Bakar', 'makanan', '20000', NULL), (NULL, 'Rendang', 'makanan', '22000', NULL), (NULL, '[value-2]', '', '0', '[value-5]');
+
 -- Tabel pesanan
 CREATE TABLE IF NOT EXISTS pesanan (
   id INT AUTO_INCREMENT PRIMARY KEY,
