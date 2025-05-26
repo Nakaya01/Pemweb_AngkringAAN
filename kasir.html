@@ -16,6 +16,8 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <!--style-->
     <link rel="stylesheet" href="css/styleKasir.css" />
+    <!-- script -->
+    <script src="js/scriptKasir.js" defer></script>
   </head>
   <body>
     <nav class="navbar">
@@ -29,13 +31,28 @@
         </div>
       </div>
       <div class="navbar-user">
-        <h6>Selamat datang aan</h6>
+        <h6>Selamat datang andra jeletot</h6>
       </div>
       <div class="user-image">
         <img src="logo/user-cream.png" alt="User Image" />
       </div>
     </nav>
-    <main class="list-pesanan"></main>
+    <main class="list-pesanan">
+      <div class="list-pesanan-card">
+        <img src="img/makanan1.jpg" alt="Nama Makanan" class="order-item-img" />
+                <div class="order-itemlo-info">
+                    <div class="order-item-name">Nasi Goreng</div>
+                    <div class="order-item-price">Rp 15.000</div>
+                </div>
+                <div class="order-item-actions">
+                    <button class="btn-kurang btn-decrease" type="button">-</button>
+                    <input type="number" class="order-item-qty quantity" value="1" min="1" readonly />
+                    <button class="btn-tambah btn-increase" type="button">+</button>
+                    <button class="btn-hapus"><i data-feather="trash-2"></i></button>
+
+
+      </div>
+    </main>
     <aside class="rincian-pesanan"></aside>
     <script>
       feather.replace();

@@ -34,7 +34,6 @@ body {
 }
 .navbar-menu {
   display: flex;
-
 }
 
 #chart,
@@ -47,11 +46,16 @@ body {
 .navbar-menu .navbar-extra {
   position: absolute;
   display: inline;
-  top:100%;
-  left: 0%;
-  background-color: rgba(0, 0, 0, 0.600);
+  top: 100%;
+  left: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
   width: 30rem;
   height: 100dvh;
+  transition: right 0.9s ease;
+}
+
+.navbar-extra.hidden {
+  left: 0%;
 }
 
 .navbar-menu .navbar-extra a {
@@ -64,19 +68,17 @@ body {
 .navbar-menu .feather {
   margin: 0 0.5rem;
   color: var(--bg);
-  font-size: 1.4rem;
 }
 
 .navbar-menu .feather:hover,
 .navbar-menu .navbar-extra a:hover {
-  color: #4a7760; 
+  color: #4a7760;
 }
 
 .navbar-user h6 {
   font-family: "Lexend Zetta", sans-serif;
   color: var(--bg);
-  font-size: 1.2rem;
-  margin-right: 2rem;
+  font-size: 2.2rem;
 }
 
 .user-image img {
@@ -85,4 +87,37 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--primary);
+}
+
+@media (max-width: 1368px) {
+  html {
+    font-size: 100%;
+  }
+}
+/* tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 70%;
+  }
+  .navbar-user h6 {
+    font-size: 1.5rem;
+  }
+  .feather {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+}
+/* hp */
+@media (max-width: 450px) {
+  html {
+    font-size: 50%;
+  }
+
+  .navbar-user h6 {
+    font-size: 1.5rem;
+  }
+  .feather {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
 }
