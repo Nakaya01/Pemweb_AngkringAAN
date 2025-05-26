@@ -173,7 +173,7 @@ section {
   width: 3rem;
   height: 2.42rem;
   text-align: center;
-  /* padding-left: 0.8rem; */
+  /* padding-left: 0.9rem; */
   font-size: 1rem;
   border: 1px solid #12372a;
   border-radius: 5px;
@@ -319,22 +319,19 @@ nav.hide {
   cursor: pointer;
 }
 
-.popup.success {
-  background-color: rgba(50, 205, 86, 0.5); /* Hijau untuk sukses */
-}
-
+.popup.success,
 .popup.error {
-  background-color: hsla(354, 70%, 54%, 0.5); /* Merah untuk gagal */
+  background-color: hsla(0, 0%, 0%, 0.5);
 }
 
 .popup.success .popup-button {
   background: rgb(41, 163, 70);
-  color: var(--primary)
+  color: var(--primary);
 }
 
 .popup.error .popup-button {
   background: hsla(354, 70%, 54%, 1);
-  color: var(--primary)
+  color: var(--primary);
 }
 
 .popup.show {
@@ -390,6 +387,7 @@ nav.hide {
   .minuman-card,
   .snack-card {
     width: 47%;
+    height: 8rem;
     margin: 1.5%;
     box-sizing: border-box;
   }
