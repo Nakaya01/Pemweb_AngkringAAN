@@ -56,7 +56,7 @@ if ($pesanan_id) {
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet" />
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/styleChart.css" />
     <script src="js/chartscript.js" defer></script>
 </head>
 <body>
