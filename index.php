@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
       </div>
 
       <div class="navbar-extra">
-        <a href="chart.html" id="chart"><i data-feather="shopping-cart"></i></a>
+        <a href="chart.php" id="chart"><i data-feather="shopping-cart"></i></a>
         <a href="login.php" id="kasir"><i data-feather="user"></i></a>
       </div>
     </nav>
