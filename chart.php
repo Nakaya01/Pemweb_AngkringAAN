@@ -24,7 +24,7 @@ if (!$pesanan_id) {
 }
 if (!$pesanan_id) {
     // Buat pesanan baru
-    $conn->query("INSERT INTO pesanan (no_meja, pembayaran) VALUES (0, NULL)");
+    $conn->query("INSERT INTO pesanan (no_meja, pembayaran) VALUES (0, '')");
     $pesanan_id = $conn->insert_id;
     $_SESSION['pesanan_id'] = $pesanan_id;
     $pesanan = $conn->query("SELECT * FROM pesanan WHERE id=$pesanan_id")->fetch_assoc();
