@@ -26,6 +26,7 @@ if (isset($_SESSION['kasir_logged_in']) && $_SESSION['kasir_logged_in'] === true
       href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap"
       rel="stylesheet"
     />
+    <script src="js/scriptKasir.js" defer></script>
   </head>
   <body>
     <nav class="navbar">
@@ -58,6 +59,14 @@ if (isset($_SESSION['kasir_logged_in']) && $_SESSION['kasir_logged_in'] === true
         </div>
       </div>
     </section>
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <span class="popup-icon"><i data-feather="check"></i></span>
+        <h3 id="popup-title"></h3>
+        <p id="popup-message"></p>
+        <button id="popup-button" class="popup-button"></button>
+      </div>
+    </div>
     <script>
       feather.replace();
     </script>

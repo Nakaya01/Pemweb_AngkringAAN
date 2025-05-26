@@ -82,10 +82,6 @@ body {
   color: #4a7760;
 }
 
-.navbar-extra #chart {
-  margin: 0 2rem 0 2rem;
-}
-
 /* section untuk makanan, minuman, dan snack */
 section {
   min-height: 100dvh;
@@ -274,59 +270,6 @@ footer p {
   margin-top: 1rem;
 }
 
-/* media query */
-/* pada laptop */
-@media (max-width: 1368px) {
-  html {
-    font-size: 110%;
-  }
-}
-/* tablet */
-@media (max-width: 768px) {
-  html {
-    font-size: 70%;
-  }
-  .navbar .logo {
-    font-size: 1.6rem;
-  }
-  .makanan-card img,
-  .minuman-card img,
-  .snack-card img {
-    width: 80%;
-    height: 50%;
-  }
-  .feather {
-    width: 1.7rem;
-    height: 1.7rem;
-  }
-}
-/* hp */
-@media (max-width: 450px) {
-  html {
-    font-size: 50%;
-  }
-  .navbar .logo {
-    font-size: 1rem;
-  }
-  .makanan-card,
-  .minuman-card,
-  .snack-card {
-    width: 47%;
-    margin: 1.5%;
-    box-sizing: border-box;
-  }
-  .makanan-card img,
-  .minuman-card img,
-  .snack-card img {
-    width: 80%;
-    height: 50%;
-  }
-  .feather {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-}
-
 nav.hide {
   top: -100px; /* Sembunyikan navbar dengan naik ke atas */
 }
@@ -385,13 +328,13 @@ nav.hide {
 }
 
 .popup.success .popup-button {
-  background: green;
-  color: white;
+  background: rgb(41, 163, 70);
+  color: var(--primary)
 }
 
 .popup.error .popup-button {
-  background: red;
-  color: rgb(255, 255, 255);
+  background: hsla(354, 70%, 54%, 1);
+  color: var(--primary)
 }
 
 .popup.show {
@@ -403,6 +346,66 @@ nav.hide {
 .hidden {
   display: none;
 }
+
+/* media query */
+/* pada laptop */
+@media (max-width: 1368px) {
+  html {
+    font-size: 90%;
+  }
+}
+/* tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 70%;
+  }
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
+  .makanan-card img,
+  .minuman-card img,
+  .snack-card img {
+    width: 80%;
+    height: 50%;
+  }
+  .feather {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+}
+/* hp */
+@media (max-width: 479px) {
+  html {
+    font-size: 50%;
+  }
+  .navbar .logo {
+    font-size: 1rem;
+  }
+  .navbar-extra .feather {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--primary);
+  }
+  .makanan-card,
+  .minuman-card,
+  .snack-card {
+    width: 47%;
+    margin: 1.5%;
+    box-sizing: border-box;
+  }
+  .makanan-card img,
+  .minuman-card img,
+  .snack-card img {
+    width: 80%;
+    height: 50%;
+  }
+  .feather {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+/* WARNING !!! ini css punya mu bal, jan km ganti yang atasnya */
 
 /* Chart (Keranjang) Page Styles */
 .chart-container {
@@ -538,7 +541,7 @@ nav.hide {
 }
 
 /* Responsive for order-item */
-@media (max-width: 900px) {
+@media (max-width: 1368px) {
   .chart-container {
     flex-direction: column;
     align-items: stretch;
@@ -560,52 +563,6 @@ nav.hide {
   }
   .order-summary {
     margin-top: 1.2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .chart-container {
-    flex-direction: column;
-    margin-top: 5rem;
-    padding: 0.5rem 0.2rem;
-    gap: 1rem;
-  }
-  .order-list,
-  .order-form,
-  .order-summary {
-    padding: 0.8rem 0.3rem;
-    font-size: 0.95rem;
-    max-width: 100%;
-    min-width: unset;
-    margin-bottom: 0.7rem;
-  }
-  .order-list th,
-  .order-list td {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.2rem;
-  }
-  .order-list h2,
-  .order-form h2,
-  .order-summary h2 {
-    font-size: 1.1rem;
-  }
-  .order-summary {
-    margin-top: 0.7rem;
-  }
-  .order-list .order-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.7rem;
-    padding: 0.7rem;
-  }
-  .order-list .order-item-img {
-    width: 55px;
-    height: 55px;
-  }
-  .order-list .order-item-actions {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 0.3rem;
   }
 }
 
@@ -764,4 +721,50 @@ order-summary select {
   font-size: 1.2rem;
   margin: 0 1rem;
   font-weight: normal;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    flex-direction: column;
+    margin-top: 5rem;
+    padding: 0.5rem 0.2rem;
+    gap: 1rem;
+  }
+  .order-list,
+  .order-form,
+  .order-summary {
+    padding: 0.8rem 0.3rem;
+    font-size: 0.95rem;
+    max-width: 100%;
+    min-width: unset;
+    margin-bottom: 0.7rem;
+  }
+  .order-list th,
+  .order-list td {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .order-list h2,
+  .order-form h2,
+  .order-summary h2 {
+    font-size: 1.1rem;
+  }
+  .order-summary {
+    margin-top: 0.7rem;
+  }
+  .order-list .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.7rem;
+  }
+  .order-list .order-item-img {
+    width: 55px;
+    height: 55px;
+  }
+  .order-list .order-item-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.3rem;
+  }
 }

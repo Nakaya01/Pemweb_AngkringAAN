@@ -26,8 +26,10 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
   $user = $result->fetch_assoc();
   if ($password === $user['password']) {
-    $_SESSION['username'] = $username;
-    header("Location: kasir.html");
+    $_SESSION['kasir_logged_in'] = true;
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['nama_kasir'] = $user['nama_kasir'];
+    header("Location: kasir.php");
     exit();
   }
 }

@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+// mengecek apakah user sudah login
+if (!isset($_SESSION['kasir_logged_in']) || $_SESSION['kasir_logged_in'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
+$nama_kasir = isset($_SESSION['nama_kasir']) ? $_SESSION['nama_kasir'] : $_SESSION['username'];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,7 +49,7 @@
         </div>
       </div>
       <div class="navbar-user">
-        <h6>Selamat datang andra asiz</h6>
+        <h6>Selamat datang <?php echo htmlspecialchars($nama_kasir); ?></h6>
       </div>
       <div class="user-image">
         <img src="logo/user-cream.png" alt="User Image" />
