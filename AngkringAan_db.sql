@@ -19,7 +19,37 @@ CREATE TABLE IF NOT EXISTS menu (
   gambar VARCHAR(255)
 );
 
-INSERT INTO `menu` (`id`, `nama`, `kategori`, `harga`, `gambar`) VALUES (NULL, 'Mie Goreng', 'makanan', '8000', NULL), (NULL, 'Gado-Gado', 'makanan', '10000', NULL), (NULL, 'Bakso', 'makanan', '12000', NULL), (NULL, 'Nasi Goreng', 'makanan', '13000', NULL), (NULL, 'Soto Ayam', 'makanan', '15000', NULL), (NULL, 'Ayam Bakar', 'makanan', '20000', NULL), (NULL, 'Rendang', 'makanan', '22000', NULL), (NULL, '[value-2]', '', '0', '[value-5]');
+INSERT INTO menu (nama, kategori, harga, gambar) VALUES
+-- Makanan
+('Mie Goreng', 'makanan', 8000, 'Assets/miegoreng.png'),
+('Gado-Gado', 'makanan', 10000, 'Assets/gado.png'),
+('Bakso', 'makanan', 12000, 'Assets/bakso.png'),
+('Nasi Goreng', 'makanan', 13000, 'Assets/nasgor.png'),
+('Soto Ayam', 'makanan', 15000, 'Assets/soto.png'),
+('Ayam Bakar', 'makanan', 20000, 'Assets/ayam bakar.png'),
+('Rendang', 'makanan', 22000, 'Assets/rendang.png'),
+
+-- Minuman
+('Air Mineral', 'minuman', 3000, 'Assets/mineral.png'),
+('Es Teh', 'minuman', 5000, 'Assets/esteh.png'),
+('Jus Alpukat', 'minuman', 6000, 'Assets/alpukat.png'),
+('Kopi Hitam', 'minuman', 7000, 'Assets/kopi.png'),
+('Jus Jeruk', 'minuman', 8000, 'Assets/jeruk.png'),
+('Susu Coklat', 'minuman', 9000, 'Assets/susu_coklat.png'),
+('Teh Tarik', 'minuman', 10000, 'Assets/teh tarik.png'),
+('Soda Gembira', 'minuman', 11000, 'Assets/soda gembira.png'),
+
+-- Snack
+('Bakwan', 'snack', 5000, 'Assets/bakwan.png'),
+('Risoles', 'snack', 7000, 'Assets/risol.png'),
+('Tahu Crispy', 'snack', 8000, 'Assets/tahu_crispyB.png'),
+('Pisang Goreng', 'snack', 9000, 'Assets/pisgor2.png'),
+('Cireng', 'snack', 10000, 'Assets/cireng.png'),
+('Singkong Keju', 'snack', 11000, 'Assets/singkong_keju.png'),
+('Lumpia', 'snack', 12000, 'Assets/lumpia.png'),
+('Kentang Goreng', 'snack', 15000, 'Assets/kentang.png'),
+('Sate Taichan', 'snack', 16000, 'Assets/taichan.png'),
+('Sate Ayam', 'snack', 16000, 'Assets/sate top.png');
 
 -- Tabel pesanan
 CREATE TABLE IF NOT EXISTS pesanan (

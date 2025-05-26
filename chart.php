@@ -3,7 +3,7 @@ session_start();
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "AngkringAan_db";
+$db = "angkringaan_db";
 $conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
