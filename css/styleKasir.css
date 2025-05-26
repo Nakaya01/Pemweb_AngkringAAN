@@ -24,7 +24,7 @@ body {
   align-items: center;
   padding: 0.8rem 4%;
   position: fixed;
-  background-color: var(--primary); /* fix transparansi */
+  background-color: var(--primary);
   top: 0;
   left: 0;
   right: 0;
@@ -78,7 +78,7 @@ body {
 .navbar-user h6 {
   font-family: "Lexend Zetta", sans-serif;
   color: var(--bg);
-  font-size: 2.2rem;
+  font-size: 1.5rem;
 }
 
 .user-image img {
@@ -86,7 +86,44 @@ body {
   height: 4rem;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--primary);
+}
+
+.main {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2rem 7%;
+}
+
+.main-menu {
+  width: 100%;
+  padding: 1rem;
+}
+
+.list-pesanan {
+  margin-top: 6rem;
+  width: 100%;
+  overflow-x: auto; /* untuk responsif jika terlalu lebar */
+}
+
+.pesanan-cards th{
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Lexend Zetta", sans-serif;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.pesanan-cards th,
+.pesanan-cards td {
+  padding: 1rem;
+  /* border: 1px solid #ccc; */
+  text-align: center;
+}
+
+.pesanan-cards .header-pesanan {
+  color: var(--bg);
 }
 
 @media (max-width: 1368px) {

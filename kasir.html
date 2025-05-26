@@ -24,34 +24,51 @@
       <div class="navbar-menu">
         <a href="#" id="menu"><i data-feather="list"></i></a>
         <div class="navbar-extra">
-          <a href="#" id="chart"><i data-feather="bar-chart-2"></i>Laporan Penjualan</a>
+          <a href="#" id="list"><i data-feather="inbox"></i>List Pemesanan</a>
           <a href="#" id="edit"><i data-feather="edit"></i>Tambah Menu</a>
-          <a href="#" id="archive"><i data-feather="archive"></i>Histori Penjualan</a>
-          <a href="log-out.php" id="logout"><i data-feather="log-out"></i>Keluar</a>
+          <a href="#" id="chart"
+            ><i data-feather="bar-chart-2"></i>Laporan Penjualan</a
+          >
+          <a href="#" id="archive"
+            ><i data-feather="archive"></i>Histori Penjualan</a
+          >
+          <a href="log-out.php" id="logout"
+            ><i data-feather="log-out"></i>Keluar</a
+          >
         </div>
       </div>
       <div class="navbar-user">
-        <h6>Selamat datang andra jeletot</h6>
+        <h6>Selamat datang andra asiz</h6>
       </div>
       <div class="user-image">
         <img src="logo/user-cream.png" alt="User Image" />
       </div>
     </nav>
-    <main class="list-pesanan">
-      <div class="list-pesanan-card">
-        <img src="img/makanan1.jpg" alt="Nama Makanan" class="order-item-img" />
-                <div class="order-itemlo-info">
-                    <div class="order-item-name">Nasi Goreng</div>
-                    <div class="order-item-price">Rp 15.000</div>
-                </div>
-                <div class="order-item-actions">
-                    <button class="btn-kurang btn-decrease" type="button">-</button>
-                    <input type="number" class="order-item-qty quantity" value="1" min="1" readonly />
-                    <button class="btn-tambah btn-increase" type="button">+</button>
-                    <button class="btn-hapus"><i data-feather="trash-2"></i></button>
-
-
-      </div>
+    <main class="main-menu">
+      <section class="list-pesanan">
+        <table class="pesanan-cards">
+          <tr class="header-pesanan">
+            <th>Pesanan ID</th>
+            <th>Nama Pelanggan</th>
+            <th>Meja Pesanan</th>
+            <th>Rincian Pesanan</th>
+          </tr>
+          <tr class="list">
+            <td>1vjkdbs</td>
+            <td>Jariz imueot</td>
+            <td>Meja 5</td>
+            <td>
+              <button class="btn-rincian">
+                <i data-feather="shopping-bag"></i>
+              </button>
+            </td>
+          </tr>
+        </table>
+          <!-- <div class="hapus-pesanan">
+            <button class="btn-hapus"><i data-feather="trash-2"></i></button>
+          </div> -->
+        </div>
+      </section>
     </main>
     <aside class="rincian-pesanan"></aside>
     <script>
