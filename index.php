@@ -3,27 +3,64 @@ session_start();
 
 // Proses simpan data pesanan ke session
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
+    header('Content-Type: application/json');
+    
+    // Validasi input
     $cartData = json_decode($_POST['cart'], true);
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($cartData)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data keranjang tidak valid']);
+        exit;
+    }
 
+    // Inisialisasi cart jika belum ada
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
 
     foreach ($cartData as $item) {
-        $name = $item['name'];
-        $category = $item['category'];
-        $qty = (int)$item['quantity'];
+        // Validasi item
+        if (!isset($item['id']) || !isset($item['name']) || !isset($item['category']) || 
+            !isset($item['quantity']) || !isset($item['price_value']) || !isset($item['image'])) {
+            continue;
+        }
 
-        if ($qty > 0) {
+        $id = (int)$item['id'];
+        $name = trim($item['name']);
+        $category = trim($item['category']);
+        $qty = (int)$item['quantity'];
+        $price = (int)$item['price_value'];
+        $image = trim($item['image']);
+
+        // Cari item yang sudah ada di cart
+        $itemExists = false;
+        foreach ($_SESSION['cart'] as &$cartItem) {
+            if ($cartItem['id'] === $id) {
+                $cartItem['quantity'] += $qty;
+                $itemExists = true;
+                break;
+            }
+        }
+
+        // Tambahkan item baru jika belum ada dan quantity > 0
+        if (!$itemExists && $qty > 0) {
             $_SESSION['cart'][] = [
+                'id' => $id,
                 'name' => $name,
                 'category' => $category,
-                'quantity' => $qty
+                'quantity' => $qty,
+                'price_value' => $price,
+                'price_formatted' => 'Rp ' . number_format($price, 0, ',', '.'),
+                'image' => $image,
+                'added_at' => time() // Timestamp untuk sorting
             ];
         }
     }
 
-    echo json_encode(['status' => 'success', 'message' => 'Pesanan disimpan di session.']);
+    echo json_encode([
+        'status' => 'success', 
+        'message' => 'Pesanan disimpan di session.',
+        'cart_count' => count($_SESSION['cart'])
+    ]);
     exit;
 }
 ?>

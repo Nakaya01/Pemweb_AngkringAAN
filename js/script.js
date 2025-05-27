@@ -1,45 +1,26 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const menuData = {
-    // List makanan
-    makanan: [
-      { name: "Mie Goreng", price: "Rp 8.000", image: "Assets/miegoreng.png" },
-      { name: "Gado-Gado", price: "Rp 10.000", image: "Assets/gado.png" },
-      { name: "Bakso", price: "Rp 12.000", image: "Assets/bakso.png" },
-      { name: "Nasi Goreng", price: "Rp 13.000", image: "Assets/nasgor.png" },
-      { name: "Soto Ayam", price: "Rp 15.000", image: "Assets/soto.png" },
-      { name: "Ayam Bakar",price: "Rp 20.000",image: "Assets/ayam bakar.png"},
-      { name: "Rendang", price: "Rp 22.000", image: "Assets/rendang.png" },
-    ],
-    // List minuman
-    minuman: [
-      { name: "Air Mineral", price: "Rp 3.000", image: "Assets/mineral.png" },
-      { name: "Es Teh", price: "Rp 5.000", image: "Assets/esteh.png" },
-      { name: "Jus Alpukat", price: "Rp 6.000", image: "Assets/alpukat.png" },
-      { name: "Kopi Hitam", price: "Rp 7.000", image: "Assets/kopi.png" },
-      { name: "Jus Jeruk", price: "Rp 8.000", image: "Assets/jeruk.png" },
-      { name: "Susu Coklat",price: "Rp 9.000", image: "Assets/susu_coklat.png"},
-      { name: "Teh Tarik", price: "Rp 10.000", image: "Assets/teh tarik.png" },
-      { name: "Soda Gembira", price: "Rp 11.000", image: "Assets/soda gembira.png"},
-    ],
-    // List snack
-    snack: [
-      { name: "Bakwan", price: "Rp 5.000", image: "Assets/bakwan.png"},
-      { name: "Risoles", price: "Rp 7.000", image: "Assets/risol.png"},
-      { name: "Tahu Crispy", price: "Rp 8.000", image: "Assets/tahu_crispyB.png"},
-      { name: "Pisang Goreng", price: "Rp 9.000", image: "Assets/pisgor2.png"},
-      { name: "Cireng", price: "Rp 10.000", image: "Assets/cireng.png" },
-      { name: "Singkong Keju", price: "Rp 11.000", image: "Assets/singkong_keju.png"},
-      { name: "Lumpia", price: "Rp 12.000", image: "Assets/lumpia.png" },
-      { name: "Kentang Goreng", price: "Rp 15.000", image: "Assets/kentang.png"},
-      { name: "Sate Taichan", price: "Rp 16.000", image: "Assets/taichan.png" },
-      { name: "Sate Ayam", price: "Rp 16.000", image: "Assets/sate top.png" },
-    ],
-  };
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    // Pertama, muat data menu
+    await loadMenuData();
 
-  // Fungsi membuat kartu menu
+    // Setelah data dimuat, baru tambahkan event listeners
+    setupEventListeners();
+
+    // Inisialisasi feather icons untuk elemen yang baru dibuat
+    feather.replace();
+  } catch (err) {
+    console.error("Gagal memuat menu:", err);
+  }
+});
+
+async function loadMenuData() {
+  const response = await fetch("tampilkanMenu.php");
+  const menuData = await response.json();
+
   const createCard = (item, category) => {
     const card = document.createElement("div");
     card.className = `${category}-card`;
+    card.dataset.itemId = item.id; // Simpan ID di data attribute
     card.innerHTML = `
       <img src="${item.image}" alt="${item.name}" />
       <h5>${item.name}</h5>
@@ -49,12 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <input type="number" class="quantity" value="0" min="0" readonly>
         <button class="btn-increase"><i data-feather="plus"></i></button>
       </div>
-      <button class="btn-checkout">Tambah</button>
-    `;
+      <button class="btn-checkout">Tambah</button>`;
     return card;
   };
 
-  // Tampilkan kartu menu
   Object.keys(menuData).forEach((category) => {
     const container = document.getElementById(`${category}-list`);
     menuData[category].forEach((item) => {
@@ -62,20 +41,78 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(card);
     });
   });
+}
 
-  // Ganti ikon feather
-  feather.replace();
+function setupEventListeners() {
+  // Event delegation untuk tombol +, -, dan Tambah
+  document.addEventListener("click", function (e) {
+    const card = e.target.closest(".makanan-card, .minuman-card, .snack-card");
+    if (!card) return;
+
+    const quantityInput = card.querySelector(".quantity");
+
+    // Tombol +
+    if (e.target.closest(".btn-increase")) {
+      let value = parseInt(quantityInput.value) || 0;
+      quantityInput.value = value + 1;
+    }
+
+    // Tombol -
+    else if (e.target.closest(".btn-decrease")) {
+      let value = parseInt(quantityInput.value) || 0;
+      if (value > 0) quantityInput.value = value - 1;
+    }
+
+    // Tombol Tambah
+    else if (e.target.closest(".btn-checkout")) {
+      const qty = parseInt(quantityInput.value);
+      if (qty > 0) {
+        const itemName = card.querySelector("h5").innerText;
+        let category = "snack";
+        if (card.classList.contains("makanan-card")) category = "makanan";
+        else if (card.classList.contains("minuman-card")) category = "minuman";
+
+        const cartData = [
+          {
+            id: card.dataset.itemId, // Ambil ID dari data attribute
+            name: itemName,
+            category: category,
+            quantity: qty,
+            price_value: item.price_value, // Pastikan ini ada di data menu
+            image: item.image,
+          },
+        ];
+
+        fetch("index.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `cart=${encodeURIComponent(JSON.stringify(cartData))}`,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "success") {
+              showPopup(
+                `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
+                true
+              );
+              quantityInput.value = 0;
+            } else {
+              showPopup("Gagal menambahkan ke keranjang", false);
+            }
+          })
+          .catch(() => showPopup("Terjadi kesalahan jaringan", false));
+      } else {
+        showPopup("Jumlah harus lebih dari 0", false);
+      }
+    }
+  });
 
   // Navigasi antar section
   const navbarNav = document.querySelector(".navbar-nav");
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".navbar-nav a");
-
-  document.addEventListener("click", function (e) {
-    if (!navbarNav.contains(e.target)) {
-      navbarNav.classList.remove("active");
-    }
-  });
 
   function hideAllSectionsExcept(targetId) {
     sections.forEach((section) => {
@@ -96,73 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hideAllSectionsExcept(targetId);
     });
   });
-
-  // Event tombol +, - dan Tambah
-  document
-    .querySelectorAll(".makanan-card, .minuman-card, .snack-card")
-    .forEach((card) => {
-      const quantityInput = card.querySelector(".quantity");
-      const plusBtn = card.querySelector(".btn-increase");
-      const minusBtn = card.querySelector(".btn-decrease");
-      const tambahBtn = card.querySelector(".btn-checkout");
-
-      // Tambah jumlah
-      plusBtn.addEventListener("click", () => {
-        let value = parseInt(quantityInput.value) || 0;
-        quantityInput.value = value + 1;
-      });
-
-      // Kurangi jumlah
-      minusBtn.addEventListener("click", () => {
-        let value = parseInt(quantityInput.value) || 0;
-        if (value > 0) quantityInput.value = value - 1;
-      });
-
-      // Tambah ke keranjang
-      tambahBtn.addEventListener("click", () => {
-        const qty = parseInt(quantityInput.value);
-        if (qty > 0) {
-          const itemName = card.querySelector("h5").innerText;
-          let category = "snack";
-          if (card.classList.contains("makanan-card")) category = "makanan";
-          else if (card.classList.contains("minuman-card"))
-            category = "minuman";
-
-          const cartData = [
-            {
-              name: itemName,
-              category: category,
-              quantity: qty,
-            },
-          ];
-
-          const formData = new FormData();
-          formData.append("cart", JSON.stringify(cartData));
-
-          fetch("index.php", {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.status === "success") {
-                showPopup(
-                  `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
-                  true
-                );
-                quantityInput.value = 0;
-              } else {
-                showPopup("Gagal menambahkan ke keranjang", false);
-              }
-            })
-            .catch(() => showPopup("Terjadi kesalahan jaringan", false));
-        } else {
-          showPopup("Jumlah harus lebih dari 0", false);
-        }
-      });
-    });
-});
-
+}
 // Sembunyikan navbar saat scroll ke bawah, munculkan saat scroll ke atas
 let lastScrollTop = 0;
 const navbar = document.querySelector("nav");
