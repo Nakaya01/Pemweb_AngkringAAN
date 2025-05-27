@@ -11,6 +11,10 @@ localhost
 - Keranjang Pemesanan
 - Formulir User
 - Menu Kasir
+- Mengkonfirmasi List Pemesanan
+- Menambahkan Menu
+- Menampilkan Laporan Penjualan
+- Menampilkan Histori Penjualan 
 ## Teknologi
 - Html
 - CSS
