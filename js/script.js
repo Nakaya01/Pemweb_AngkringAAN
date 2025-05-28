@@ -2,10 +2,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Pertama, muat data menu
     await loadMenuData();
-
     // Setelah data dimuat, baru tambahkan event listeners
     setupEventListeners();
-
     // Inisialisasi feather icons untuk elemen yang baru dibuat
     feather.replace();
   } catch (err) {
@@ -20,7 +18,9 @@ async function loadMenuData() {
   const createCard = (item, category) => {
     const card = document.createElement("div");
     card.className = `${category}-card`;
-    card.dataset.itemId = item.id; // Simpan ID di data attribute
+    card.dataset.itemId = item.id;
+    card.dataset.priceValue = item.price_value;
+    card.dataset.image = item.image;
     card.innerHTML = `
       <img src="${item.image}" alt="${item.name}" />
       <h5>${item.name}</h5>
@@ -60,7 +60,9 @@ function setupEventListeners() {
     // Tombol -
     else if (e.target.closest(".btn-decrease")) {
       let value = parseInt(quantityInput.value) || 0;
-      if (value > 0) quantityInput.value = value - 1;
+      if (value > 0) {
+        quantityInput.value = value - 1;
+      }
     }
 
     // Tombol Tambah
@@ -74,14 +76,16 @@ function setupEventListeners() {
 
         const cartData = [
           {
-            id: card.dataset.itemId, // Ambil ID dari data attribute
+            id: card.dataset.itemId,
             name: itemName,
             category: category,
             quantity: qty,
-            price_value: item.price_value, // Pastikan ini ada di data menu
-            image: item.image,
+            price_value: parseInt(card.dataset.priceValue),
+            image: card.dataset.image,
           },
         ];
+
+        console.log("Mengirim data:", cartData); //ngecek data yang akan dikirim
 
         fetch("index.php", {
           method: "POST",
@@ -90,8 +94,12 @@ function setupEventListeners() {
           },
           body: `cart=${encodeURIComponent(JSON.stringify(cartData))}`,
         })
-          .then((res) => res.json())
+          .then((res) => {
+            console.log("Status response:", res.status); 
+            return res.json(); 
+          })
           .then((data) => {
+            console.log("Data dari server:", data);
             if (data.status === "success") {
               showPopup(
                 `Berhasil menambahkan ${qty} ${itemName} ke keranjang`,
@@ -133,6 +141,32 @@ function setupEventListeners() {
       hideAllSectionsExcept(targetId);
     });
   });
+
+  // Fungsi popup
+  function showPopup(message, isSuccess = false) {
+    const popup = document.getElementById("popup");
+    const title = document.getElementById("popup-title");
+    const messageText = document.getElementById("popup-message");
+    const button = document.getElementById("popup-button");
+    const icon = popup.querySelector(".popup-icon");
+
+    if (isSuccess) {
+      title.textContent = "Pesanan anda berhasil!";
+      icon.innerHTML = `<img src="logo/Succses.png" alt="Success" style="width:120px;height:120px;">`;
+      popup.className = "popup success show";
+    } else {
+      title.textContent = "Pesanan anda dibatalkan!";
+      icon.innerHTML = `<img src="logo/Failed.png" alt="Error" style="width:120px;height:120px;">`;
+      popup.className = "popup error show";
+    }
+
+    messageText.textContent = message;
+
+    button.textContent = "Tutup";
+    button.onclick = () => {
+      popup.classList.remove("show");
+    };
+  }
 }
 // Sembunyikan navbar saat scroll ke bawah, munculkan saat scroll ke atas
 let lastScrollTop = 0;
@@ -147,29 +181,3 @@ window.addEventListener("scroll", function () {
   }
   lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
-
-// Fungsi popup
-function showPopup(message, isSuccess = true) {
-  const popup = document.getElementById("popup");
-  const title = document.getElementById("popup-title");
-  const messageText = document.getElementById("popup-message");
-  const button = document.getElementById("popup-button");
-  const icon = popup.querySelector(".popup-icon");
-
-  if (isSuccess) {
-    title.textContent = "Pesanan anda berhasil!";
-    icon.innerHTML = `<img src="logo/Succses.png" alt="Success" style="width:120px;height:120px;">`;
-    popup.className = "popup success show";
-  } else {
-    title.textContent = "Pesanan anda dibatalkan!";
-    icon.innerHTML = `<img src="logo/Failed.png" alt="Error" style="width:120px;height:120px;">`;
-    popup.className = "popup error show";
-  }
-
-  messageText.textContent = message;
-
-  button.textContent = "Tutup";
-  button.onclick = () => {
-    popup.classList.remove("show");
-  };
-}
