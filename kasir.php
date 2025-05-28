@@ -1,5 +1,7 @@
 <?php
 session_start();
+require 'config.php';
+require 'getPesanan.php';
 
 // mengecek apakah user sudah login
 if (!isset($_SESSION['kasir_logged_in']) || $_SESSION['kasir_logged_in'] !== true) {
@@ -7,7 +9,8 @@ if (!isset($_SESSION['kasir_logged_in']) || $_SESSION['kasir_logged_in'] !== tru
     exit;
 }
 
-$nama_kasir = isset($_SESSION['nama_kasir']) ? $_SESSION['nama_kasir'] : $_SESSION['username'];
+$nama_kasir = $_SESSION['nama_kasir'] ?? $_SESSION['username'];
+$pesanan = getPesananAktif();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,15 +40,9 @@ $nama_kasir = isset($_SESSION['nama_kasir']) ? $_SESSION['nama_kasir'] : $_SESSI
         <div class="navbar-extra">
           <a href="#" id="list"><i data-feather="inbox"></i>List Pemesanan</a>
           <a href="#" id="edit"><i data-feather="edit"></i>Tambah Menu</a>
-          <a href="#" id="chart"
-            ><i data-feather="bar-chart-2"></i>Laporan Penjualan</a
-          >
-          <a href="#" id="archive"
-            ><i data-feather="archive"></i>Histori Penjualan</a
-          >
-          <a href="log-out.php" id="logout"
-            ><i data-feather="log-out"></i>Keluar</a
-          >
+          <a href="#" id="chart"><i data-feather="bar-chart-2"></i>Laporan Penjualan</a>
+          <a href="#" id="archive"><i data-feather="archive"></i>Histori Penjualan</a>
+          <a href="log-out.php" id="logout"><i data-feather="log-out"></i>Keluar</a>
         </div>
       </div>
       <div class="navbar-user">
@@ -59,9 +56,10 @@ $nama_kasir = isset($_SESSION['nama_kasir']) ? $_SESSION['nama_kasir'] : $_SESSI
       <section class="list-pesanan">
         <table class="pesanan-cards">
           <tr class="header-pesanan">
-            <th>Pesanan ID</th>
+            <th>ID Pesanan</th>
             <th>Nama Pelanggan</th>
             <th>Meja Pesanan</th>
+            <th>Waktu</th>
             <th>Rincian Pesanan</th>
           </tr>
           <tr class="list">
@@ -75,13 +73,18 @@ $nama_kasir = isset($_SESSION['nama_kasir']) ? $_SESSION['nama_kasir'] : $_SESSI
             </td>
           </tr>
         </table>
-          <!-- <div class="hapus-pesanan">
-            <button class="btn-hapus"><i data-feather="trash-2"></i></button>
-          </div> -->
-        </div>
       </section>
     </main>
-    <aside class="rincian-pesanan"></aside>
+    <aside class="rincian-pesanan">
+      <div class="rincian-header">
+        <h2>Rincian Pesanan (nama pemesan)</h2>
+        <button class="close-rincian"><i data-feather="x"></i></button>
+      </div>
+      <div class="rincian-content">
+      </div>
+      <button class="btn-selesai">Selesai</button>
+      <button class="btn-batal">Batalkan Pesanan</button>
+    </aside>
     <script>
       feather.replace();
     </script>

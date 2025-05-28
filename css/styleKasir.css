@@ -158,3 +158,144 @@ body {
     height: 1.3rem;
   }
 }
+
+/* Tambahkan bagian ini di akhir file CSS Anda */
+
+/* Rincian Pesanan Aside */
+.rincian-pesanan {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Awalnya tersembunyi di sebelah kanan */
+  width: 400px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+}
+
+.rincian-pesanan.active {
+  right: 0; /* Muncul saat aktif */
+}
+
+.rincian-header {
+  padding: 1rem;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rincian-header h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.close-rincian {
+  background: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.rincian-content {
+  padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.rincian-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.item-info img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-details h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.item-details p {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.total-harga {
+  padding: 1rem;
+  text-align: right;
+  font-size: 1.2rem;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.btn-selesai, .btn-batal {
+  padding: 0.8rem;
+  margin: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.btn-selesai {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-selesai:hover {
+  background-color: #218838;
+}
+
+.btn-batal {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-batal:hover {
+  background-color: #c82333;
+}
+
+/* Overlay saat aside aktif */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rincian-pesanan {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .rincian-pesanan.active {
+    right: 0;
+  }
+}

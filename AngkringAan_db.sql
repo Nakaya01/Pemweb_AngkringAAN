@@ -51,13 +51,19 @@ INSERT INTO menu (nama, kategori, harga, gambar) VALUES
 ('Sate Taichan', 'snack', 16000, 'Assets/taichan.png'),
 ('Sate Ayam', 'snack', 16000, 'Assets/sate top.png');
 
+-- Tabel pelanggan
+CREATE TABLE IF NOT EXISTS pelanggan (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama VARCHAR(100) NOT NULL,
+  no_meja INT NOT NULL,
+);
+
 -- Tabel pesanan
 CREATE TABLE IF NOT EXISTS pesanan (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nama_pemesan VARCHAR(100),
-  no_meja INT NOT NULL,
-  pembayaran ENUM('Cash', 'Qris', 'Transfer') NOT NULL,
-  waktu_pesan TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  kuantitas INT NOT NULL,
+  total_harga INT NOT NULL,
+  pembayaran ENUM('Cash', 'Qris', 'Transfer') NOT NULL
 );
 
 -- Tabel detail pesanan
@@ -66,6 +72,7 @@ CREATE TABLE IF NOT EXISTS detail_pesanan (
   pesanan_id INT NOT NULL,
   menu_id INT NOT NULL,
   jumlah INT NOT NULL,
+  waktu_pesan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (pesanan_id) REFERENCES pesanan(id) ON DELETE CASCADE,
   FOREIGN KEY (menu_id) REFERENCES menu(id) ON DELETE CASCADE
 );

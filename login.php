@@ -26,7 +26,7 @@ if (isset($_SESSION['kasir_logged_in']) && $_SESSION['kasir_logged_in'] === true
       href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap"
       rel="stylesheet"
     />
-    <script src="js/scriptKasir.js" defer></script>
+    <script src="js/scriptLogin.js" defer></script>
   </head>
   <body>
     <nav class="navbar">
