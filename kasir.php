@@ -28,6 +28,7 @@ $pesanan = getPesananAktif();
     />
     <!--icon-->
     <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!--style-->
     <link rel="stylesheet" href="css/styleKasir.css" />
     <!-- script -->
@@ -48,36 +49,63 @@ $pesanan = getPesananAktif();
       <div class="navbar-user">
         <h6>Selamat datang <?php echo htmlspecialchars($nama_kasir); ?></h6>
       </div>
-      <div class="user-image">
-        <img src="logo/user-cream.png" alt="User Image" />
-      </div>
     </nav>
     <main class="main-menu">
       <section class="list-pesanan">
-        <table class="pesanan-cards">
-          <tr class="header-pesanan">
-            <th>ID Pesanan</th>
-            <th>Nama Pelanggan</th>
-            <th>Meja Pesanan</th>
-            <th>Waktu</th>
-            <th>Rincian Pesanan</th>
-          </tr>
-          <tr class="list">
-            <td>1vjkdbs</td>
-            <td>Jariz imueot</td>
-            <td>Meja 5</td>
-            <td>
-              <button class="btn-rincian">
-                <i data-feather="shopping-bag"></i>
-              </button>
-            </td>
-          </tr>
-        </table>
+        <div class="pesanan-header">
+          <div class="search-box">
+            <form action="" method="get">
+              <input type="text" id="search-input" placeholder="Cari ID Pesanan..." name="search">
+              <button type="submit"><i data-feather="search"></i></button>
+            </form>
+          </div>
+          <div class="pesanan-count">
+            <span><?php echo count($pesanan); ?> Pesanan</span>
+          </div>
+        </div>
+        
+        <div class="pesanan-container">
+          <?php if(empty($pesanan)): ?>
+            <div class="empty-state">
+              <i data-feather="inbox" class="empty-icon"></i>
+              <p>Tidak ada pesanan aktif saat ini</p>
+            </div>
+          <?php else: ?>
+            <?php foreach($pesanan as $order): ?>
+              <div class="pesanan-card">
+                <div class="card-header">
+                  <span class="order-id">#<?php echo $order['id']; ?></span>
+                  <span class="order-time"><?php echo date('H:i', strtotime($order['waktu_pesan'])); ?></span>
+                </div>
+                <div class="card-body">
+                  <div class="customer-info">
+                    <h3><?php echo htmlspecialchars($order['nama_pelanggan']); ?></h3>
+                    <p>Meja <?php echo $order['no_meja']; ?></p>
+                  </div>
+                  <div class="order-summary">
+                    <?php foreach($order['items'] as $item): ?>
+                      <div class="order-item">
+                        <span class="item-name"><?php echo $item['nama_menu']; ?></span>
+                        <span class="item-qty">x<?php echo $item['jumlah']; ?></span>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <span class="total-price">Rp <?php echo number_format($order['total_harga'], 0, ',', '.'); ?></span>
+                  <button class="btn-rincian" data-order-id="<?php echo $order['id']; ?>">
+                    <i data-feather="shopping-bag"></i> Detail
+                  </button>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </div>
       </section>
     </main>
     <aside class="rincian-pesanan">
       <div class="rincian-header">
-        <h2>Rincian Pesanan (nama pemesan)</h2>
+        <h2></h2>
         <button class="close-rincian"><i data-feather="x"></i></button>
       </div>
       <div class="rincian-content">

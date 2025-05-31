@@ -1,6 +1,15 @@
 :root {
   --primary: #12372a;
+  --secondary: #436850;
+  --accent: #ADBC9F;
   --bg: #fbfada;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+  --success: #28a745;
+  --danger: #dc3545;
+  --warning: #ffc107;
 }
 
 * {
@@ -13,25 +22,27 @@
 }
 
 body {
-  font-family: "Lexend Zetta", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: var(--bg);
-  color: var(--primary);
+  color: var(--text);
+  line-height: 1.6;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 4%;
+  padding: 1.4rem 7%;
   position: fixed;
   background-color: var(--primary);
   top: 0;
   left: 0;
   right: 0;
   z-index: 10000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* sedikit bayangan */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: top 0.3s;
 }
+
 .navbar-menu {
   display: flex;
 }
@@ -72,7 +83,7 @@ body {
 
 .navbar-menu .feather:hover,
 .navbar-menu .navbar-extra a:hover {
-  color: #4a7760;
+  color: var(--accent);
 }
 
 .navbar-user h6 {
@@ -81,85 +92,165 @@ body {
   font-size: 1.5rem;
 }
 
-.user-image img {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .main {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   padding: 2rem 7%;
 }
 
-.main-menu {
-  width: 100%;
-  padding: 1rem;
-}
-
 .list-pesanan {
-  margin-top: 6rem;
-  width: 100%;
-  overflow-x: auto; /* untuk responsif jika terlalu lebar */
+  max-width: 75rem;
 }
 
-.pesanan-cards th{
-  width: 100%;
-  border-collapse: collapse;
-  font-family: "Lexend Zetta", sans-serif;
-  color: var(--primary);
-  font-size: 1.5rem;
+.pesanan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5.3rem 7%;
 }
 
-.pesanan-cards th,
-.pesanan-cards td {
-  padding: 1rem;
-  /* border: 1px solid #ccc; */
+.search-box {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s;
+}
+
+.pesanan-count {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.pesanan-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
   text-align: center;
+  color: var(--text-light);
 }
 
-.pesanan-cards .header-pesanan {
-  color: var(--bg);
+.empty-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+  color: var(--accent);
 }
 
-@media (max-width: 1368px) {
-  html {
-    font-size: 100%;
-  }
-}
-/* tablet */
-@media (max-width: 768px) {
-  html {
-    font-size: 70%;
-  }
-  .navbar-user h6 {
-    font-size: 1.5rem;
-  }
-  .feather {
-    width: 1.7rem;
-    height: 1.7rem;
-  }
-}
-/* hp */
-@media (max-width: 450px) {
-  html {
-    font-size: 50%;
-  }
-
-  .navbar-user h6 {
-    font-size: 1.5rem;
-  }
-  .feather {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
+.pesanan-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Tambahkan bagian ini di akhir file CSS Anda */
+.pesanan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background-color: var(--secondary);
+  color: white;
+}
+
+.order-id {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.order-time {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.card-body {
+  padding: 1.2rem;
+}
+
+.customer-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+  color: var(--primary);
+}
+
+.customer-info p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.order-summary {
+  margin-top: 1rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 1rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.item-name {
+  color: var(--text);
+}
+
+.item-qty {
+  color: var(--text-light);
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border-top: 1px solid var(--border);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.total-price {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.btn-rincian {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: background-color 0.3s;
+}
+
+.btn-rincian:hover {
+  background-color: var(--secondary);
+}
 
 /* Rincian Pesanan Aside */
 .rincian-pesanan {
@@ -172,17 +263,19 @@ body {
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   transition: right 0.3s ease;
   z-index: 9999;
-  display: flex;
+  display: none;
   flex-direction: column;
   padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
 }
 
 .rincian-pesanan.active {
   right: 0; /* Muncul saat aktif */
+  display: flex;
 }
 
 .rincian-header {
   padding: 1rem;
+  margin-top: 1rem;
   background-color: var(--primary);
   color: white;
   display: flex;
@@ -193,6 +286,7 @@ body {
 .rincian-header h2 {
   font-size: 1.2rem;
   margin: 0;
+  font-weight: 600;
 }
 
 .close-rincian {
@@ -200,6 +294,8 @@ body {
   color: white;
   cursor: pointer;
   font-size: 1.2rem;
+  display: flex;
+  align-items: center;
 }
 
 .rincian-content {
@@ -211,7 +307,7 @@ body {
 .rincian-item {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .item-info {
@@ -224,38 +320,53 @@ body {
   width: 60px;
   height: 60px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .item-details h3 {
   margin-bottom: 0.5rem;
   font-size: 1rem;
+  color: var(--primary);
 }
 
 .item-details p {
   margin-bottom: 0.3rem;
   font-size: 0.9rem;
+  color: var(--text-light);
 }
 
 .total-harga {
   padding: 1rem;
   text-align: right;
   font-size: 1.2rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
   margin-top: auto;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.rincian-actions {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.8rem;
 }
 
 .btn-selesai, .btn-batal {
   padding: 0.8rem;
-  margin: 0.5rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
   transition: all 0.3s;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-selesai {
-  background-color: #28a745;
+  background-color: var(--success);
   color: white;
 }
 
@@ -264,7 +375,7 @@ body {
 }
 
 .btn-batal {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: white;
 }
 
@@ -288,14 +399,66 @@ body {
   display: block;
 }
 
-/* Responsive */
+@media (max-width: 1368px) {
+  html {
+    font-size: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .pesanan-container {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+/* tablet */
 @media (max-width: 768px) {
+  html {
+    font-size: 70%;
+  }
+  .navbar-user h6 {
+    font-size: 1.5rem;
+  }
   .rincian-pesanan {
     width: 100%;
     right: -100%;
   }
-  
   .rincian-pesanan.active {
     right: 0;
+  }
+  .pesanan-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .feather {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+}
+/* hp */
+@media (max-width: 450px) {
+  html {
+    font-size: 50%;
+  }
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0.8rem 2%;
+  }
+  .navbar-user {
+    order: 1;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .navbar-user h6 {
+    font-size: 1.5rem;
+  }
+  .search-box {
+    margin-left: auto;
+  }
+  .pesanan-container {
+    grid-template-columns: 1fr;
+  }
+  .feather {
+    width: 1.3rem;
+    height: 1.3rem;
   }
 }

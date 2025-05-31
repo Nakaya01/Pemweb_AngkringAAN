@@ -1,105 +1,142 @@
-// fungsi untuk sidebar
-const navbar = document.querySelector(".navbar-extra");
-document.querySelector(".navbar-menu").onclick = () => {
-  navbar.classList.toggle("hidden"); // tanpa titik
-};
-
 document.addEventListener('DOMContentLoaded', function() {
   feather.replace();
   
-  // Variabel global
+  // Sidebar toggle
+  const navbar = document.querySelector(".navbar-extra");
+  document.querySelector("#menu").onclick = () => {
+    navbar.classList.toggle("hidden");
+  };
+
+  // Order detail functionality
   const rincianPesanan = document.querySelector('.rincian-pesanan');
   const overlay = document.createElement('div');
   overlay.classList.add('overlay');
   document.body.appendChild(overlay);
   
-  // Event listener untuk tombol rincian
-  document.querySelectorAll('.btn-rincian').forEach(btn => {
-    btn.addEventListener('click', function() {
-      // Ambil data pesanan dari baris yang diklik
-      const row = this.closest('tr');
-      const idPesanan = row.cells[0].textContent;
-      const namaPemesan = row.cells[1].textContent;
-      const mejaPesanan = row.cells[2].textContent;
+  // Event delegation for order detail buttons
+  document.querySelector('.pesanan-container').addEventListener('click', function(e) {
+    if (e.target.closest('.btn-rincian')) {
+      const button = e.target.closest('.btn-rincian');
+      const orderId = button.dataset.orderId;
+      const card = button.closest('.pesanan-card');
       
-      // Update konten aside
-      document.querySelector('.rincian-header h2').textContent = `Rincian Pesanan (${namaPemesan})`;
+      // Get order details from card
+      const customerName = card.querySelector('.customer-info h3').textContent;
+      const tableNumber = card.querySelector('.customer-info p').textContent.replace('Meja ', '');
+      const orderTime = card.querySelector('.order-time').textContent;
+      const totalPrice = card.querySelector('.total-price').textContent;
       
-      // TODO: Tambahkan logika untuk mengambil detail pesanan dari database
-      // Contoh data dummy untuk demo
-      const dummyItems = [
-        { nama: "Nasi Goreng", harga: 25000, jumlah: 2 },
-        { nama: "Es Teh", harga: 5000, jumlah: 1 }
-      ];
-      
-      const totalHarga = dummyItems.reduce((total, item) => total + (item.harga * item.jumlah), 0);
-      
-      // Render items
-      const rincianContent = document.querySelector('.rincian-content');
-      rincianContent.innerHTML = '';
-      
-      dummyItems.forEach(item => {
-        const itemHTML = `
-          <div class="rincian-item">
-            <div class="item-info">
-              <img src="Assets/menu-placeholder.png" alt="${item.nama}" />
-              <div class="item-details">
-                <h3>${item.nama}</h3>
-                <p>Jumlah: ${item.jumlah}</p>
-                <p>Harga: Rp ${item.harga.toLocaleString('id-ID')}</p>
-              </div>
-            </div>
-          </div>
-        `;
-        rincianContent.insertAdjacentHTML('beforeend', itemHTML);
+      // Get order items
+      const items = [];
+      card.querySelectorAll('.order-item').forEach(item => {
+        items.push({
+          name: item.querySelector('.item-name').textContent,
+          qty: item.querySelector('.item-qty').textContent.replace('x', '')
+        });
       });
       
-      // Tambahkan total harga
-      const totalHTML = `
-        <div class="total-harga">
-          <p><strong>Total Harga: Rp ${totalHarga.toLocaleString('id-ID')}</strong></p>
-        </div>
-      `;
-      rincianContent.insertAdjacentHTML('beforeend', totalHTML);
+      // Update order detail view
+      updateOrderDetail(orderId, customerName, tableNumber, orderTime, totalPrice, items);
       
-      // Tampilkan aside dan overlay
+      // Show detail view
       rincianPesanan.classList.add('active');
       overlay.classList.add('active');
-    });
+    }
   });
   
-  // Event listener untuk tombol close
-  document.querySelector('.close-rincian').addEventListener('click', function() {
-    rincianPesanan.classList.remove('active');
-    overlay.classList.remove('active');
-  });
+  // Close detail view
+  document.querySelector('.close-rincian').addEventListener('click', closeDetailView);
+  overlay.addEventListener('click', closeDetailView);
   
-  // Event listener untuk overlay
-  overlay.addEventListener('click', function() {
-    rincianPesanan.classList.remove('active');
-    this.classList.remove('active');
-  });
-  
-  // Event listener untuk tombol aksi
+  // Order actions
   document.querySelector('.btn-selesai').addEventListener('click', function() {
+    const orderId = document.querySelector('.rincian-content').dataset.orderId;
     if (confirm('Apakah Anda yakin ingin menyelesaikan pesanan ini?')) {
-      // TODO: Tambahkan logika untuk menyelesaikan pesanan
+      // In a real app, you would send an AJAX request here
+      console.log(`Pesanan ${orderId} selesai`);
       alert('Pesanan telah diselesaikan');
-      rincianPesanan.classList.remove('active');
-      overlay.classList.remove('active');
-      // Refresh halaman atau update tabel
+      closeDetailView();
+      // In a real app, you would update the UI without reloading
       location.reload();
     }
   });
   
   document.querySelector('.btn-batal').addEventListener('click', function() {
+    const orderId = document.querySelector('.rincian-content').dataset.orderId;
     if (confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
-      // TODO: Tambahkan logika untuk membatalkan pesanan
+      // In a real app, you would send an AJAX request here
+      console.log(`Pesanan ${orderId} dibatalkan`);
       alert('Pesanan telah dibatalkan');
-      rincianPesanan.classList.remove('active');
-      overlay.classList.remove('active');
-      // Refresh halaman atau update tabel
+      closeDetailView();
+      // In a real app, you would update the UI without reloading
       location.reload();
     }
   });
+  
+  // Search functionality
+  const searchForm = document.querySelector('.search-box form');
+  searchForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const searchTerm = document.querySelector('#search-input').value.toLowerCase();
+    
+    document.querySelectorAll('.pesanan-card').forEach(card => {
+      const orderId = card.querySelector('.order-id').textContent.toLowerCase();
+      if (orderId.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+  
+  // Helper functions
+  function updateOrderDetail(orderId, customerName, tableNumber, orderTime, totalPrice, items) {
+    const rincianContent = document.querySelector('.rincian-content');
+    rincianContent.innerHTML = '';
+    rincianContent.dataset.orderId = orderId;
+    
+    // Update header
+    document.querySelector('.rincian-header h2').textContent = `Pesanan #${orderId}`;
+    
+    // Add customer info
+    const customerHTML = `
+      <div class="customer-details">
+        <h3>${customerName}</h3>
+        <p>Meja ${tableNumber}</p>
+        <p>Waktu: ${orderTime}</p>
+      </div>
+      <div class="order-items-header">
+        <h4>Detail Pesanan</h4>
+      </div>
+    `;
+    rincianContent.insertAdjacentHTML('beforeend', customerHTML);
+    
+    // Add items
+    items.forEach(item => {
+      const itemHTML = `
+        <div class="rincian-item">
+          <div class="item-info">
+            <div class="item-details">
+              <h3>${item.name}</h3>
+              <p>Jumlah: ${item.qty}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      rincianContent.insertAdjacentHTML('beforeend', itemHTML);
+    });
+    
+    // Add total
+    const totalHTML = `
+      <div class="total-harga">
+        <p>Total: ${totalPrice}</p>
+      </div>
+    `;
+    rincianContent.insertAdjacentHTML('beforeend', totalHTML);
+  }
+  
+  function closeDetailView() {
+    rincianPesanan.classList.remove('active');
+    overlay.classList.remove('active');
+  }
 });
