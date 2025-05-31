@@ -103,7 +103,7 @@ $pesanan = getPesananAktif();
         </div>
       </section>
     </main>
-    <aside class="rincian-pesanan">
+    <div class="rincian-pesanan">
       <div class="rincian-header">
         <h2></h2>
         <button class="close-rincian"><i data-feather="x"></i></button>
@@ -112,7 +112,7 @@ $pesanan = getPesananAktif();
       </div>
       <button class="btn-selesai">Selesai</button>
       <button class="btn-batal">Batalkan Pesanan</button>
-    </aside>
+    </div>
     <script>
       feather.replace();
     </script>

@@ -387,7 +387,7 @@ nav.hide {
   .minuman-card,
   .snack-card {
     width: 47%;
-    height: 8rem;
+    padding: 10%;
     margin: 1.5%;
     box-sizing: border-box;
   }

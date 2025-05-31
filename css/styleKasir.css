@@ -22,6 +22,9 @@
 }
 
 body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   font-family: "Poppins", sans-serif;
   background-color: var(--bg);
   color: var(--text);
@@ -30,10 +33,9 @@ body {
 
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1.4rem 7%;
-  position: fixed;
+  padding: 1.4rem 2%;
+  position: relative;
   background-color: var(--primary);
   top: 0;
   left: 0;
@@ -47,6 +49,15 @@ body {
   display: flex;
 }
 
+#menu {
+  padding-top: 1rem;
+}
+
+#menu .feather {
+  height: 2rem;
+  width: 2rem;
+}
+
 #chart,
 #edit,
 #archive,
@@ -56,7 +67,7 @@ body {
 
 .navbar-menu .navbar-extra {
   position: absolute;
-  display: inline;
+  display: none;
   top: 100%;
   left: 100%;
   background-color: rgba(0, 0, 0, 0.6);
@@ -67,6 +78,7 @@ body {
 
 .navbar-extra.hidden {
   left: 0%;
+  display: inline;
 }
 
 .navbar-menu .navbar-extra a {
@@ -86,6 +98,14 @@ body {
   color: var(--accent);
 }
 
+.navbar-user {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
 .navbar-user h6 {
   font-family: "Lexend Zetta", sans-serif;
   color: var(--bg);
@@ -93,45 +113,48 @@ body {
 }
 
 .main {
-  min-height: 100dvh;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex: 1;
+  gap: 2rem;
   align-items: center;
   padding: 2rem 7%;
-}
-
-.list-pesanan {
-  max-width: 75rem;
 }
 
 .pesanan-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 5.3rem 7%;
+  margin: 0.8rem 2rem 1rem 2rem;
 }
 
 .search-box {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(255, 255, 255);
   border-radius: 30px;
   padding: 0.5rem 1rem;
   transition: all 0.3s;
 }
 
+.search-box button {
+  background-color: rgb(255, 255, 255);
+}
+
+.search-box input {
+  padding-bottom: 0.5rem;
+}
+
 .pesanan-count {
   background-color: var(--primary);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  padding: 1rem;
+  border-radius: 30px;
   font-size: 0.9rem;
 }
 
 .pesanan-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-self: center;
   gap: 1.5rem;
-  margin-top: 1rem;
+  margin: 1rem;
 }
 
 .empty-state {
@@ -263,7 +286,7 @@ body {
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   transition: right 0.3s ease;
   z-index: 9999;
-  display: none;
+  /* display: none; */
   flex-direction: column;
   padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
 }
@@ -403,8 +426,6 @@ body {
   html {
     font-size: 100%;
   }
-}
-@media (max-width: 1024px) {
   .pesanan-container {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
@@ -425,9 +446,11 @@ body {
     right: 0;
   }
   .pesanan-header {
-    flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  .pesanan-container {
+
   }
   .feather {
     width: 1.7rem;
@@ -440,19 +463,18 @@ body {
     font-size: 50%;
   }
   .navbar {
-    flex-wrap: wrap;
     padding: 0.8rem 2%;
   }
   .navbar-user {
-    order: 1;
+    position: relative; /* ubah dari absolute ke relative */
+    left: auto;
+    transform: none;
     width: 100%;
+    text-align: center;
     margin-top: 0.5rem;
   }
   .navbar-user h6 {
     font-size: 1.5rem;
-  }
-  .search-box {
-    margin-left: auto;
   }
   .pesanan-container {
     grid-template-columns: 1fr;
