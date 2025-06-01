@@ -176,6 +176,7 @@ body {
 }
 
 .pesanan-card {
+  height: 100%;
   background-color: var(--card-bg);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -193,7 +194,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1.2rem;
-  background-color: var(--secondary);
+  background-color: var(--primary);
   color: white;
 }
 
@@ -209,6 +210,7 @@ body {
 
 .card-body {
   padding: 1.2rem;
+  height: 60%;
 }
 
 .customer-info h3 {
@@ -220,7 +222,6 @@ body {
 .customer-info p {
   font-size: 0.9rem;
   color: var(--text-light);
-  margin-bottom: 1rem;
 }
 
 .order-summary {
@@ -275,30 +276,43 @@ body {
   background-color: var(--secondary);
 }
 
-/* Rincian Pesanan Aside */
+.customer-details {
+  display: flex;
+}
+
+
+
 .rincian-pesanan {
   position: fixed;
-  top: 0;
-  right: -400px; /* Awalnya tersembunyi di sebelah kanan */
-  width: 400px;
-  height: 100vh;
-  background-color: white;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  transition: right 0.3s ease;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* pusatkan horizontal dan vertikal */
+  width: 30rem;
+  max-height: 70dvh;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
   z-index: 9999;
-  /* display: none; */
+  display: none;
   flex-direction: column;
-  padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+  padding: 0.7rem;
+  background-color: white; /* opsional, agar kontennya terlihat */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* opsional, buat lebih menonjol */
+  border-radius: 8px; /* opsional, biar lebih estetik */
 }
 
 .rincian-pesanan.active {
-  right: 0; /* Muncul saat aktif */
   display: flex;
+}
+
+.rincian-pesanan .order-summary {
+  overflow-y: auto;
+  flex: 1;
+  margin-top: 1rem;
+  max-height: 50vh; /* ini yang membuat bagian pesanan bisa discroll */
 }
 
 .rincian-header {
   padding: 1rem;
-  margin-top: 1rem;
   background-color: var(--primary);
   color: white;
   display: flex;
@@ -322,9 +336,30 @@ body {
 }
 
 .rincian-content {
-  padding: 1rem;
+  background-color: white;
+  padding: 0rem 1rem;
   flex-grow: 1;
   overflow-y: auto;
+}
+
+.rincian-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.item-image img{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-jumlah p,
+.item-harga p {
+  font-size: 0.9rem;
+  color: var(--text);
 }
 
 .rincian-item {
@@ -391,6 +426,7 @@ body {
 .btn-selesai {
   background-color: var(--success);
   color: white;
+  margin-bottom: 1rem;
 }
 
 .btn-selesai:hover {
@@ -406,7 +442,6 @@ body {
   background-color: #c82333;
 }
 
-/* Overlay saat aside aktif */
 .overlay {
   position: fixed;
   top: 0;
@@ -438,19 +473,12 @@ body {
   .navbar-user h6 {
     font-size: 1.5rem;
   }
-  .rincian-pesanan {
-    width: 100%;
-    right: -100%;
-  }
-  .rincian-pesanan.active {
-    right: 0;
-  }
   .pesanan-header {
     align-items: flex-start;
     gap: 0.5rem;
   }
-  .pesanan-container {
-
+  .rincian-pesanan {
+    width: 30rem;
   }
   .feather {
     width: 1.7rem;

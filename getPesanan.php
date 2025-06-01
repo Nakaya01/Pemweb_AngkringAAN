@@ -13,6 +13,8 @@ function getPesananAktif() {
             pl.no_meja
         FROM pesanan p
         JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
+        LEFT JOIN history_pesanan hp ON p.id_pesanan = hp.pesanan_id
+        WHERE hp.pesanan_id IS NULL
         ORDER BY p.waktu_pesan DESC
     ";
 
@@ -31,7 +33,9 @@ function getPesananAktif() {
         $detail_query = "
             SELECT 
                 m.nama AS nama_menu,
-                dp.jumlah
+                dp.jumlah,
+                m.gambar,
+                m.harga
             FROM detail_pesanan dp
             JOIN menu m ON dp.menu_id = m.id_menu
             WHERE dp.pesanan_id = $id_pesanan
@@ -43,7 +47,9 @@ function getPesananAktif() {
         while ($detail = $detail_result->fetch_assoc()) {
             $items[] = [
                 'nama_menu' => $detail['nama_menu'],
-                'jumlah' => $detail['jumlah']
+                'jumlah' => $detail['jumlah'],
+                'gambar' => $detail['gambar'],
+                'harga' => $detail['harga']
             ];
         }
 

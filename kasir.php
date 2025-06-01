@@ -84,8 +84,8 @@ $pesanan = getPesananAktif();
                   </div>
                   <div class="order-summary">
                     <?php foreach($order['items'] as $item): ?>
-                      <div class="order-item">
-                        <span class="item-name"><?php echo $item['nama_menu']; ?></span>
+                      <div class="order-item" data-image="<?php echo htmlspecialchars($item['gambar']); ?>" data-price="<?php echo intval($item['harga']); ?>">
+                        <span class="item-name"><?php echo htmlspecialchars($item['nama_menu']); ?></span>
                         <span class="item-qty">x<?php echo $item['jumlah']; ?></span>
                       </div>
                     <?php endforeach; ?>
@@ -108,8 +108,7 @@ $pesanan = getPesananAktif();
         <h2></h2>
         <button class="close-rincian"><i data-feather="x"></i></button>
       </div>
-      <div class="rincian-content">
-      </div>
+      <div class="rincian-content"></div>
       <button class="btn-selesai">Selesai</button>
       <button class="btn-batal">Batalkan Pesanan</button>
     </div>
