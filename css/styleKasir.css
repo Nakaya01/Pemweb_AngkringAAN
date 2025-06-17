@@ -1,7 +1,7 @@
 :root {
   --primary: #12372a;
   --secondary: #436850;
-  --accent: #ADBC9F;
+  --accent: #adbc9f;
   --bg: #fbfada;
   --card-bg: #ffffff;
   --text: #333333;
@@ -49,10 +49,6 @@ body {
   display: flex;
 }
 
-#menu {
-  padding-top: 1rem;
-}
-
 #menu .feather {
   height: 2rem;
   width: 2rem;
@@ -87,7 +83,6 @@ body {
   font-size: 1rem;
 }
 
-/* Bagian ikon */
 .navbar-menu .feather {
   margin: 0 0.5rem;
   color: var(--bg);
@@ -112,6 +107,43 @@ body {
   font-size: 1.5rem;
 }
 
+.search-menu-navbar {
+  align-items: center;
+  background-color: white;
+  border-radius: 30px;
+  padding: 0.3rem 0.8rem;
+  gap: 0.5rem;
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.search-menu-navbar input {
+  background: var(--card-bg);
+  border: none;
+  outline: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 180px;
+  color: var(--primary);
+}
+
+.search-menu-navbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.search-menu-navbar.hidden {
+  display: none;
+}
+
+/* style menu main */
 .main {
   display: flex;
   flex: 1;
@@ -126,7 +158,7 @@ body {
   margin: 0.8rem 2rem 1rem 2rem;
 }
 
-.search-box {
+.search-box form {
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   padding: 0.5rem 1rem;
@@ -137,8 +169,19 @@ body {
   background-color: rgb(255, 255, 255);
 }
 
+.search-box svg {
+  width: 100%;
+}
+
 .search-box input {
-  padding-bottom: 0.5rem;
+  background-color: #ffffff;
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.search-box input::placeholder {
+  color: #999;
 }
 
 .pesanan-count {
@@ -146,7 +189,6 @@ body {
   color: white;
   padding: 1rem;
   border-radius: 30px;
-  font-size: 0.9rem;
 }
 
 .pesanan-container {
@@ -278,15 +320,18 @@ body {
 
 .customer-details {
   display: flex;
+  justify-content: space-between;
 }
 
-
+.customer-details p {
+  padding-top: 0.4rem;
+}
 
 .rincian-pesanan {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* pusatkan horizontal dan vertikal */
+  transform: translate(-50%, -50%);
   width: 30rem;
   max-height: 70dvh;
   overflow: hidden;
@@ -295,9 +340,9 @@ body {
   display: none;
   flex-direction: column;
   padding: 0.7rem;
-  background-color: white; /* opsional, agar kontennya terlihat */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* opsional, buat lebih menonjol */
-  border-radius: 8px; /* opsional, biar lebih estetik */
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 }
 
 .rincian-pesanan.active {
@@ -308,7 +353,7 @@ body {
   overflow-y: auto;
   flex: 1;
   margin-top: 1rem;
-  max-height: 50vh; /* ini yang membuat bagian pesanan bisa discroll */
+  max-height: 50vh;
 }
 
 .rincian-header {
@@ -349,7 +394,7 @@ body {
   gap: 1rem;
 }
 
-.item-image img{
+.item-image img {
   width: 80px;
   height: 80px;
   object-fit: cover;
@@ -410,7 +455,25 @@ body {
   gap: 0.8rem;
 }
 
-.btn-selesai, .btn-batal {
+.empty-state {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.empty-state svg {
+  height: 50%;
+  width: 50%;
+}
+
+.empty-state p {
+  font-family: "Poppins", sans-serif;
+  font-size: large;
+}
+
+.btn-selesai,
+.btn-batal {
   padding: 0.8rem;
   border-radius: 6px;
   cursor: pointer;
@@ -457,12 +520,322 @@ body {
   display: block;
 }
 
-@media (max-width: 1368px) {
+.section-hidden {
+  display: none !important;
+}
+
+/* style menu tambah menu */
+
+.menu-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.menu-filter .btn-filter {
+  background-color: var(--bg);
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  margin: 0rem 3rem;
+  color: var(--primary);
+  padding: 1rem;
+  border-radius: 1.3rem;
+}
+
+.menu-filter .btn-filter::after {
+  content: "";
+  display: block;
+  padding-bottom: 0.1rem;
+  border-bottom: 0.1rem solid #4a7760;
+  transform: scaleX(0);
+  transition: 0.1s linear;
+}
+
+.menu-filter .btn-filter:hover::after {
+  transform: scaleX(0.9);
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.no-menu-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #888;
+  grid-column: 1 / -1; 
+}
+.menu-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.menu-img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: 100px;
+  object-fit: contain; 
+  border-radius: 8px;
+}
+.menu-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.menu-actions svg,
+.btn-edit,
+.btn-delete {
+  background-color: #ffffff;
+}
+.image-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+#preview-edit-gambar {
+  max-height: 100px;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.menu-actions button {
+  background-color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+  cursor: pointer;
+}
+.menu-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.menu-actions .btn-edit:hover svg {
+  color: #28a745;
+}
+.menu-actions .btn-delete:hover svg {
+  color: #dc3545;
+}
+.floating-add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
+}
+.floating-add-button.animate-hide {
+  animation: spinOut 0.4s forwards;
+}
+
+@keyframes spinOut {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(0);
+    opacity: 0;
+  }
+}
+#popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* efek redup */
+  z-index: 888;
+  display: none;
+}
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+#popup-overlay.active {
+  display: block;
+}
+.popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.popup.hidden {
+  display: none;
+}
+.popup h3 {
+  font-family: "Lexend Zetta", sans-serif;
+  font-size: 1.6rem;
+  text-align: center;
+  color: var(--primary);
+}
+.popup input,
+.popup select {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+.popup input:focus,
+.popup select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+.popup label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+#popup-konfirmasi-hapus {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  z-index: 999;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+#popup-overlay.active {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+.popup.confirm-delete {
+  width: 320px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+.popup.confirm-delete .popup-icon {
+  margin-bottom: 12px;
+}
+.popup.confirm-delete .icon-warning {
+  color: var(--warning);
+  width: 48px;
+  height: 48px;
+}
+.popup.confirm-delete p {
+  font-family:"Poppins", sans-serif;
+  color: var(--text-light);
+  font-size: 14px;
+  margin: 8px 0 16px;
+}
+.btn-submit-danger,
+.btn-cancel,
+.btn-submit {
+  font-family:"Poppins", sans-serif;
+  background: #ffffff;
+  font-size: 1rem;
+  font-weight: 300;
+  transition: all 0.3s ease;
+}
+.btn-submit-danger:hover,
+.btn-cancel:hover,
+.btn-submit:hover {
+  transform: translateY(-2px);
+}
+
+.popup .btn-submit {
+  background-color: #28a745;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.popup .btn-submit:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.popup .btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.popup .btn-cancel:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.popup .btn-submit-danger {
+  background-color: #218838;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.popup .btn-submit-danger:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
   html {
     font-size: 100%;
   }
   .pesanan-container {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    padding: 1rem;
+    gap: 1rem;
   }
 }
 /* tablet */
@@ -476,13 +849,41 @@ body {
   .pesanan-header {
     align-items: flex-start;
     gap: 0.5rem;
+    padding: 1rem;
   }
   .rincian-pesanan {
-    width: 30rem;
+    width: 90vw;
   }
   .feather {
     width: 1.7rem;
     height: 1.7rem;
+  }
+  .menu-filter {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .menu-filter .btn-filter {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+    padding: 0.8rem;
+  }
+  .menu-container {
+    padding: 1rem 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.8rem;
+  }
+  .menu-card {
+    padding: 0.8rem;
+  }
+  .menu-img {
+    height: 100px;
+  }
+  .navbar-menu .navbar-extra {
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 100%;
   }
 }
 /* hp */
@@ -494,7 +895,7 @@ body {
     padding: 0.8rem 2%;
   }
   .navbar-user {
-    position: relative; /* ubah dari absolute ke relative */
+    position: relative;
     left: auto;
     transform: none;
     width: 100%;
@@ -511,4 +912,36 @@ body {
     width: 1.3rem;
     height: 1.3rem;
   }
+  .popup,
+  .popup.confirm-delete,
+  .rincian-pesanan {
+    width: 90vw;
+    padding: 1.2rem;
+  }
+  .popup-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .search-box form,
+  .btn-selesai,
+  .btn-batal {
+    width: 100%;
+  }
+  .menu-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .menu-card {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  .menu-img {
+    height: 150px;
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
