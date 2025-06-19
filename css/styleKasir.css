@@ -574,7 +574,7 @@ body {
   font-size: 1.2rem;
   font-weight: 500;
   color: #888;
-  grid-column: 1 / -1; 
+  grid-column: 1 / -1;
 }
 .menu-card {
   background: white;
@@ -593,7 +593,7 @@ body {
   margin: 0 auto;
   width: 100%;
   height: 100px;
-  object-fit: contain; 
+  object-fit: contain;
   border-radius: 8px;
 }
 .menu-actions {
@@ -769,7 +769,7 @@ body {
   height: 48px;
 }
 .popup.confirm-delete p {
-  font-family:"Poppins", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: var(--text-light);
   font-size: 14px;
   margin: 8px 0 16px;
@@ -777,7 +777,7 @@ body {
 .btn-submit-danger,
 .btn-cancel,
 .btn-submit {
-  font-family:"Poppins", sans-serif;
+  font-family: "Poppins", sans-serif;
   background: #ffffff;
   font-size: 1rem;
   font-weight: 300;
@@ -826,6 +826,27 @@ body {
 .popup .btn-submit-danger:hover {
   background-color: #218838;
   transform: scale(1.05);
+}
+
+.popup-notifikasi {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2d2d2d;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-size: 15px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+.popup-notifikasi.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (max-width: 1024px) {
@@ -940,8 +961,8 @@ body {
   }
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

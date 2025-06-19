@@ -54,6 +54,17 @@ document.addEventListener("DOMContentLoaded", function () {
       navbar.classList.remove("hidden");
     }
   });
+  // fungsi pop up notifikasi
+  function showPopupMessage(message) {
+    const popup = document.getElementById("popup-notifikasi");
+    const msg = document.getElementById("popup-message");
+    msg.textContent = message;
+    popup.classList.add("show");
+
+    setTimeout(() => {
+      popup.classList.remove("show");
+    }, 2000); // tampilkan selama 2 detik
+  }
 
   // Tampilkan rincian pesanan
   const rincianPesanan = document.querySelector(".rincian-pesanan");
@@ -110,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".btn-selesai").addEventListener("click", function () {
     const orderId = document.querySelector(".rincian-content").dataset.orderId;
     if (confirm("Apakah Anda yakin ingin menyelesaikan pesanan ini?")) {
-      alert("Pesanan telah diselesaikan");
+      showPopupMessage("Pesanan telah diselesaikan");
       closeDetailView();
       location.reload();
     }
@@ -119,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".btn-batal").addEventListener("click", function () {
     const orderId = document.querySelector(".rincian-content").dataset.orderId;
     if (confirm("Apakah Anda yakin ingin membatalkan pesanan ini?")) {
-      alert("Pesanan telah dibatalkan");
+      showPopupMessage("Pesanan telah dibatalkan");
       closeDetailView();
       location.reload();
     }
@@ -207,6 +218,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   formTambah.addEventListener("submit", async function (e) {
     e.preventDefault();
+    const currentCategory =
+      document.querySelector(".btn-filter.active")?.dataset.category ||
+      "makanan";
 
     const formData = new FormData(formTambah);
 
@@ -218,21 +232,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const result = await response.json();
 
     if (result.status === "success") {
-      alert("Menu berhasil ditambahkan");
+      showPopupMessage("Menu berhasil ditambahkan");
+      loadMenuByCategory(currentCategory);
 
       // Tutup popup dan reset form
       popup.classList.add("hidden");
       overlayBg.classList.remove("active");
       btnTambah.classList.remove("animate-hide");
       formTambah.reset();
-
-      // Reload kategori menu aktif
-      const currentCategory =
-        document.querySelector(".btn-filter.active")?.dataset.category ||
-        "makanan";
-      loadMenuByCategory(currentCategory);
     } else {
-      alert("Gagal menambahkan menu: " + result.message);
+      showPopupMessage("Gagal menambahkan menu: " + result.message);
     }
   });
 
@@ -401,6 +410,37 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    // Submit Edit Menu
+    formEdit.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(formEdit);
+
+      const response = await fetch("editMenu.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        showPopupMessage(result.message);
+        popupEdit.classList.remove("show");
+        overlayBg.classList.remove("active");
+        setTimeout(() => popupEdit.classList.add("hidden"), 300);
+        const currentCategory =
+          document.querySelector(".btn-filter.active")?.dataset.category ||
+          "makanan";
+        loadMenuByCategory(currentCategory);
+      } else {
+        showPopupMessage("Gagal edit menu: " + result.message);
+      }
+    });
+
+    inputEditHarga.addEventListener("input", function () {
+      this.value = this.value.replace(/[^\d]/g, "");
+    });
+
     // Tombol hapus ditekan
     if (e.target.closest(".btn-delete")) {
       const btn = e.target.closest(".btn-delete");
@@ -421,16 +461,22 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((res) => res.json())
         .then((result) => {
-          if (result.success) {
-            alert("Menu berhasil dihapus.");
-            loadMenuByCategory("makanan");
+          if (result.status === "success") {
+            showPopupMessage(result.message);
+            const currentCategory =
+              document.querySelector(".btn-filter.active")?.dataset.category ||
+              "makanan";
+            loadMenuByCategory(currentCategory);
           } else {
-            alert("Gagal menghapus menu.");
+            showPopupMessage("Gagal menghapus menu: " + result.message);
           }
-          // Reset dan sembunyikan popup
           popupHapus.classList.add("hidden");
           overlayBg.classList.remove("active");
           idMenuToDelete = null;
+        })
+        .catch((error) => {
+          showPopupMessage("Terjadi kesalahan saat menghapus.");
+          console.error(error);
         });
     });
 

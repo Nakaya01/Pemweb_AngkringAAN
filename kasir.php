@@ -185,6 +185,9 @@ $pesanan = getPesananAktif();
           <button id="cancel-hapus" class="btn-cancel">Batal</button>
         </div>
       </div>
+      <div id="popup-notifikasi" class="popup-notifikasi hidden">
+        <p id="popup-message">Pesan notifikasi</p>
+      </div>
     </section>
     <section class="laporan-penjualan section-hidden" id="laporan-penjualan">
 

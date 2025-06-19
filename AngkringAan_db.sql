@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS AngkringAan_db;
-USE AngkringAan_db;
+CREATE DATABASE IF NOT EXISTS angkringaan_db;
+USE angkringaan_db;
 
 -- Tabel kasir
 CREATE TABLE IF NOT EXISTS kasir (
