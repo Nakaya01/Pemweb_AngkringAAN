@@ -14,7 +14,6 @@ localhost
 - Mengkonfirmasi List Pemesanan
 - Menambahkan Menu
 - Menampilkan Laporan Penjualan
-- Menampilkan Histori Penjualan 
 ## Teknologi
 - Html
 - CSS
