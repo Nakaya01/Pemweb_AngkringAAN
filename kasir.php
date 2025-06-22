@@ -37,8 +37,7 @@ $pesanan = getPesananAktif();
       <div class="navbar-extra">
         <a href="#list-pesanan" id="list"><i data-feather="inbox"></i>List Pemesanan</a>
         <a href="#menambahkan-menu" id="edit"><i data-feather="edit"></i>Tambah Menu</a>
-        <a href="#laporan-penjualan" id="chart"><i data-feather="bar-chart-2"></i>Laporan Penjualan</a>
-        <a href="#Histori-penjualan" id="archive"><i data-feather="archive"></i>Histori Penjualan</a>
+        <a href="#laporan-penjualan" id="chart"><i data-feather="bar-chart-2"></i>Laporan & Riwayat</a>
         <a href="log-out.php" id="logout"><i data-feather="log-out"></i>Logout</a>
       </div>
     </div>
@@ -190,10 +189,146 @@ $pesanan = getPesananAktif();
       </div>
     </section>
     <section class="laporan-penjualan section-hidden" id="laporan-penjualan">
+      <div class="laporan-header">
+        <h2>Laporan & Riwayat Penjualan</h2>
+        <div class="tab-navigation">
+          <button class="tab-btn active" data-tab="riwayat">
+            <i data-feather="list"></i> Riwayat Transaksi
+          </button>
+          <button class="tab-btn" data-tab="laporan">
+            <i data-feather="bar-chart-2"></i> Rekap Laporan
+          </button>
+        </div>
+      </div>
 
-    </section>
-    <section class="Histori-penjualan section-hidden" id="Histori-penjualan">
+      <!-- Tab Content Container -->
+      <div class="tab-content">
+        <!-- Tab 1: Riwayat Transaksi -->
+        <div class="tab-pane active" id="tab-riwayat">
+          <div class="riwayat-filter">
+            <form id="form-riwayat-tanggal">
+              <label for="tanggal-riwayat">Pilih Tanggal:</label>
+              <input type="date" id="tanggal-riwayat" name="tanggal" required>
+              <button type="submit" class="btn-cari-riwayat">
+                <i data-feather="search"></i> Cari
+              </button>
+            </form>
+          </div>
 
+          <div class="riwayat-summary" id="riwayat-summary" style="display: none;">
+            <div class="summary-card">
+              <h3>Ringkasan Hari Ini</h3>
+              <div class="summary-content">
+                <div class="summary-item">
+                  <span class="summary-label">Total Transaksi:</span>
+                  <span class="summary-value" id="total-transaksi">0</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Total Pendapatan:</span>
+                  <span class="summary-value" id="total-pendapatan-hari">Rp 0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="transaksi-list" id="transaksi-list">
+            <div class="empty-state">
+              <i data-feather="calendar" class="empty-icon"></i>
+              <p>Pilih tanggal untuk melihat riwayat transaksi</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Rekap Laporan -->
+        <div class="tab-pane" id="tab-laporan">
+          <div class="laporan-filter">
+            <div class="filter-group">
+              <label for="periode-laporan">Periode:</label>
+              <select id="periode-laporan" name="periode">
+                <option value="hari">Hari Ini</option>
+                <option value="minggu">Minggu Ini</option>
+                <option value="bulan">Bulan Ini</option>
+                <option value="custom">Kustom</option>
+              </select>
+            </div>
+            <div class="filter-group" id="custom-date-group" style="display: none;">
+              <label for="tanggal-mulai">Dari:</label>
+              <input type="date" id="tanggal-mulai" name="tanggal_mulai">
+              <label for="tanggal-akhir">Sampai:</label>
+              <input type="date" id="tanggal-akhir" name="tanggal_akhir">
+            </div>
+            <button type="button" id="btn-generate-laporan" class="btn-generate">
+              <i data-feather="refresh-cw"></i> Generate Laporan
+            </button>
+          </div>
+
+          <div class="laporan-content" id="laporan-content">
+            <div class="laporan-cards">
+              <div class="laporan-card">
+                <div class="card-icon">
+                  <i data-feather="dollar-sign"></i>
+                </div>
+                <div class="card-content">
+                  <h3>Total Pendapatan</h3>
+                  <p id="total-pendapatan-laporan">Rp 0</p>
+                </div>
+              </div>
+
+              <div class="laporan-card">
+                <div class="card-icon">
+                  <i data-feather="shopping-bag"></i>
+                </div>
+                <div class="card-content">
+                  <h3>Total Transaksi</h3>
+                  <p id="total-transaksi-laporan">0</p>
+                </div>
+              </div>
+
+              <div class="laporan-card">
+                <div class="card-icon">
+                  <i data-feather="trending-up"></i>
+                </div>
+                <div class="card-content">
+                  <h3>Rata-rata per Transaksi</h3>
+                  <p id="rata-transaksi">Rp 0</p>
+                </div>
+              </div>
+
+              <div class="laporan-card">
+                <div class="card-icon">
+                  <i data-feather="users"></i>
+                </div>
+                <div class="card-content">
+                  <h3>Menu Terjual</h3>
+                  <p id="total-menu-terjual">0 item</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="laporan-detail">
+              <div class="detail-section">
+                <h3>Menu Terlaris</h3>
+                <div id="menu-terlaris" class="menu-list">
+                  <div class="empty-state">
+                    <i data-feather="package" class="empty-icon"></i>
+                    <p>Belum ada data menu terlaris</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <h3>Metode Pembayaran</h3>
+                <div id="metode-pembayaran" class="payment-stats">
+                  <div class="empty-state">
+                    <i data-feather="credit-card" class="empty-icon"></i>
+                    <p>Belum ada data pembayaran</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -208,7 +343,6 @@ $pesanan = getPesananAktif();
   </div>
 
   <script>
-    feather.replace();
   </script>
 </body>
 

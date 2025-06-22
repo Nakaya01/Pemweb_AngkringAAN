@@ -129,6 +129,19 @@ CREATE TABLE IF NOT EXISTS history_pesanan (
   kasir_id INT,
   waktu_selesai TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   total_harga INT NOT NULL,
+  status ENUM('diterima', 'dibatalkan') NOT NULL DEFAULT 'diterima',
   FOREIGN KEY (pesanan_id) REFERENCES pesanan(id_pesanan) ON DELETE CASCADE,
   FOREIGN KEY (kasir_id) REFERENCES kasir(id_kasir) ON DELETE SET NULL
 );
+
+-- Insert sample data ke history_pesanan untuk testing
+INSERT INTO history_pesanan (pesanan_id, kasir_id, total_harga, waktu_selesai, status) VALUES
+(1, 1, 31000, '2025-01-15 12:30:00', 'diterima'),
+(2, 2, 8000, '2025-01-15 13:15:00', 'diterima'),
+(3, 1, 32000, '2025-01-15 14:20:00', 'diterima'),
+(4, 3, 22000, '2025-01-15 15:45:00', 'diterima'),
+(5, 2, 30000, '2025-01-16 11:30:00', 'diterima'),
+(6, 1, 33000, '2025-01-16 12:45:00', 'diterima'),
+(7, 3, 26000, '2025-01-16 13:20:00', 'diterima'),
+(8, 2, 38000, '2025-01-16 14:10:00', 'diterima');
+
