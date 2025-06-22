@@ -42,7 +42,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran di Kasir - AngkringAan</title>
+    <title>Pembayaran Berhasil - AngkringAan</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet" />
@@ -55,7 +55,7 @@ $conn->close();
     <nav class="navbar">
         <a href="index.php" class="logo">AngkringAan</a>
         <div class="navbar-nav">
-            <p>Pembayaran di Kasir</p>
+            <p>Pembayaran Berhasil</p>
         </div>
         <div class="navbar-extra">
             <a href="index.php">
@@ -69,9 +69,9 @@ $conn->close();
 
     <div class="success-container">
         <div class="success-header">
-            <div class="success-icon">🧾</div>
-            <h1 class="success-title">Pembayaran di Kasir</h1>
-            <p class="success-subtitle">Silakan tunjukkan halaman ini kepada kasir untuk menyelesaikan pembayaran.</p>
+            <div class="success-icon">✓</div>
+            <h1 class="success-title">Pembayaran Berhasil!</h1>
+            <p class="success-subtitle">Terima kasih telah berbelanja di AngkringAan</p>
         </div>
 
         <div class="order-info">
@@ -91,6 +91,10 @@ $conn->close();
             <div class="info-row">
                 <span>Metode Pembayaran:</span>
                 <span><?php echo htmlspecialchars($pembayaran); ?></span>
+            </div>
+            <div class="info-row">
+                <span>Tanggal:</span>
+                <span><?php echo date('d/m/Y H:i'); ?></span>
             </div>
         </div>
 
@@ -112,7 +116,7 @@ $conn->close();
 
         <div class="btn-container">
             <a href="index.php" class="btn-home">Kembali ke Menu</a>
-            <button onclick="window.print()" class="btn-home">Cetak Struk</button>
+            <button onclick="window.print()" class="btn-home">Cetak</button>
         </div>
     </div>
 </body>
