@@ -102,6 +102,18 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+.chart-container.is-empty {
+    grid-template-columns: 1fr;
+    max-width: none;
+    padding-left: 7%;
+    padding-right: 7%;
+}
+
+.chart-container.is-empty .order-list {
+    height: auto;
+    max-height: none;
+}
+
 .order-list {
     grid-column: 1;
     grid-row: 1;

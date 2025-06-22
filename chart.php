@@ -10,6 +10,36 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
+// Check if there's any cart data or valid order
+$has_cart_data = isset($_SESSION['cart']) && !empty($_SESSION['cart']);
+$has_valid_order = isset($_SESSION['pesanan_id']);
+
+// Clean up empty temporary orders that might exist
+if (!$has_cart_data) {
+    // Delete empty temporary orders
+    $conn->query("DELETE p FROM pesanan p 
+                  JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
+                  WHERE p.total_harga = 0 AND pl.nama = 'Temporary' 
+                  AND NOT EXISTS (SELECT 1 FROM detail_pesanan dp WHERE dp.pesanan_id = p.id_pesanan)");
+    
+    // Also clean up orphaned temporary customers
+    $conn->query("DELETE pl FROM pelanggan pl 
+                  WHERE pl.nama = 'Temporary' 
+                  AND NOT EXISTS (SELECT 1 FROM pesanan p WHERE p.id_pelanggan = pl.id_pelanggan)");
+    
+    // Clear any invalid pesanan_id from session
+    if ($has_valid_order) {
+        unset($_SESSION['pesanan_id']);
+        $has_valid_order = false;
+    }
+}
+
+// Allow access to chart.php even if cart is empty, but don't create temporary orders
+// Only redirect if there's no cart data AND no valid order AND no session cart
+if (!$has_cart_data && !$has_valid_order && !isset($_SESSION['cart'])) {
+    // Don't redirect, just show empty cart
+}
+
 // Convert session cart to database if exists
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // Create temporary pesanan if not exists
@@ -62,28 +92,20 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 $user_id = $_SESSION['user_id'] ?? 1; // Ganti sesuai implementasi login
 // Untuk demo, asumsikan satu pesanan aktif per user (bisa pakai session)
 $pesanan_id = $_SESSION['pesanan_id'] ?? null;
-if (!$pesanan_id) {
+
+// Hanya cari atau buat pesanan temporary jika ada pesanan_id dalam session
+if ($pesanan_id) {
     // Cari pesanan aktif (total_harga = 0) - temporary pesanan
     $pesanan = $conn->query("SELECT p.* FROM pesanan p 
                              JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
-                             WHERE p.total_harga = 0 AND pl.nama = 'Temporary' 
-                             ORDER BY p.id_pesanan DESC LIMIT 1")->fetch_assoc();
+                             WHERE p.id_pesanan = $pesanan_id AND p.total_harga = 0 AND pl.nama = 'Temporary'")->fetch_assoc();
     if ($pesanan) {
-        $pesanan_id = $pesanan['id_pesanan'];
-        $_SESSION['pesanan_id'] = $pesanan_id;
+        $pesanan = $conn->query("SELECT * FROM pesanan WHERE id_pesanan=$pesanan_id")->fetch_assoc();
+    } else {
+        // Pesanan tidak ditemukan atau sudah tidak valid, hapus dari session
+        unset($_SESSION['pesanan_id']);
+        $pesanan_id = null;
     }
-}
-if (!$pesanan_id) {
-    // Buat pesanan temporary baru dengan pelanggan temporary
-    $conn->query("INSERT INTO pelanggan (nama, no_meja) VALUES ('Temporary', 0)");
-    $temp_pelanggan_id = $conn->insert_id;
-    
-    $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, 'Cash')");
-    $pesanan_id = $conn->insert_id;
-    $_SESSION['pesanan_id'] = $pesanan_id;
-    $pesanan = $conn->query("SELECT * FROM pesanan WHERE id_pesanan=$pesanan_id")->fetch_assoc();
-} else {
-    $pesanan = $conn->query("SELECT * FROM pesanan WHERE id_pesanan=$pesanan_id")->fetch_assoc();
 }
 
 // Ambil item makanan di keranjang
@@ -170,7 +192,7 @@ if ($pesanan_id) {
     <?php endif; ?>
 
     <!-- Konten Keranjang -->
-    <main class="chart-container">
+    <main class="chart-container<?= (count($order_items) == 0) ? ' is-empty' : '' ?>">
         <!-- Class 1: Daftar barang dipesan -->
         <div class="order-list">
             <h2>Pesanan Anda</h2>
@@ -209,12 +231,18 @@ if ($pesanan_id) {
                     </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>Keranjang kosong.</p>
+                    <div class="empty-cart-message" style="text-align: center; padding: 2rem; color: #fbfada;">
+                        <i data-feather="shopping-cart" style="width: 48px; height: 48px; color: #fbfada; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #fbfada;">Keranjang belanja Anda masih kosong.</p>
+                        <p style="margin-bottom: 1.5rem; color: #fbfada;">Silakan pilih menu favorit Anda di halaman utama.</p>
+                        <a href="index.php" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #fbfada; color: #12372a; text-decoration: none; border-radius: 8px; transition: background-color 0.3s; font-weight: 600;">Kembali ke Menu</a>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
 
         <!-- Right side container for form and summary -->
+        <?php if (count($order_items) > 0): ?>
         <form id="checkout-form" method="post" action="checkout.php" class="right-side-container">
             <!-- Class 2: Form nama dan nomor meja -->
             <div class="order-form">
@@ -255,7 +283,7 @@ if ($pesanan_id) {
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button id="btn-checkout" type="submit" <?= count($order_items) == 0 ? 'disabled' : '' ?>>Checkout</button>
+                                <button id="btn-checkout" type="submit">Checkout</button>
                             </td>
                         </tr>
                     </tbody>
@@ -263,25 +291,9 @@ if ($pesanan_id) {
                 <input type="hidden" name="pesanan_id" value="<?= $pesanan_id ?>">
             </div>
         </form>
+        <?php endif; ?>
     </main>
 
-    <script>
-        feather.replace();
-        
-        // Auto-hide alert messages after 3 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                setTimeout(function() {
-                    alert.style.opacity = '0';
-                    alert.style.transform = 'translateX(-50%) translateY(-20px)';
-                    setTimeout(function() {
-                        alert.remove();
-                    }, 300);
-                }, 3000);
-            });
-        });
-    </script>
 </body>
 </html>
 <?php $conn->close(); ?>
