@@ -32,6 +32,7 @@ body {
   left: 0;
   right: 0;
   z-index: 10000;
+  background: #133d2f;
   transition: top 0.3s;
 }
 
@@ -46,11 +47,19 @@ body {
 }
 
 .navbar .navbar-nav a {
-  font-family: "Sansita Swashed", cursive;
+  font-family: "Lexend Zetta", sans-serif;
   display: inline-block;
   color: var(--primary);
   font-size: 1.2rem;
   margin: 0 1rem;
+}
+
+.navbar .navbar-nav p {
+  font-family: "Lexend Zetta", sans-serif;
+  color: var(--primary);
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  font-weight: 400;
 }
 
 .navbar .navbar-nav a:hover {
@@ -356,8 +365,15 @@ nav.hide {
   html {
     font-size: 70%;
   }
+  .navbar .navbar-nav a {
+    font-size: 1rem;
+    margin: 0 0.4rem;
+  }
   .navbar .logo {
     font-size: 1.2rem;
+  }
+  .navbar .navbar-nav p {
+    font-size: 1rem;
   }
   .makanan-card img,
   .minuman-card img,
@@ -376,7 +392,15 @@ nav.hide {
     font-size: 50%;
   }
   .navbar .logo {
+    font-size: 1.1rem;
+  }
+  .navbar .navbar-nav a {
     font-size: 1rem;
+    margin: 0 0.2rem;
+  }
+  .navbar .navbar-nav p {
+    font-size: 0.9rem;
+    margin: 0 0.3rem;
   }
   .navbar-extra .feather {
     width: 1.4rem;

@@ -42,7 +42,11 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran QRIS - Angkring AAN</title>
+    <title>Pembayaran QRIS - AngkringAan</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet" />
+    <!-- Style -->
     <link rel="stylesheet" href="css/style.css">
     <style>
         .qris-container {
@@ -300,6 +304,12 @@ $conn->close();
             }
         }
         
+        @media (max-width: 479px) {
+            .navbar .navbar-nav p {
+                font-size: 0.9rem !important;
+            }
+        }
+        
         @media print {
             .navbar {
                 display: none;
@@ -372,7 +382,7 @@ $conn->close();
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <a href="index.php" class="logo">Angkring AAN</a>
+        <a href="index.php" class="logo">AngkringAan</a>
         <div class="navbar-nav">
             <p>Pembayaran QRIS</p>
         </div>
