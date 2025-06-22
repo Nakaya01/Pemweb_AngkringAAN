@@ -110,55 +110,57 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Tab panes found:", tabPanes.length);
 
   // Event listener untuk tab navigation
-  tabButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const targetTab = this.getAttribute("data-tab");
-      console.log("Tab clicked:", targetTab);
+  if (tabButtons.length > 0 && tabPanes.length > 0) {
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const targetTab = this.getAttribute("data-tab");
+        console.log("Tab clicked:", targetTab);
 
-      // Remove active class from all buttons and panes
-      tabButtons.forEach((btn) => btn.classList.remove("active"));
-      tabPanes.forEach((pane) => pane.classList.remove("active"));
+        // Remove active class from all buttons and panes
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
+        tabPanes.forEach((pane) => pane.classList.remove("active"));
 
-      // Add active class to clicked button and corresponding pane
-      this.classList.add("active");
-      const targetPane = document.getElementById(`tab-${targetTab}`);
-      if (targetPane) {
-        targetPane.classList.add("active");
-        console.log("Tab pane activated:", `tab-${targetTab}`);
+        // Add active class to clicked button and corresponding pane
+        this.classList.add("active");
+        const targetPane = document.getElementById(`tab-${targetTab}`);
+        if (targetPane) {
+          targetPane.classList.add("active");
+          console.log("Tab pane activated:", `tab-${targetTab}`);
 
-        // PERBAIKAN: Pastikan section laporan-penjualan aktif jika mengakses tab laporan
-        if (targetTab === "laporan") {
-          const laporanSection = document.getElementById("laporan-penjualan");
-          if (
-            laporanSection &&
-            laporanSection.classList.contains("section-hidden")
-          ) {
-            laporanSection.classList.remove("section-hidden");
-            console.log("Laporan section activated");
+          // PERBAIKAN: Pastikan section laporan-penjualan aktif jika mengakses tab laporan
+          if (targetTab === "laporan") {
+            const laporanSection = document.getElementById("laporan-penjualan");
+            if (
+              laporanSection &&
+              laporanSection.classList.contains("section-hidden")
+            ) {
+              laporanSection.classList.remove("section-hidden");
+              console.log("Laporan section activated");
 
-            // Update URL hash untuk menunjukkan section laporan aktif
-            history.replaceState(null, null, "#laporan-penjualan");
-          }
-
-          // PERBAIKAN: Tunggu lebih lama agar DOM sepenuhnya ter-render
-          setTimeout(() => {
-            // Auto-generate laporan setelah section aktif
-            const btnGenerateLaporan = document.getElementById(
-              "btn-generate-laporan"
-            );
-            if (btnGenerateLaporan) {
-              console.log("Auto-generating laporan...");
-              btnGenerateLaporan.click();
-            } else {
-              console.error("Generate laporan button not found");
+              // Update URL hash untuk menunjukkan section laporan aktif
+              history.replaceState(null, null, "#laporan-penjualan");
             }
-          }, 500); // Tunggu 500ms agar DOM sepenuhnya ter-render
+
+            // PERBAIKAN: Tunggu lebih lama agar DOM sepenuhnya ter-render
+            setTimeout(() => {
+              // Auto-generate laporan setelah section aktif
+              const btnGenerateLaporan = document.getElementById(
+                "btn-generate-laporan"
+              );
+              if (btnGenerateLaporan) {
+                console.log("Auto-generating laporan...");
+                btnGenerateLaporan.click();
+              } else {
+                console.error("Generate laporan button not found");
+              }
+            }, 500); // Tunggu 500ms agar DOM sepenuhnya ter-render
+          }
+        } else {
+          console.error("Target pane not found:", `tab-${targetTab}`);
         }
-      } else {
-        console.error("Target pane not found:", `tab-${targetTab}`);
-      }
+      });
     });
-  });
+  }
 
   // Navigasi antar halaman dengan anchor link
   const navLinks = document.querySelectorAll(".navbar-extra a[href^='#']");
@@ -231,9 +233,10 @@ document.addEventListener("DOMContentLoaded", function () {
   overlay.classList.add("overlay");
   document.body.appendChild(overlay);
 
-  document
-    .querySelector(".pesanan-container")
-    .addEventListener("click", function (e) {
+  // Pengecekan elemen pesanan-container sebelum menambahkan event listener
+  const pesananContainerElement = document.querySelector(".pesanan-container");
+  if (pesananContainerElement) {
+    pesananContainerElement.addEventListener("click", function (e) {
       if (e.target.closest(".btn-rincian")) {
         const button = e.target.closest(".btn-rincian");
         const orderId = button.dataset.orderId;
@@ -269,94 +272,110 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.classList.add("active");
       }
     });
+  }
 
   // Tutup rincian
-  document
-    .querySelector(".close-rincian")
-    .addEventListener("click", closeDetailView);
+  const closeRincianBtn = document.querySelector(".close-rincian");
+  if (closeRincianBtn) {
+    closeRincianBtn.addEventListener("click", closeDetailView);
+  }
   overlay.addEventListener("click", closeDetailView);
 
   // Tombol aksi selesai/batal pesanan
-  document.querySelector(".btn-selesai").addEventListener("click", function () {
-    const orderId = document.querySelector(".rincian-content").dataset.orderId;
-    if (confirm("Apakah Anda yakin ingin menyelesaikan pesanan ini?")) {
-      // Kirim request untuk menyelesaikan pesanan
-      const formData = new FormData();
-      formData.append("pesanan_id", orderId);
-      formData.append("status", "diterima");
+  const btnSelesai = document.querySelector(".btn-selesai");
+  if (btnSelesai) {
+    btnSelesai.addEventListener("click", function () {
+      const orderId =
+        document.querySelector(".rincian-content").dataset.orderId;
+      if (confirm("Apakah Anda yakin ingin menyelesaikan pesanan ini?")) {
+        // Kirim request untuk menyelesaikan pesanan
+        const formData = new FormData();
+        formData.append("pesanan_id", orderId);
+        formData.append("status", "diterima");
 
-      fetch("selesaiPesanan.php", {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success") {
-            showPopupMessage("Pesanan telah diselesaikan");
-            closeDetailView();
-            location.reload();
-          } else {
-            showPopupMessage("Gagal menyelesaikan pesanan: " + data.message);
-          }
+        fetch("selesaiPesanan.php", {
+          method: "POST",
+          body: formData,
         })
-        .catch((error) => {
-          console.error("Error:", error);
-          showPopupMessage("Terjadi kesalahan saat menyelesaikan pesanan");
-        });
-    }
-  });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              showPopupMessage("Pesanan telah diselesaikan");
+              closeDetailView();
+              location.reload();
+            } else {
+              showPopupMessage("Gagal menyelesaikan pesanan: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showPopupMessage("Terjadi kesalahan saat menyelesaikan pesanan");
+          });
+      }
+    });
+  }
 
-  document.querySelector(".btn-batal").addEventListener("click", function () {
-    const orderId = document.querySelector(".rincian-content").dataset.orderId;
-    if (confirm("Apakah Anda yakin ingin membatalkan pesanan ini?")) {
-      // Kirim request untuk membatalkan pesanan
-      const formData = new FormData();
-      formData.append("pesanan_id", orderId);
-      formData.append("status", "dibatalkan");
+  const btnBatal = document.querySelector(".btn-batal");
+  if (btnBatal) {
+    btnBatal.addEventListener("click", function () {
+      const orderId =
+        document.querySelector(".rincian-content").dataset.orderId;
+      if (confirm("Apakah Anda yakin ingin membatalkan pesanan ini?")) {
+        // Kirim request untuk membatalkan pesanan
+        const formData = new FormData();
+        formData.append("pesanan_id", orderId);
+        formData.append("status", "dibatalkan");
 
-      fetch("selesaiPesanan.php", {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success") {
-            showPopupMessage("Pesanan telah dibatalkan");
-            closeDetailView();
-            location.reload();
-          } else {
-            showPopupMessage("Gagal membatalkan pesanan: " + data.message);
-          }
+        fetch("selesaiPesanan.php", {
+          method: "POST",
+          body: formData,
         })
-        .catch((error) => {
-          console.error("Error:", error);
-          showPopupMessage("Terjadi kesalahan saat membatalkan pesanan");
-        });
-    }
-  });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              showPopupMessage("Pesanan telah dibatalkan");
+              closeDetailView();
+              location.reload();
+            } else {
+              showPopupMessage("Gagal membatalkan pesanan: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showPopupMessage("Terjadi kesalahan saat membatalkan pesanan");
+          });
+      }
+    });
+  }
 
   // Fitur pencarian pesanan berdasarkan ID
   const searchForm = document.querySelector(".search-box form");
-  searchForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const searchTerm = document
-      .querySelector("#search-input")
-      .value.toLowerCase();
-    let matchFound = false;
+  if (searchForm) {
+    searchForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const searchTerm = document
+        .querySelector("#search-input")
+        .value.toLowerCase();
+      let matchFound = false;
 
-    document.querySelectorAll(".pesanan-card").forEach((card) => {
-      const orderId = card.querySelector(".order-id").textContent.toLowerCase();
-      if (orderId.includes(searchTerm)) {
-        card.style.display = "block";
-        matchFound = true;
-      } else {
-        card.style.display = "none";
+      document.querySelectorAll(".pesanan-card").forEach((card) => {
+        const orderId = card
+          .querySelector(".order-id")
+          .textContent.toLowerCase();
+        if (orderId.includes(searchTerm)) {
+          card.style.display = "block";
+          matchFound = true;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      const notFoundMessage = document.getElementById("not-found-message");
+      if (notFoundMessage) {
+        notFoundMessage.style.display = matchFound ? "none" : "block";
       }
     });
-
-    const notFoundMessage = document.getElementById("not-found-message");
-    notFoundMessage.style.display = matchFound ? "none" : "block";
-  });
+  }
 
   // Fungsi update detail tampilan pesanan
   function updateOrderDetail(
@@ -415,41 +434,44 @@ document.addEventListener("DOMContentLoaded", function () {
   const formTambah = document.getElementById("form-tambah-menu");
   const overlayBg = document.getElementById("popup-overlay");
 
-  formTambah.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const currentCategory =
-      document.querySelector(".btn-filter.active")?.dataset.category ||
-      "makanan";
+  if (formTambah) {
+    formTambah.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const currentCategory =
+        document.querySelector(".btn-filter.active")?.dataset.category ||
+        "makanan";
 
-    const formData = new FormData(formTambah);
+      const formData = new FormData(formTambah);
 
-    const response = await fetch("tambahMenu.php", {
-      method: "POST",
-      body: formData,
+      const response = await fetch("tambahMenu.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        showPopupMessage("Menu berhasil ditambahkan");
+        loadMenuByCategory(currentCategory);
+
+        // Tutup popup dan reset form
+        popup.classList.add("hidden");
+        overlayBg.classList.remove("active");
+        btnTambah.classList.remove("animate-hide");
+        formTambah.reset();
+      } else {
+        showPopupMessage("Gagal menambahkan menu: " + result.message);
+      }
     });
+  }
 
-    const result = await response.json();
-
-    if (result.status === "success") {
-      showPopupMessage("Menu berhasil ditambahkan");
-      loadMenuByCategory(currentCategory);
-
-      // Tutup popup dan reset form
-      popup.classList.add("hidden");
-      overlayBg.classList.remove("active");
-      btnTambah.classList.remove("animate-hide");
-      formTambah.reset();
-    } else {
-      showPopupMessage("Gagal menambahkan menu: " + result.message);
-    }
-  });
-
-  document
-    .querySelector("input[name='harga']")
-    .addEventListener("input", function (e) {
+  const hargaInput = document.querySelector("input[name='harga']");
+  if (hargaInput) {
+    hargaInput.addEventListener("input", function (e) {
       // Hapus karakter selain angka
       this.value = this.value.replace(/[^\d]/g, "");
     });
+  }
 
   async function loadMenuByCategory(category) {
     const response = await fetch(`getMenuByCategory.php?kategori=${category}`);
@@ -483,210 +505,266 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Tombol tambah menu tampilkan popup
-  btnTambah.addEventListener("click", () => {
-    popup.classList.remove("hidden");
-    overlayBg.classList.add("active");
-    btnTambah.classList.add("animate-hide");
-  });
+  if (btnTambah) {
+    btnTambah.addEventListener("click", () => {
+      popup.classList.remove("hidden");
+      overlayBg.classList.add("active");
+      btnTambah.classList.add("animate-hide");
+    });
+  }
 
-  btnCancel.addEventListener("click", () => {
-    popup.classList.add("hidden");
-    overlayBg.classList.remove("active");
-    btnTambah.classList.remove("animate-hide");
-  });
+  if (btnCancel) {
+    btnCancel.addEventListener("click", () => {
+      popup.classList.add("hidden");
+      overlayBg.classList.remove("active");
+      btnTambah.classList.remove("animate-hide");
+    });
+  }
 
   // Filter menu berdasarkan kategori
-  document.querySelectorAll(".btn-filter").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const kategori = btn.dataset.category;
-      loadMenuByCategory(kategori);
+  const filterButtons = document.querySelectorAll(".btn-filter");
+  if (filterButtons.length > 0) {
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const kategori = btn.dataset.category;
+        loadMenuByCategory(kategori);
+      });
     });
-  });
+  }
 
   // Search menu berdasarkan nama
   const searchFormMenu = document.getElementById("search-menu-form");
   const searchInput = document.getElementById("search-menu-input");
-  searchInput.value = "";
-  searchFormMenu.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const keyword = searchInput.value.trim();
 
-    let url = "";
-    if (keyword === "") {
-      const currentCategory =
-        document.querySelector(".btn-filter.active")?.dataset.category ||
-        "makanan";
-      url = `getMenuByCategory.php?kategori=${currentCategory}`;
-    } else {
-      url = `getMenuByCategory.php?search=${encodeURIComponent(keyword)}`;
-    }
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    menuContainer.innerHTML = "";
-
-    if (data.length === 0) {
-      menuContainer.innerHTML = `
-      <div class="no-menu-found">
-        <p>Menu tidak ditemukan.</p>
-      </div>`;
-      return;
-    }
-
-    data.forEach((item) => {
-      const card = document.createElement("div");
-      card.className = "menu-card";
-      card.innerHTML = `
-      <img src="${item.gambar}" alt="${item.nama}" class="menu-img"/>
-      <h4>${item.nama}</h4>
-      <p>Rp ${parseInt(item.harga).toLocaleString("id-ID")}</p>
-      <div class="menu-actions">
-        <button class="btn-edit" data-id="${
-          item.id_menu
-        }"><i data-feather="edit"></i></button>
-        <button class="btn-delete" data-id="${
-          item.id_menu
-        }"><i data-feather="trash-2"></i></button>
-      </div>
-    `;
-      menuContainer.appendChild(card);
-    });
-
-    feather.replace(); // refresh icon
-  });
-
-  // Menambahkan event listener untuk edit dan hapus menu
-  menuContainer.addEventListener("click", (e) => {
-    const popupEdit = document.getElementById("popup-edit-menu");
-    const formEdit = document.getElementById("form-edit-menu");
-    const cancelEdit = document.getElementById("btn-cancel-edit");
-    const inputEditId = document.getElementById("edit-id-menu");
-    const inputEditNama = document.getElementById("edit-nama");
-    const inputEditHarga = document.getElementById("edit-harga");
-    const popupHapus = document.getElementById("popup-konfirmasi-hapus");
-    const confirmHapusBtn = document.getElementById("confirm-hapus");
-    const cancelHapusBtn = document.getElementById("cancel-hapus");
-
-    let idMenuToDelete = null;
-
-    // Tombol edit ditekan
-    if (e.target.closest(".btn-edit")) {
-      const btn = e.target.closest(".btn-edit");
-      const card = btn.closest(".menu-card");
-      const id = btn.dataset.id;
-      const nama = card.querySelector("h4").textContent;
-      const harga = card.querySelector("p").textContent.replace(/\D/g, "");
-      const imgSrc = card.querySelector("img").getAttribute("src");
-
-      inputEditId.value = id;
-      inputEditNama.value = nama;
-      inputEditHarga.value = harga;
-      document.getElementById("preview-edit-gambar").src = imgSrc;
-
-      popupEdit.classList.remove("hidden");
-      popupEdit.classList.add("show");
-      overlayBg.classList.add("active");
-
-      document
-        .getElementById("edit-gambar")
-        .addEventListener("change", function () {
-          const file = this.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              document.getElementById("preview-edit-gambar").src =
-                e.target.result;
-            };
-            reader.readAsDataURL(file);
-          }
-        });
-
-      cancelEdit.addEventListener("click", () => {
-        popupEdit.classList.remove("show");
-        overlayBg.classList.remove("active");
-        setTimeout(() => popupEdit.classList.add("hidden"), 300);
-      });
-    }
-
-    // Submit Edit Menu
-    formEdit.addEventListener("submit", async function (e) {
+  if (searchFormMenu && searchInput) {
+    searchInput.value = "";
+    searchFormMenu.addEventListener("submit", async function (e) {
       e.preventDefault();
+      const keyword = searchInput.value.trim();
 
-      const formData = new FormData(formEdit);
-
-      const response = await fetch("editMenu.php", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.status === "success") {
-        showPopupMessage(result.message);
-        popupEdit.classList.remove("show");
-        overlayBg.classList.remove("active");
-        setTimeout(() => popupEdit.classList.add("hidden"), 300);
+      let url = "";
+      if (keyword === "") {
         const currentCategory =
           document.querySelector(".btn-filter.active")?.dataset.category ||
           "makanan";
-        loadMenuByCategory(currentCategory);
+        url = `getMenuByCategory.php?kategori=${currentCategory}`;
       } else {
-        showPopupMessage("Gagal edit menu: " + result.message);
+        url = `getMenuByCategory.php?search=${encodeURIComponent(keyword)}`;
       }
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      menuContainer.innerHTML = "";
+
+      if (data.length === 0) {
+        menuContainer.innerHTML = `
+        <div class="no-menu-found">
+          <p>Menu tidak ditemukan.</p>
+        </div>`;
+        return;
+      }
+
+      data.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "menu-card";
+        card.innerHTML = `
+        <img src="${item.gambar}" alt="${item.nama}" class="menu-img"/>
+        <h4>${item.nama}</h4>
+        <p>Rp ${parseInt(item.harga).toLocaleString("id-ID")}</p>
+        <div class="menu-actions">
+          <button class="btn-edit" data-id="${
+            item.id_menu
+          }"><i data-feather="edit"></i></button>
+          <button class="btn-delete" data-id="${
+            item.id_menu
+          }"><i data-feather="trash-2"></i></button>
+        </div>
+      `;
+        menuContainer.appendChild(card);
+      });
+
+      feather.replace(); // refresh icon
     });
+  }
 
-    inputEditHarga.addEventListener("input", function () {
-      this.value = this.value.replace(/[^\d]/g, "");
-    });
+  // Menambahkan event listener untuk edit dan hapus menu
+  if (menuContainer) {
+    menuContainer.addEventListener("click", (e) => {
+      const popupEdit = document.getElementById("popup-edit-menu");
+      const formEdit = document.getElementById("form-edit-menu");
+      const cancelEdit = document.getElementById("btn-cancel-edit");
+      const inputEditId = document.getElementById("edit-id-menu");
+      const inputEditNama = document.getElementById("edit-nama");
+      const inputEditHarga = document.getElementById("edit-harga");
+      const popupHapus = document.getElementById("popup-konfirmasi-hapus");
+      const confirmHapusBtn = document.getElementById("confirm-hapus");
+      const cancelHapusBtn = document.getElementById("cancel-hapus");
 
-    // Tombol hapus ditekan
-    if (e.target.closest(".btn-delete")) {
-      const btn = e.target.closest(".btn-delete");
-      idMenuToDelete = btn.dataset.id;
+      let idMenuToDelete = null;
 
-      // Tampilkan popup konfirmasi hapus
-      popupHapus.classList.remove("hidden");
-      overlayBg.classList.add("active");
-    }
+      // Tombol edit ditekan
+      if (e.target.closest(".btn-edit")) {
+        const btn = e.target.closest(".btn-edit");
+        const card = btn.closest(".menu-card");
+        const id = btn.dataset.id;
+        const nama = card.querySelector("h4").textContent;
+        const harga = card.querySelector("p").textContent.replace(/\D/g, "");
+        const imgSrc = card.querySelector("img").getAttribute("src");
 
-    confirmHapusBtn.addEventListener("click", () => {
-      if (!idMenuToDelete) return;
+        inputEditId.value = id;
+        inputEditNama.value = nama;
+        inputEditHarga.value = harga;
+        document.getElementById("preview-edit-gambar").src = imgSrc;
 
-      fetch("hapusMenu.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id_menu=${idMenuToDelete}`,
-      })
-        .then((res) => res.json())
-        .then((result) => {
-          if (result.status === "success") {
-            showPopupMessage(result.message);
-            const currentCategory =
-              document.querySelector(".btn-filter.active")?.dataset.category ||
-              "makanan";
-            loadMenuByCategory(currentCategory);
-          } else {
-            showPopupMessage("Gagal menghapus menu: " + result.message);
-          }
-          popupHapus.classList.add("hidden");
+        popupEdit.classList.remove("hidden");
+        popupEdit.classList.add("show");
+        overlayBg.classList.add("active");
+
+        document
+          .getElementById("edit-gambar")
+          .addEventListener("change", function () {
+            const file = this.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                document.getElementById("preview-edit-gambar").src =
+                  e.target.result;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+        cancelEdit.addEventListener("click", () => {
+          popupEdit.classList.remove("show");
           overlayBg.classList.remove("active");
-          idMenuToDelete = null;
-        })
-        .catch((error) => {
-          showPopupMessage("Terjadi kesalahan saat menghapus.");
-          console.error(error);
+          setTimeout(() => popupEdit.classList.add("hidden"), 300);
         });
+      }
+
+      // Submit Edit Menu
+      formEdit.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(formEdit);
+
+        const response = await fetch("editMenu.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          showPopupMessage(result.message);
+          popupEdit.classList.remove("show");
+          overlayBg.classList.remove("active");
+          setTimeout(() => popupEdit.classList.add("hidden"), 300);
+          const currentCategory =
+            document.querySelector(".btn-filter.active")?.dataset.category ||
+            "makanan";
+          loadMenuByCategory(currentCategory);
+        } else {
+          showPopupMessage("Gagal edit menu: " + result.message);
+        }
+      });
+
+      inputEditHarga.addEventListener("input", function () {
+        this.value = this.value.replace(/[^\d]/g, "");
+      });
+
+      // Tombol hapus ditekan
+      if (e.target.closest(".btn-delete")) {
+        const btn = e.target.closest(".btn-delete");
+        idMenuToDelete = btn.dataset.id;
+
+        // Tampilkan popup konfirmasi hapus
+        popupHapus.classList.remove("hidden");
+        overlayBg.classList.add("active");
+      }
+
+      confirmHapusBtn.addEventListener("click", () => {
+        if (!idMenuToDelete) return;
+
+        fetch("hapusMenu.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `id_menu=${idMenuToDelete}`,
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            if (result.status === "success") {
+              showPopupMessage(result.message);
+              const currentCategory =
+                document.querySelector(".btn-filter.active")?.dataset
+                  .category || "makanan";
+              loadMenuByCategory(currentCategory);
+            } else {
+              showPopupMessage("Gagal menghapus menu: " + result.message);
+            }
+            popupHapus.classList.add("hidden");
+            overlayBg.classList.remove("active");
+            idMenuToDelete = null;
+          })
+          .catch((error) => {
+            showPopupMessage("Terjadi kesalahan saat menghapus.");
+            console.error(error);
+          });
+      });
+
+      cancelHapusBtn.addEventListener("click", () => {
+        popupHapus.classList.add("hidden");
+        overlayBg.classList.remove("active");
+        idMenuToDelete = null;
+      });
+    });
+  }
+  // Load awal menu makanan
+  if (menuContainer) {
+    loadMenuByCategory("makanan");
+  }
+
+  // ===== FUNGSI UNTUK ORDER SUMMARY SCROLL =====
+  function checkOrderSummaryScroll() {
+    const orderSummaries = document.querySelectorAll(".order-summary");
+    if (orderSummaries.length > 0) {
+      orderSummaries.forEach((summary) => {
+        if (summary.scrollHeight > summary.clientHeight) {
+          summary.classList.add("has-scroll");
+        } else {
+          summary.classList.remove("has-scroll");
+        }
+      });
+    }
+  }
+
+  // Panggil fungsi saat halaman dimuat
+  checkOrderSummaryScroll();
+
+  // Panggil fungsi saat window di-resize
+  window.addEventListener("resize", checkOrderSummaryScroll);
+
+  // Panggil fungsi setelah data pesanan dimuat (untuk pesanan yang sudah ada di DOM)
+  setTimeout(checkOrderSummaryScroll, 100);
+
+  // Nonaktifkan tombol print saat halaman pertama kali dimuat
+  const btnPrintLaporan = document.getElementById("btn-print-laporan");
+  if (btnPrintLaporan) {
+    btnPrintLaporan.disabled = true;
+  }
+
+  // Observer untuk memantau perubahan pada pesanan container
+  const pesananContainerObserver = document.querySelector(".pesanan-container");
+  if (pesananContainerObserver) {
+    const observer = new MutationObserver(() => {
+      setTimeout(checkOrderSummaryScroll, 50);
     });
 
-    cancelHapusBtn.addEventListener("click", () => {
-      popupHapus.classList.add("hidden");
-      overlayBg.classList.remove("active");
-      idMenuToDelete = null;
+    observer.observe(pesananContainerObserver, {
+      childList: true,
+      subtree: true,
     });
-  });
-  // Load awal menu makanan
-  loadMenuByCategory("makanan");
+  }
 
   // ===== LAPORAN & RIWAYAT PENJUALAN =====
 
@@ -820,7 +898,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="riwayat-card-header">
                 <div class="riwayat-header-left">
                   <div class="riwayat-order-info">
-                    <span class="riwayat-order-id">#${order.id_pesanan}</span>
+                    <span class="riwayat-order-id">#${order.id}</span>
                     <span class="riwayat-time">${waktuPesan} - ${waktuSelesai}</span>
                   </div>
                   <div class="riwayat-customer-info">
@@ -988,6 +1066,12 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
             `;
             }
+
+            // Nonaktifkan tombol print jika gagal memuat laporan
+            const btnPrint = document.getElementById("btn-print-laporan");
+            if (btnPrint) {
+              btnPrint.disabled = true;
+            }
           }
         })
         .catch((error) => {
@@ -1003,6 +1087,12 @@ document.addEventListener("DOMContentLoaded", function () {
               <small>Error: ${error.message}</small>
             </div>
           `;
+          }
+
+          // Nonaktifkan tombol print jika terjadi error
+          const btnPrint = document.getElementById("btn-print-laporan");
+          if (btnPrint) {
+            btnPrint.disabled = true;
           }
         });
     });
@@ -1140,7 +1230,182 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         console.log("✅ Laporan content created and updated successfully");
+
+        // Aktifkan tombol print setelah laporan berhasil dimuat
+        const btnPrint = document.getElementById("btn-print-laporan");
+        if (btnPrint) {
+          btnPrint.disabled = false;
+        }
       }
+    }
+
+    // ===== FUNGSI PRINT LAPORAN =====
+    function printLaporan() {
+      const btnPrint = document.getElementById("btn-print-laporan");
+
+      // Tampilkan loading state
+      if (btnPrint) {
+        btnPrint.classList.add("loading");
+        btnPrint.disabled = true;
+      }
+
+      // Ambil data periode untuk header
+      const periode = document.getElementById("periode-laporan").value;
+      const tanggalMulai = document.getElementById("tanggal-mulai").value;
+      const tanggalAkhir = document.getElementById("tanggal-akhir").value;
+
+      let periodeText = "";
+      if (periode === "hari") {
+        periodeText = "Hari Ini";
+      } else if (periode === "minggu") {
+        periodeText = "Minggu Ini";
+      } else if (periode === "bulan") {
+        periodeText = "Bulan Ini";
+      } else if (periode === "custom") {
+        periodeText = `${tanggalMulai} - ${tanggalAkhir}`;
+      }
+
+      // Buat window print baru
+      const printWindow = window.open("", "_blank");
+
+      // HTML untuk print
+      const printHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Laporan Penjualan - AngkringAan</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 20px;
+              background: white;
+              color: black;
+            }
+            .print-header {
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #000;
+              padding-bottom: 20px;
+            }
+            .print-header h1 {
+              font-size: 24px;
+              font-weight: bold;
+              margin: 0 0 10px 0;
+            }
+            .print-header p {
+              font-size: 14px;
+              margin: 5px 0;
+            }
+            .laporan-cards {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 20px;
+              margin-bottom: 30px;
+            }
+            .laporan-card {
+              border: 1px solid #000;
+              padding: 15px;
+              text-align: center;
+            }
+            .card-content h3 {
+              font-size: 14px;
+              margin: 0 0 10px 0;
+              font-weight: normal;
+            }
+            .card-content p {
+              font-size: 20px;
+              font-weight: bold;
+              margin: 0;
+            }
+            .laporan-detail {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 30px;
+            }
+            .detail-section {
+              border: 1px solid #000;
+              padding: 20px;
+            }
+            .detail-section h3 {
+              font-size: 16px;
+              border-bottom: 1px solid #000;
+              padding-bottom: 10px;
+              margin: 0 0 20px 0;
+            }
+            .menu-item, .payment-item {
+              display: flex;
+              justify-content: space-between;
+              padding: 8px 0;
+              border-bottom: 1px solid #ccc;
+            }
+            .menu-item:last-child, .payment-item:last-child {
+              border-bottom: none;
+            }
+            .menu-name, .payment-method {
+              font-weight: bold;
+            }
+            .sold-count, .payment-count {
+              font-weight: bold;
+            }
+            .print-footer {
+              text-align: center;
+              margin-top: 30px;
+              border-top: 1px solid #000;
+              padding-top: 20px;
+              font-size: 12px;
+            }
+            @media print {
+              body { margin: 0; }
+              .laporan-cards { page-break-inside: avoid; }
+              .laporan-detail { page-break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-header">
+            <h1>LAPORAN PENJUALAN ANGRINGAAN</h1>
+            <p>Periode: ${periodeText}</p>
+            <p>Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}</p>
+            <p>Kasir: ${document
+              .querySelector(".navbar-user h6")
+              .textContent.replace("Selamat datang ", "")}</p>
+          </div>
+          
+          ${document.getElementById("laporan-content").innerHTML}
+          
+          <div class="print-footer">
+            <p>Laporan ini dicetak pada ${new Date().toLocaleString(
+              "id-ID"
+            )}</p>
+            <p>AngkringAan - Sistem Manajemen Penjualan</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(printHTML);
+      printWindow.document.close();
+
+      // Tunggu sebentar agar konten ter-load, lalu print
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+
+        // Hapus loading state
+        if (btnPrint) {
+          btnPrint.classList.remove("loading");
+          btnPrint.disabled = false;
+        }
+
+        showPopupMessage("Laporan berhasil dicetak!");
+      }, 500);
+    }
+
+    // Event listener untuk tombol print
+    const btnPrintLaporan = document.getElementById("btn-print-laporan");
+    if (btnPrintLaporan) {
+      btnPrintLaporan.addEventListener("click", printLaporan);
     }
 
     // Fungsi untuk mendapatkan teks periode
