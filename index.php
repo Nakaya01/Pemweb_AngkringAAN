@@ -148,6 +148,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart'])) {
     </div>
     <script>
       feather.replace();
+
+      // Fungsi untuk menampilkan popup
+      function showPopup(title, message) {
+        document.getElementById('popup-title').textContent = title;
+        document.getElementById('popup-message').textContent = message;
+        document.getElementById('popup').classList.remove('hidden');
+      }
+
+      // Tutup popup saat tombol diklik
+      document.getElementById('popup-button').addEventListener('click', function() {
+        document.getElementById('popup').classList.add('hidden');
+      });
+
+      // Contoh event handler untuk tombol "Tambah ke Keranjang"
+      // Pastikan tombol "Tambah ke Keranjang" memanggil fungsi ini
+      function addToCart(item) {
+        // item: {id, name, category, quantity, price_value, image}
+        fetch('', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: 'cart=' + encodeURIComponent(JSON.stringify([item]))
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            showPopup('Berhasil!', 'Item berhasil ditambahkan ke keranjang.');
+            // Update tampilan cart count jika perlu
+            // document.getElementById('cart-count').textContent = data.cart_count;
+          } else {
+            showPopup('Gagal', data.message || 'Terjadi kesalahan.');
+          }
+        })
+        .catch(() => {
+          showPopup('Gagal', 'Tidak dapat terhubung ke server.');
+        });
+      }
+
+      // Contoh: panggil addToCart dari tombol produk
+      // document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      //   btn.addEventListener('click', function() {
+      //     const item = {...}; // Ambil data item dari atribut/data-*
+      //     addToCart(item);
+      //   });
+      // });
     </script>
   </body>
 </html>

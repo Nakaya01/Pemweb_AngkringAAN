@@ -1,46 +1,64 @@
 <?php
+session_start();
 $host = "localhost";
 $user = "root";
-$password = ""; // Ganti jika ada password
-$dbname = "angkringaan"; // Sesuaikan nama database
-
-$conn = new mysqli($host, $user, $password, $dbname);
+$pass = "";
+$db = "angkringaan_db";
+$conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
-    die(json_encode(['status' => 'error', 'message' => 'Koneksi gagal: ' . $conn->connect_error]));
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
-
-if (!isset($data['items']) || empty($data['items'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Data pesanan kosong']);
-    exit;
-}
-
-$created_at = date('Y-m-d H:i:s');
-$conn->query("INSERT INTO orders (created_at) VALUES ('$created_at')");
-$order_id = $conn->insert_id;
-
-foreach ($data['items'] as $item) {
-    $name = $conn->real_escape_string($item['name']);
-    $quantity = intval($item['quantity']);
-    $price = intval(str_replace(['Rp', '.', ','], '', $item['price']));
-    $total_price = $price * $quantity;
-
-    // Cek apakah item sudah ada di menu_items
-    $result = $conn->query("SELECT id FROM menu_items WHERE name = '$name'");
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $item_id = $row['id'];
-    } else {
-        $conn->query("INSERT INTO menu_items (name, price) VALUES ('$name', $price)");
-        $item_id = $conn->insert_id;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $menu_id = $_POST['menu_id'] ?? '';
+    $jumlah = $_POST['jumlah'] ?? 1;
+    $pesanan_id = $_SESSION['pesanan_id'] ?? null;
+    
+    // If no active pesanan, create one
+    if (!$pesanan_id) {
+        // Create temporary pelanggan
+        $conn->query("INSERT INTO pelanggan (nama, no_meja) VALUES ('Temporary', 0)");
+        $temp_pelanggan_id = $conn->insert_id;
+        
+        // Create temporary pesanan
+        $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, NULL)");
+        $pesanan_id = $conn->insert_id;
+        $_SESSION['pesanan_id'] = $pesanan_id;
     }
-
-    // Simpan ke order_items
-    $conn->query("INSERT INTO order_items (order_id, item_id, quantity, total_price) 
-                  VALUES ($order_id, $item_id, $quantity, $total_price)");
+    
+    // Check if item already exists in cart
+    $sql = "SELECT id, jumlah FROM detail_pesanan WHERE pesanan_id = ? AND menu_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $pesanan_id, $menu_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        // Update existing item
+        $row = $result->fetch_assoc();
+        $new_jumlah = $row['jumlah'] + $jumlah;
+        $sql = "UPDATE detail_pesanan SET jumlah = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $new_jumlah, $row['id']);
+        $stmt->execute();
+    } else {
+        // Add new item
+        $sql = "INSERT INTO detail_pesanan (pesanan_id, menu_id, jumlah) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iii", $pesanan_id, $menu_id, $jumlah);
+        $stmt->execute();
+    }
+    
+    // Clear session cart after saving to database
+    if (isset($_SESSION['cart'])) {
+        unset($_SESSION['cart']);
+    }
+    
+    echo json_encode(['status' => 'success', 'message' => 'Item berhasil ditambahkan ke keranjang']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
 
-echo json_encode(['status' => 'success', 'message' => 'Pesanan berhasil disimpan']);
+$conn->close();
 ?>
