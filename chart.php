@@ -215,11 +215,10 @@ if ($pesanan_id) {
         </div>
 
         <!-- Right side container for form and summary -->
-        <div class="right-side-container">
+        <form id="checkout-form" method="post" action="checkout.php" class="right-side-container">
             <!-- Class 2: Form nama dan nomor meja -->
             <div class="order-form">
                 <h2>Data Pemesan</h2>
-                <form method="post" action="checkout.php">
                 <table>
                     <tbody>
                         <tr>
@@ -262,9 +261,8 @@ if ($pesanan_id) {
                     </tbody>
                 </table>
                 <input type="hidden" name="pesanan_id" value="<?= $pesanan_id ?>">
-                </form>
             </div>
-        </div>
+        </form>
     </main>
 
     <script>
