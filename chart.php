@@ -10,34 +10,27 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Check if there's any cart data or valid order
-$has_cart_data = isset($_SESSION['cart']) && !empty($_SESSION['cart']);
-$has_valid_order = isset($_SESSION['pesanan_id']);
+// Clean up all empty temporary orders from the database
+$conn->query("DELETE p FROM pesanan p 
+              JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
+              WHERE p.total_harga = 0 AND pl.nama = 'Temporary' 
+              AND NOT EXISTS (SELECT 1 FROM detail_pesanan dp WHERE dp.pesanan_id = p.id_pesanan)");
 
-// Clean up empty temporary orders that might exist
-if (!$has_cart_data) {
-    // Delete empty temporary orders
-    $conn->query("DELETE p FROM pesanan p 
-                  JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
-                  WHERE p.total_harga = 0 AND pl.nama = 'Temporary' 
-                  AND NOT EXISTS (SELECT 1 FROM detail_pesanan dp WHERE dp.pesanan_id = p.id_pesanan)");
-    
-    // Also clean up orphaned temporary customers
-    $conn->query("DELETE pl FROM pelanggan pl 
-                  WHERE pl.nama = 'Temporary' 
-                  AND NOT EXISTS (SELECT 1 FROM pesanan p WHERE p.id_pelanggan = pl.id_pelanggan)");
-    
-    // Clear any invalid pesanan_id from session
-    if ($has_valid_order) {
+// Also clean up orphaned temporary customers that no longer have orders
+$conn->query("DELETE pl FROM pelanggan pl 
+              WHERE pl.nama = 'Temporary' 
+              AND NOT EXISTS (SELECT 1 FROM pesanan p WHERE p.id_pelanggan = pl.id_pelanggan)");
+
+// After DB cleanup, check if the pesanan_id in the session is still valid. If not, unset it.
+if (isset($_SESSION['pesanan_id'])) {
+    $check_stmt = $conn->prepare("SELECT id_pesanan FROM pesanan WHERE id_pesanan = ?");
+    $check_stmt->bind_param("i", $_SESSION['pesanan_id']);
+    $check_stmt->execute();
+    $result = $check_stmt->get_result();
+    if ($result->num_rows == 0) {
         unset($_SESSION['pesanan_id']);
-        $has_valid_order = false;
     }
-}
-
-// Allow access to chart.php even if cart is empty, but don't create temporary orders
-// Only redirect if there's no cart data AND no valid order AND no session cart
-if (!$has_cart_data && !$has_valid_order && !isset($_SESSION['cart'])) {
-    // Don't redirect, just show empty cart
+    $check_stmt->close();
 }
 
 // Convert session cart to database if exists
@@ -92,21 +85,6 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 $user_id = $_SESSION['user_id'] ?? 1; // Ganti sesuai implementasi login
 // Untuk demo, asumsikan satu pesanan aktif per user (bisa pakai session)
 $pesanan_id = $_SESSION['pesanan_id'] ?? null;
-
-// Hanya cari atau buat pesanan temporary jika ada pesanan_id dalam session
-if ($pesanan_id) {
-    // Cari pesanan aktif (total_harga = 0) - temporary pesanan
-    $pesanan = $conn->query("SELECT p.* FROM pesanan p 
-                             JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
-                             WHERE p.id_pesanan = $pesanan_id AND p.total_harga = 0 AND pl.nama = 'Temporary'")->fetch_assoc();
-    if ($pesanan) {
-        $pesanan = $conn->query("SELECT * FROM pesanan WHERE id_pesanan=$pesanan_id")->fetch_assoc();
-    } else {
-        // Pesanan tidak ditemukan atau sudah tidak valid, hapus dari session
-        unset($_SESSION['pesanan_id']);
-        $pesanan_id = null;
-    }
-}
 
 // Ambil item makanan di keranjang
 $order_items = [];
@@ -294,6 +272,23 @@ if ($pesanan_id) {
         <?php endif; ?>
     </main>
 
+    <script>
+        feather.replace();
+        
+        // Auto-hide alert messages after 3 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateX(-50%) translateY(-20px)';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 300);
+                }, 3000);
+            });
+        });
+    </script>
 </body>
 </html>
 <?php $conn->close(); ?>

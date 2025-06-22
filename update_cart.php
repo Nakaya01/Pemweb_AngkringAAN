@@ -189,9 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($success) {
             $itemCount = getItemCount($conn, $pesanan_id);
             if ($itemCount == 0) {
-                // Hapus pesanan dari session jika sudah kosong
-                unset($_SESSION['pesanan_id']);
-                header("Location: chart.php?message=cart_empty");
+                header("Location: chart.php?success=updated");
             } else {
                 header("Location: chart.php?success=updated");
             }
