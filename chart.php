@@ -20,7 +20,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         $temp_pelanggan_id = $conn->insert_id;
         
         // Create temporary pesanan
-        $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, NULL)");
+        $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, 'Cash')");
         $pesanan_id = $conn->insert_id;
         $_SESSION['pesanan_id'] = $pesanan_id;
     }
@@ -58,13 +58,16 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     unset($_SESSION['cart']);
 }
 
-// Ambil pesanan aktif user (belum checkout, pembayaran NULL)
+// Ambil pesanan aktif user (belum checkout, total_harga = 0)
 $user_id = $_SESSION['user_id'] ?? 1; // Ganti sesuai implementasi login
 // Untuk demo, asumsikan satu pesanan aktif per user (bisa pakai session)
 $pesanan_id = $_SESSION['pesanan_id'] ?? null;
 if (!$pesanan_id) {
-    // Cari pesanan aktif (pembayaran NULL) - temporary pesanan
-    $pesanan = $conn->query("SELECT * FROM pesanan WHERE pembayaran IS NULL ORDER BY id_pesanan DESC LIMIT 1")->fetch_assoc();
+    // Cari pesanan aktif (total_harga = 0) - temporary pesanan
+    $pesanan = $conn->query("SELECT p.* FROM pesanan p 
+                             JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
+                             WHERE p.total_harga = 0 AND pl.nama = 'Temporary' 
+                             ORDER BY p.id_pesanan DESC LIMIT 1")->fetch_assoc();
     if ($pesanan) {
         $pesanan_id = $pesanan['id_pesanan'];
         $_SESSION['pesanan_id'] = $pesanan_id;
@@ -75,7 +78,7 @@ if (!$pesanan_id) {
     $conn->query("INSERT INTO pelanggan (nama, no_meja) VALUES ('Temporary', 0)");
     $temp_pelanggan_id = $conn->insert_id;
     
-    $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, NULL)");
+    $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, 'Cash')");
     $pesanan_id = $conn->insert_id;
     $_SESSION['pesanan_id'] = $pesanan_id;
     $pesanan = $conn->query("SELECT * FROM pesanan WHERE id_pesanan=$pesanan_id")->fetch_assoc();

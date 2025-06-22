@@ -57,9 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ii", $new_pesanan_id, $pesanan_id);
         $stmt->execute();
         
-        // 5. Delete the temporary pesanan
+        // 5. Get temporary pelanggan ID before deleting pesanan
+        $stmt = $conn->prepare("SELECT id_pelanggan FROM pesanan WHERE id_pesanan = ?");
+        $stmt->bind_param("i", $pesanan_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $temp_pesanan = $result->fetch_assoc();
+        $temp_pelanggan_id = $temp_pesanan['id_pelanggan'];
+        
+        // 6. Delete the temporary pesanan
         $stmt = $conn->prepare("DELETE FROM pesanan WHERE id_pesanan = ?");
         $stmt->bind_param("i", $pesanan_id);
+        $stmt->execute();
+        
+        // 7. Delete the temporary pelanggan if it's a temporary one
+        $stmt = $conn->prepare("DELETE FROM pelanggan WHERE id_pelanggan = ? AND nama = 'Temporary'");
+        $stmt->bind_param("i", $temp_pelanggan_id);
         $stmt->execute();
         
         // Commit transaction

@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $temp_pelanggan_id = $conn->insert_id;
         
         // Create temporary pesanan
-        $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, NULL)");
+        $conn->query("INSERT INTO pesanan (id_pelanggan, total_harga, pembayaran) VALUES ($temp_pelanggan_id, 0, 'Cash')");
         $pesanan_id = $conn->insert_id;
         $_SESSION['pesanan_id'] = $pesanan_id;
     }
