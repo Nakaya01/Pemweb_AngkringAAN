@@ -42,7 +42,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran QRIS - AngkringAan</title>
+    <title>Pembayaran di Kasir - AngkringAan</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet" />
@@ -55,7 +55,7 @@ $conn->close();
     <nav class="navbar">
         <a href="index.php" class="logo">AngkringAan</a>
         <div class="navbar-nav">
-            <p>Pembayaran QRIS</p>
+            <p>Pembayaran di Kasir</p>
         </div>
         <div class="navbar-extra">
             <a href="index.php">
@@ -67,11 +67,11 @@ $conn->close();
         </div>
     </nav>
 
-    <div class="qris-container">
-        <div class="qris-header">
-            <div class="qris-icon">📱</div>
-            <h1 class="qris-title">Pembayaran QRIS</h1>
-            <p class="qris-subtitle">Scan QR Code dengan aplikasi e-wallet Anda</p>
+    <div class="success-container">
+        <div class="success-header">
+            <div class="success-icon">🧾</div>
+            <h1 class="success-title">Pembayaran di Kasir</h1>
+            <p class="success-subtitle">Silakan tunjukkan halaman ini kepada kasir untuk menyelesaikan pembayaran.</p>
         </div>
 
         <div class="order-info">
@@ -89,33 +89,8 @@ $conn->close();
                 <span><?php echo htmlspecialchars($meja); ?></span>
             </div>
             <div class="info-row">
-                <span>Total Pembayaran:</span>
-                <span>Rp <?php echo number_format($total, 0, ',', '.'); ?></span>
-            </div>
-        </div>
-
-        <div class="qris-code-container">
-            <h3>QR Code Pembayaran</h3>
-            <div class="qris-code">
-                <img src="Assets/qris_dummy.jpg" alt="QRIS Payment Code">
-            </div>
-            <div class="qris-amount">
-                Rp <?php echo number_format($total, 0, ',', '.'); ?>
-            </div>
-            <p style="color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem;">
-                Scan QR Code di atas dengan aplikasi e-wallet Anda
-            </p>
-            
-            <div class="supported-apps">
-                <h4>Aplikasi yang Didukung:</h4>
-                <div class="app-list">
-                    <span>• GoPay</span>
-                    <span>• OVO</span>
-                    <span>• DANA</span>
-                    <span>• LinkAja</span>
-                    <span>• ShopeePay</span>
-                    <span>• QRIS</span>
-                </div>
+                <span>Metode Pembayaran:</span>
+                <span><?php echo htmlspecialchars($pembayaran); ?></span>
             </div>
         </div>
 
@@ -135,21 +110,9 @@ $conn->close();
             </div>
         </div>
 
-        <div class="instructions">
-            <h3>Cara Pembayaran</h3>
-            <ol class="instruction-list">
-                <li>Buka aplikasi e-wallet di smartphone Anda</li>
-                <li>Pilih menu "Scan QR" atau "Pay QR"</li>
-                <li>Arahkan kamera ke QR Code di atas</li>
-                <li>Masukkan jumlah pembayaran: <strong>Rp <?php echo number_format($total, 0, ',', '.'); ?></strong></li>
-                <li>Konfirmasi pembayaran</li>
-                <li>Simpan bukti pembayaran</li>
-            </ol>
-        </div>
-
         <div class="btn-container">
-            <a href="index.php" class="btn-home">Kembali ke Menu</a>
-            <button onclick="window.print()" class="btn-home">Cetak</button>
+            <a href="index.php" class="btn-home">Buat Pesanan Baru</a>
+            <button onclick="window.print()" class="btn-home">Cetak Struk</button>
         </div>
     </div>
 </body>

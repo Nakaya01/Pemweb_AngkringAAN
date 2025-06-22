@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         switch ($pembayaran) {
             case 'Cash':
-                header("Location: payment_success.php?$redirect_params");
+                header("Location: cash_payment.php?$redirect_params");
                 break;
             case 'Transfer':
                 header("Location: transfer_payment.php?$redirect_params");

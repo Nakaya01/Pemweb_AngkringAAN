@@ -48,310 +48,7 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet" />
     <!-- Style -->
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .transfer-container {
-            max-width: 700px;
-            margin: 8rem auto 2rem auto;
-            padding: 2rem;
-            background: rgba(19, 61, 47, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-        }
-        
-        .transfer-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .transfer-icon {
-            font-size: 3rem;
-            color: #2196F3;
-            margin-bottom: 1rem;
-        }
-        
-        .transfer-title {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .transfer-subtitle {
-            color: #61fac4;
-            font-size: 1.1rem;
-        }
-        
-        .order-info {
-            background: #184c3a;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .order-info h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .bank-info {
-            background: #184c3a;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .bank-info h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .bank-details {
-            background: #133d2f;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .bank-detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .bank-detail-row:last-child {
-            margin-bottom: 0;
-        }
-        
-        .copy-btn {
-            background: #fbfada;
-            color: #133d2f;
-            border: 1px solid #113327;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-left: 0.5rem;
-        }
-        
-        .copy-btn:hover {
-            background: #d2d0a0;
-        }
-        
-        .order-details {
-            background: #184c3a;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .order-details h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #2a5a4a;
-            color: var(--primary);
-        }
-        
-        .order-item:last-child {
-            border-bottom: none;
-        }
-        
-        .item-name {
-            flex: 1;
-        }
-        
-        .item-qty {
-            margin: 0 1rem;
-            color: #61fac4;
-        }
-        
-        .item-price {
-            color: #61fac4;
-            font-weight: bold;
-        }
-        
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 2px solid #2a5a4a;
-            color: #61fac4;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .instructions {
-            background: #184c3a;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .instructions h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .instruction-list {
-            color: var(--primary);
-            padding-left: 1.5rem;
-        }
-        
-        .instruction-list li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .btn-container {
-            text-align: center;
-        }
-        
-        .btn-home {
-            background: #fbfada;
-            color: #133d2f;
-            border: 1px solid #113327;
-            border-radius: 6px;
-            padding: 0.8rem 2rem;
-            font-family: "Sansita Swashed", cursive;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 1rem;
-        }
-        
-        .btn-home:hover {
-            background: #d2d0a0;
-            color: #184c3a;
-        }
-        
-        .btn-success {
-            background: #4CAF50;
-            color: white;
-            border: 1px solid #45a049;
-            border-radius: 6px;
-            padding: 0.8rem 2rem;
-            font-family: "Sansita Swashed", cursive;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-success:hover {
-            background: #45a049;
-        }
-        
-        @media (max-width: 768px) {
-            .transfer-container {
-                margin: 6rem 1rem 2rem 1rem;
-                padding: 1rem;
-            }
-            
-            .transfer-title {
-                font-size: 1.5rem;
-            }
-            
-            .order-info, .bank-info, .order-details, .instructions {
-                padding: 1rem;
-            }
-            
-            .btn-container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .btn-home, .btn-success {
-                margin-right: 0;
-            }
-        }
-        
-        @media (max-width: 479px) {
-            .navbar .navbar-nav p {
-                font-size: 0.9rem !important;
-            }
-        }
-        
-        @media print {
-            .navbar {
-                display: none;
-            }
-            
-            .btn-container {
-                display: none;
-            }
-            
-            .transfer-container {
-                margin: 0;
-                padding: 1rem;
-                box-shadow: none;
-                background: white;
-            }
-            
-            body {
-                background: white;
-            }
-            
-            .transfer-icon {
-                color: #000;
-            }
-            
-            .transfer-title {
-                color: #000;
-            }
-            
-            .transfer-subtitle {
-                color: #333;
-            }
-            
-            .order-info, .bank-info, .order-details, .instructions {
-                background: #f5f5f5;
-                border: 1px solid #ddd;
-            }
-            
-            .order-info h3, .bank-info h3, .order-details h3, .instructions h3 {
-                color: #000;
-            }
-            
-            .info-row, .bank-detail-row, .order-item {
-                color: #000;
-            }
-            
-            .item-qty, .item-price, .total-row {
-                color: #333;
-            }
-            
-            .bank-details {
-                background: #e9e9e9;
-            }
-            
-            .copy-btn {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/stylePayment.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -407,13 +104,49 @@ $conn->close();
                 <div class="bank-detail-row">
                     <span>Nomor Rekening:</span>
                     <span>
-                        <span id="account-number">1234567890</span>
-                        <button class="copy-btn" onclick="copyToClipboard('account-number')">Salin</button>
+                        <span id="account-number-bca">0123456789</span>
+                        <button class="copy-btn" onclick="copyToClipboard('account-number-bca')">Salin</button>
                     </span>
                 </div>
                 <div class="bank-detail-row">
                     <span>Atas Nama:</span>
-                    <span>AngkringAan</span>
+                    <span>Aan Gagah</span>
+                </div>
+            </div>
+
+            <div class="bank-details">
+                <div class="bank-detail-row">
+                    <span>Bank:</span>
+                    <span>Bank Rakyat Indonesia (BRI)</span>
+                </div>
+                <div class="bank-detail-row">
+                    <span>Nomor Rekening:</span>
+                    <span>
+                        <span id="account-number-bri">1234567890</span>
+                        <button class="copy-btn" onclick="copyToClipboard('account-number-bri')">Salin</button>
+                    </span>
+                </div>
+                <div class="bank-detail-row">
+                    <span>Atas Nama:</span>
+                    <span>Iqbal Ganteng</span>
+                </div>
+            </div>
+
+            <div class="bank-details">
+                <div class="bank-detail-row">
+                    <span>Bank:</span>
+                    <span>Bank Mandiri</span>
+                </div>
+                <div class="bank-detail-row">
+                    <span>Nomor Rekening:</span>
+                    <span>
+                        <span id="account-number-mandiri">2345678901</span>
+                        <button class="copy-btn" onclick="copyToClipboard('account-number-mandiri')">Salin</button>
+                    </span>
+                </div>
+                <div class="bank-detail-row">
+                    <span>Atas Nama:</span>
+                    <span>Andra WOW</span>
                 </div>
             </div>
         </div>
@@ -450,27 +183,6 @@ $conn->close();
         </div>
     </div>
 
-    <script>
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent;
-            
-            navigator.clipboard.writeText(text).then(function() {
-                const button = element.nextElementSibling;
-                const originalText = button.textContent;
-                button.textContent = 'Tersalin!';
-                button.style.background = '#4CAF50';
-                button.style.color = 'white';
-                
-                setTimeout(function() {
-                    button.textContent = originalText;
-                    button.style.background = '#fbfada';
-                    button.style.color = '#133d2f';
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Gagal menyalin: ', err);
-            });
-        }
-    </script>
+    <script src="js/scriptPayment.js"></script>
 </body>
 </html> 
