@@ -200,21 +200,31 @@ body {
 }
 
 .empty-state {
-  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 2.5rem 1rem;
+  margin: 2rem 0;
   text-align: center;
   color: var(--text-light);
+  background: none;
+  position: static;
+  box-shadow: none;
 }
 
+.empty-state svg,
 .empty-icon {
   width: 60px;
   height: 60px;
   margin-bottom: 1rem;
   color: var(--accent);
+}
+
+.empty-state p {
+  font-family: "Poppins", sans-serif;
+  font-size: large;
+  margin: 0;
 }
 
 .pesanan-card {
@@ -849,115 +859,650 @@ body {
   pointer-events: auto;
 }
 
-@media (max-width: 1024px) {
-  html {
-    font-size: 100%;
-  }
-  .pesanan-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    padding: 1rem;
-    gap: 1rem;
-  }
+/* ===== LAPORAN & RIWAYAT PENJUALAN ===== */
+
+/* Header dan Tab Navigation */
+.laporan-header {
+  padding: 2rem;
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
 }
-/* tablet */
+
+.laporan-header h2 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tab-btn {
+  background-color: white;
+  color: var(--text);
+  border: 2px solid var(--border);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 2rem;
+}
+
+.tab-pane {
+  display: none;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* ===== TAB 1: RIWAYAT TRANSAKSI ===== */
+
+.riwayat-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.riwayat-filter form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.riwayat-filter label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.riwayat-filter input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn-cari-riwayat {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-cari-riwayat:hover {
+  background-color: var(--secondary);
+}
+
+.riwayat-summary {
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.summary-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.summary-value {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.transaksi-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.riwayat-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.riwayat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.riwayat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--card-bg);
+  border-radius: 10px 10px 0 0;
+}
+
+.riwayat-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.riwayat-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.riwayat-status-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Status styling */
+.riwayat-card.status-diterima {
+  border-left: 4px solid var(--success);
+}
+
+.riwayat-card.status-dibatalkan {
+  border-left: 4px solid var(--danger);
+}
+
+.riwayat-card.status-diterima .riwayat-status-badge {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success);
+}
+
+.riwayat-card.status-dibatalkan .riwayat-status-badge {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--danger);
+}
+
+.riwayat-card.status-diterima .riwayat-status-badge svg {
+  color: var(--success);
+}
+
+.riwayat-card.status-dibatalkan .riwayat-status-badge svg {
+  color: var(--danger);
+}
+
+.riwayat-order-id {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.riwayat-order-time {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.riwayat-card-body {
+  padding: 1.5rem;
+}
+
+.riwayat-customer-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.riwayat-customer-info p {
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.riwayat-payment-info {
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+}
+
+.riwayat-payment-info p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.riwayat-items {
+  margin-top: 1rem;
+}
+
+.riwayat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.riwayat-item-name {
+  color: var(--text);
+}
+
+.riwayat-item-qty {
+  color: var(--text-light);
+}
+
+.riwayat-card-footer {
+  background-color: rgba(0, 0, 0, 0.02);
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.riwayat-total-price {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.riwayat-kasir {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+/* ===== TAB 2: REKAP LAPORAN ===== */
+
+.laporan-filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn-generate {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-generate:hover {
+  background-color: var(--secondary);
+}
+
+/* Laporan Cards */
+.laporan-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.laporan-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.laporan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  flex-shrink: 0;
+}
+
+.card-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.card-content h3 {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.card-content p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* Laporan Detail */
+.laporan-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.detail-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detail-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+
+/* Menu List */
+.menu-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.menu-qty {
+  background: var(--accent);
+  color: var(--primary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Payment Stats */
+.payment-stats {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.payment-item:last-child {
+  border-bottom: none;
+}
+
+.payment-method {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.payment-count {
+  background: var(--secondary);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  html {
-    font-size: 70%;
-  }
-  .navbar-user h6 {
-    font-size: 1.5rem;
-  }
-  .pesanan-header {
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1rem;
-  }
-  .rincian-pesanan {
-    width: 90vw;
-  }
-  .feather {
-    width: 1.7rem;
-    height: 1.7rem;
-  }
-  .menu-filter {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .menu-filter .btn-filter {
-    font-size: 1.2rem;
-    margin: 0.5rem;
-    padding: 0.8rem;
-  }
-  .menu-container {
-    padding: 1rem 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.8rem;
-  }
-  .menu-card {
-    padding: 0.8rem;
-  }
-  .menu-img {
-    height: 100px;
-  }
-  .navbar-menu .navbar-extra {
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 100%;
-  }
-}
-/* hp */
-@media (max-width: 450px) {
-  html {
-    font-size: 50%;
-  }
-  .navbar {
-    padding: 0.8rem 2%;
-  }
-  .navbar-user {
-    position: relative;
-    left: auto;
-    transform: none;
-    width: 100%;
-    text-align: center;
-    margin-top: 0.5rem;
-  }
-  .navbar-user h6 {
-    font-size: 1.5rem;
-  }
-  .pesanan-container {
-    grid-template-columns: 1fr;
-  }
-  .feather {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-  .popup,
-  .popup.confirm-delete,
-  .rincian-pesanan {
-    width: 90vw;
-    padding: 1.2rem;
-  }
-  .popup-actions {
+  .tab-navigation {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.5rem;
   }
-  .search-box form,
-  .btn-selesai,
-  .btn-batal {
+
+  .tab-btn {
     width: 100%;
+    justify-content: center;
   }
-  .menu-container {
-    grid-template-columns: 1fr;
+
+  .riwayat-filter form {
+    flex-direction: column;
     gap: 1rem;
   }
-  .menu-card {
+
+  .transaksi-list {
+    grid-template-columns: 1fr;
+  }
+
+  .laporan-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .laporan-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .laporan-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .laporan-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-icon {
+    margin-bottom: 1rem;
+  }
+
+  .laporan-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .laporan-header h2 {
+    text-align: center;
+  }
+
+  .tab-content {
     padding: 1rem;
+  }
+
+  .empty-state {
+    margin: 2rem 1rem;
+  }
+
+  .empty-state svg,
+  .empty-state i {
+    width: 60px;
+    height: 60px;
+  }
+
+  .empty-state p {
+    font-size: 1rem;
+  }
+
+  /* Status badge responsive */
+  .riwayat-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .riwayat-status-badge {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 450px) {
+  .riwayat-filter input[type="date"],
+  .laporan-filter input[type="date"] {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+
+  .btn-cari-riwayat,
+  .btn-generate {
+    padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
   }
-  .menu-img {
-    height: 150px;
+
+  .laporan-card {
+    padding: 1rem;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .empty-state {
+    margin: 1.5rem 0.5rem;
+  }
+
+  .empty-state svg,
+  .empty-state i {
+    width: 50px;
+    height: 50px;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+  }
+
+  /* Status badge mobile */
+  .riwayat-status-badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .riwayat-status-badge svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .riwayat-card-header {
+    padding: 0.8rem;
   }
 }
 
