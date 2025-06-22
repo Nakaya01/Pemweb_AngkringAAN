@@ -153,7 +153,15 @@ if ($pesanan_id) {
             <?php if (count($order_items) > 0): ?>
                 <?php foreach ($order_items as $item): ?>
                 <div class="order-item">
-                    <img src="Assets/<?= htmlspecialchars($item['gambar']) ?>" alt="<?= htmlspecialchars($item['nama']) ?>" class="order-item-img" />
+                    <?php 
+                    $image_path = $item['gambar'];
+                    $image_exists = file_exists($image_path);
+                    ?>
+                    <img src="<?= htmlspecialchars($image_path) ?>" 
+                         alt="<?= htmlspecialchars($item['nama']) ?>" 
+                         class="order-item-img"
+                         onerror="this.src='Assets/default-menu.png'; this.onerror=null;"
+                         style="<?= !$image_exists ? 'border: 2px dashed #ccc;' : '' ?>" />
                     <div class="order-item-info">
                         <div class="order-item-name"><?= htmlspecialchars($item['nama']) ?></div>
                         <div class="order-item-price">Rp <?= number_format($item['harga'], 0, ',', '.') ?></div>
