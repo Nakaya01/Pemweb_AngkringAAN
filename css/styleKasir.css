@@ -204,16 +204,28 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 1rem;
-  margin: 2rem 0;
+  padding: 2.5rem;
   text-align: center;
   color: var(--text-light);
-  background: none;
-  position: static;
-  box-shadow: none;
+  margin: 2rem auto;
+  max-width: 450px;
+  width: 100%;
 }
 
-.empty-state svg,
+.empty-state svg {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.empty-state p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
 .empty-icon {
   width: 60px;
   height: 60px;
@@ -221,19 +233,16 @@ body {
   color: var(--accent);
 }
 
-.empty-state p {
-  font-family: "Poppins", sans-serif;
-  font-size: large;
-  margin: 0;
-}
-
 .pesanan-card {
-  height: 100%;
   background-color: var(--card-bg);
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  max-height: 300px;
 }
 
 .pesanan-card:hover {
@@ -245,65 +254,139 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1.2rem;
-  background-color: var(--primary);
-  color: white;
+  padding: 0 0 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
 }
 
 .order-id {
   font-weight: 600;
+  color: var(--primary);
   font-size: 0.9rem;
 }
 
 .order-time {
   font-size: 0.8rem;
-  opacity: 0.8;
+  color: var(--text-light);
 }
 
 .card-body {
-  padding: 1.2rem;
-  height: 60%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.5rem 0;
 }
 
 .customer-info h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 0.3rem;
   color: var(--primary);
+  line-height: 1.2;
 }
 
 .customer-info p {
   font-size: 0.9rem;
   color: var(--text-light);
+  margin-bottom: 0.3rem;
 }
 
 .order-summary {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   border-top: 1px dashed var(--border);
-  padding-top: 1rem;
+  padding-top: 0.5rem;
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.order-summary::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(transparent, var(--card-bg));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+
+.order-summary.has-scroll::after {
+  opacity: 1;
+}
+
+.order-summary.has-scroll {
+  padding-bottom: 20px;
+}
+
+.order-summary::-webkit-scrollbar {
+  width: 4px;
+}
+
+.order-summary::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 2px 0;
+}
+
+.order-summary::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 2px;
+  min-height: 20px;
+}
+
+.order-summary::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-light);
+}
+
+.order-summary::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .order-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  line-height: 1.2;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .item-name {
   color: var(--text);
+  flex: 1;
+  margin-right: 0.5rem;
+  word-break: break-word;
 }
 
 .item-qty {
   color: var(--text-light);
+  flex-shrink: 0;
+  font-weight: 500;
 }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1.2rem;
+  padding: 0.6rem 0;
   border-top: 1px solid var(--border);
   background-color: rgba(0, 0, 0, 0.02);
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .total-price {
@@ -463,23 +546,6 @@ body {
   flex-direction: column;
   padding: 1rem;
   gap: 0.8rem;
-}
-
-.empty-state {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.empty-state svg {
-  height: 50%;
-  width: 50%;
-}
-
-.empty-state p {
-  font-family: "Poppins", sans-serif;
-  font-size: large;
 }
 
 .btn-selesai,
@@ -909,7 +975,7 @@ body {
 
 /* Tab Content */
 .tab-content {
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .tab-pane {
@@ -1225,6 +1291,61 @@ body {
   background-color: var(--secondary);
 }
 
+.btn-print {
+  background-color: var(--accent);
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.btn-print:hover {
+  background-color: var(--secondary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-print:disabled {
+  background-color: var(--border);
+  color: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-print.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-print.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 /* Laporan Cards */
 .laporan-cards {
   display: grid;
@@ -1398,6 +1519,13 @@ body {
     align-items: stretch;
   }
 
+  .btn-generate,
+  .btn-print {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
   .laporan-cards {
     grid-template-columns: 1fr;
   }
@@ -1429,7 +1557,9 @@ body {
   }
 
   .empty-state {
-    margin: 2rem 1rem;
+    padding: 2rem;
+    margin: 1.5rem auto;
+    max-width: 400px;
   }
 
   .empty-state svg,
@@ -1452,6 +1582,20 @@ body {
   .riwayat-status-badge {
     align-self: flex-end;
   }
+
+  .order-summary {
+    max-height: 100px;
+  }
+
+  .order-item {
+    font-size: 0.8rem;
+    padding: 0.2rem 0;
+  }
+
+  .pesanan-card {
+    min-height: 180px;
+    max-height: 250px;
+  }
 }
 
 @media (max-width: 450px) {
@@ -1467,6 +1611,11 @@ body {
     font-size: 0.9rem;
   }
 
+  .btn-print {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
   .laporan-card {
     padding: 1rem;
   }
@@ -1477,7 +1626,9 @@ body {
   }
 
   .empty-state {
-    margin: 1.5rem 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem auto;
+    max-width: 320px;
   }
 
   .empty-state svg,
@@ -1504,10 +1655,246 @@ body {
   .riwayat-card-header {
     padding: 0.8rem;
   }
+
+  .order-summary {
+    max-height: 80px;
+  }
+
+  .order-item {
+    font-size: 0.75rem;
+    padding: 0.15rem 0;
+  }
+
+  .pesanan-card {
+    min-height: 160px;
+    max-height: 220px;
+  }
+}
+
+@media (max-width: 320px) {
+  .empty-state {
+    padding: 1rem;
+    margin: 0.5rem auto;
+    max-width: 280px;
+  }
+
+  .empty-state svg,
+  .empty-state i {
+    width: 40px;
+    height: 40px;
+  }
+
+  .empty-state p {
+    font-size: 0.8rem;
+  }
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Sembunyikan elemen yang tidak perlu dicetak */
+  .navbar,
+  .navbar-extra,
+  .search-menu-navbar,
+  .tab-navigation,
+  .laporan-filter,
+  .btn-generate,
+  .btn-print,
+  .floating-add-button,
+  .popup,
+  .popup-notifikasi,
+  .overlay,
+  .section-hidden,
+  .pesanan-container,
+  .menu-container,
+  .rincian-pesanan {
+    display: none !important;
+  }
+
+  /* Tampilkan semua section saat print */
+  .section-hidden {
+    display: block !important;
+  }
+
+  /* Reset background dan warna untuk print */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+    margin: 0;
+    padding: 20px;
+  }
+
+  /* Header untuk print */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #000;
+    padding-bottom: 1rem;
+  }
+
+  .print-header h1 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .print-header p {
+    font-size: 10pt;
+    margin: 0.5rem 0;
+  }
+
+  /* Laporan cards untuk print */
+  .laporan-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    page-break-inside: avoid;
+  }
+
+  .laporan-card {
+    background: white !important;
+    border: 1px solid #000;
+    padding: 1rem;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .laporan-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card-icon {
+    display: none !important;
+  }
+
+  .card-content h3 {
+    font-size: 10pt;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-content p {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+
+  /* Laporan detail untuk print */
+  .laporan-detail {
+    display: block;
+    page-break-inside: avoid;
+  }
+
+  .detail-section {
+    background: white !important;
+    border: 1px solid #000;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+
+  .detail-section h3 {
+    font-size: 12pt;
+    border-bottom: 1px solid #000;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .menu-list,
+  .payment-stats {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .menu-item,
+  .payment-item {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .menu-item:last-child,
+  .payment-item:last-child {
+    border-bottom: none;
+  }
+
+  .menu-name,
+  .payment-method {
+    font-weight: bold;
+  }
+
+  .menu-qty,
+  .payment-count {
+    background: none;
+    color: black;
+    padding: 0;
+    font-weight: bold;
+  }
+
+  /* Tab content untuk print */
+  .tab-content {
+    padding: 0;
+  }
+
+  .tab-pane {
+    display: block !important;
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* Tampilkan tab laporan saat print */
+  #tab-laporan {
+    display: block !important;
+  }
+
+  #tab-riwayat {
+    display: none !important;
+  }
+
+  /* Footer untuk print */
+  .print-footer {
+    display: block !important;
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid #000;
+    padding-top: 1rem;
+    font-size: 10pt;
+  }
+
+  /* Page break */
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Hide empty states in print */
+  .empty-state {
+    display: none !important;
+  }
+}
+
+/* Empty state yang berada di dalam grid container */
+.pesanan-container .empty-state,
+.menu-container .empty-state,
+.transaksi-list .empty-state,
+.laporan-cards .empty-state {
+  grid-column: 1 / -1;
+  margin: 2rem auto;
+  justify-self: center;
+  align-self: center;
+}
+
+/* Empty state yang berada di dalam flex container */
+.detail-section .empty-state,
+.menu-list .empty-state,
+.payment-stats .empty-state {
+  grid-column: unset;
+  margin: 2rem auto;
+  width: 100%;
 }

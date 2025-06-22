@@ -63,13 +63,13 @@ $pesanan = getPesananAktif();
         </div>
       </div>
 
-      <div class="pesanan-container">
-        <?php if (empty($pesanan)): ?>
-          <div class="empty-state">
-            <i data-feather="inbox" class="empty-icon"></i>
-            <p>Tidak ada pesanan aktif saat ini</p>
-          </div>
-        <?php else: ?>
+      <?php if (empty($pesanan)): ?>
+        <div class="empty-state">
+          <i data-feather="inbox" class="empty-icon"></i>
+          <p>Tidak ada pesanan aktif saat ini</p>
+        </div>
+      <?php else: ?>
+        <div class="pesanan-container">
           <?php foreach ($pesanan as $order): ?>
             <div class="pesanan-card">
               <div class="card-header">
@@ -99,8 +99,9 @@ $pesanan = getPesananAktif();
               </div>
             </div>
           <?php endforeach; ?>
-        <?php endif; ?>
-      </div>
+        </div>
+      <?php endif; ?>
+
       <div id="not-found-message" class="empty-state" style="display: none;">
         <i data-feather="alert-triangle" class="empty-icon"></i>
         <p>Pesanan tidak ditemukan</p>
@@ -187,6 +188,19 @@ $pesanan = getPesananAktif();
       <div id="popup-notifikasi" class="popup-notifikasi hidden">
         <p id="popup-message">Pesan notifikasi</p>
       </div>
+
+      <!-- Popup Konfirmasi Selesai/Batal Pesanan -->
+      <div id="popup-konfirmasi-pesanan" class="popup confirm-pesanan hidden">
+        <div class="popup-icon">
+          <i data-feather="help-circle" class="icon-question"></i>
+        </div>
+        <h3 id="konfirmasi-title">Konfirmasi</h3>
+        <p id="konfirmasi-message">Apakah Anda yakin ingin melakukan aksi ini?</p>
+        <div class="popup-actions">
+          <button id="confirm-ya" class="btn-submit">Ya, Lanjutkan</button>
+          <button id="confirm-tidak" class="btn-cancel">Batal</button>
+        </div>
+      </div>
     </section>
     <section class="laporan-penjualan section-hidden" id="laporan-penjualan">
       <div class="laporan-header">
@@ -259,6 +273,9 @@ $pesanan = getPesananAktif();
             </div>
             <button type="button" id="btn-generate-laporan" class="btn-generate">
               <i data-feather="refresh-cw"></i> Generate Laporan
+            </button>
+            <button type="button" id="btn-print-laporan" class="btn-print" disabled>
+              <i data-feather="printer"></i> Cetak Laporan
             </button>
           </div>
 
