@@ -883,9 +883,11 @@ document.addEventListener("DOMContentLoaded", function () {
           let itemsHTML = "";
           order.items.forEach((item) => {
             itemsHTML += `
-              <div class="riwayat-item">
+              <div class="riwayat-item" style="display: flex; justify-content: space-between;">
+              <div class="item-kiri">
                 <span class="item-name">${item.nama_menu}</span>
                 <span class="item-qty">x${item.jumlah}</span>
+              </div>
                 <span class="item-price">Rp ${item.harga.toLocaleString(
                   "id-ID"
                 )}</span>
