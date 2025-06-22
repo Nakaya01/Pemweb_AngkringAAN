@@ -3,7 +3,7 @@ session_start();
 
 // Redirect jika sudah login (opsional)
 if (isset($_SESSION['kasir_logged_in']) && $_SESSION['kasir_logged_in'] === true) {
-    header("Location: kasir.html"); // Ganti ke halaman setelah login
+    header("Location: kasir.php");
     exit;
 }
 ?>

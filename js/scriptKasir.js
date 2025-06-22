@@ -1,36 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   feather.replace();
 
-  // ===== SOLUSI 1: Fungsi untuk menunggu elemen tersedia =====
-  function waitForElement(selector, timeout = 5000) {
-    return new Promise((resolve, reject) => {
-      const element = document.getElementById(selector);
-      if (element) {
-        resolve(element);
-        return;
-      }
-
-      const observer = new MutationObserver((mutations) => {
-        const element = document.getElementById(selector);
-        if (element) {
-          observer.disconnect();
-          resolve(element);
-        }
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
-
-      // Timeout fallback
-      setTimeout(() => {
-        observer.disconnect();
-        reject(new Error(`Element ${selector} not found within ${timeout}ms`));
-      }, timeout);
-    });
-  }
-
   // ===== SOLUSI 2: Fungsi untuk memastikan section dan tab aktif =====
   function ensureSectionAndTabVisible() {
     // Pastikan section laporan-penjualan terlihat
@@ -59,47 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.classList.add("active");
       }
     });
-  }
-
-  // ===== SOLUSI 3: Fungsi debug elemen =====
-  function debugElements() {
-    const elementIds = [
-      "total-pendapatan-laporan",
-      "total-transaksi-laporan",
-      "rata-transaksi",
-      "total-menu-terjual",
-      "menu-terlaris",
-      "metode-pembayaran",
-    ];
-
-    console.log("=== DEBUGGING ELEMENTS ===");
-    elementIds.forEach((id) => {
-      const element = document.getElementById(id);
-      console.log(`${id}:`, element ? "✓ Found" : "❌ Not found");
-
-      if (!element) {
-        // Cek apakah ada di dalam section yang hidden
-        const hiddenSections = document.querySelectorAll(".section-hidden");
-        hiddenSections.forEach((section) => {
-          const hiddenElement = section.querySelector(`#${id}`);
-          if (hiddenElement) {
-            console.log(`  └─ Found in hidden section:`, section.id);
-          }
-        });
-
-        // Cek apakah ada di dalam tab yang tidak aktif
-        const inactiveTabs = document.querySelectorAll(
-          ".tab-pane:not(.active)"
-        );
-        inactiveTabs.forEach((tab) => {
-          const tabElement = tab.querySelector(`#${id}`);
-          if (tabElement) {
-            console.log(`  └─ Found in inactive tab:`, tab.id);
-          }
-        });
-      }
-    });
-    console.log("=== END DEBUGGING ===");
   }
 
   // ===== TAB NAVIGATION =====

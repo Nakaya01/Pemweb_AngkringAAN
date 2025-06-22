@@ -34,14 +34,12 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 
-    // Untuk keamanan, sebaiknya gunakan password_verify() jika password di-hash
     if ($password === $user['password']) {
         $_SESSION['kasir_logged_in'] = true;
         $_SESSION['username'] = $user['username'];
         $_SESSION['nama_kasir'] = $user['username']; // Gunakan username sebagai nama
         $_SESSION['id_kasir'] = $user['id_kasir']; // Gunakan id_kasir yang benar
 
-        // Regenerate session ID untuk mencegah session fixation
         session_regenerate_id(true);
 
         header("Location: kasir.php");
