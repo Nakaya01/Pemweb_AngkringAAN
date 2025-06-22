@@ -145,96 +145,125 @@ if ($pesanan_id) {
         </div>
     <?php endif; ?>
 
+    <!-- Debug Information (remove in production) -->
+    <?php if (isset($_GET['debug']) && $_GET['debug'] === '1'): ?>
+        <div class="alert alert-info" style="background: #e3f2fd; color: #1976d2; padding: 1rem; margin: 1rem; border-radius: 8px;">
+            <h4>Debug Info:</h4>
+            <p><strong>Pesanan ID:</strong> <?= $pesanan_id ?? 'null' ?></p>
+            <p><strong>Order Items Count:</strong> <?= count($order_items) ?></p>
+            <p><strong>Session Cart:</strong> <?= isset($_SESSION['cart']) ? count($_SESSION['cart']) : '0' ?> items</p>
+            <?php if (!empty($order_items)): ?>
+                <h5>Order Items:</h5>
+                <ul>
+                <?php foreach ($order_items as $item): ?>
+                    <li>
+                        ID: <?= $item['id'] ?>, 
+                        Menu ID: <?= $item['menu_id'] ?>, 
+                        Nama: <?= htmlspecialchars($item['nama']) ?>, 
+                        Gambar: <?= htmlspecialchars($item['gambar']) ?>,
+                        Exists: <?= file_exists($item['gambar']) ? 'Yes' : 'No' ?>
+                    </li>
+                <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Konten Keranjang -->
     <main class="chart-container">
         <!-- Class 1: Daftar barang dipesan -->
-        <div class="order-list" id="order-list">
+        <div class="order-list">
             <h2>Pesanan Anda</h2>
-            <?php if (count($order_items) > 0): ?>
-                <?php foreach ($order_items as $item): ?>
-                <div class="order-item">
-                    <?php 
-                    $image_path = $item['gambar'];
-                    $image_exists = file_exists($image_path);
-                    ?>
-                    <img src="<?= htmlspecialchars($image_path) ?>" 
-                         alt="<?= htmlspecialchars($item['nama']) ?>" 
-                         class="order-item-img"
-                         onerror="this.src='Assets/default-menu.png'; this.onerror=null;"
-                         style="<?= !$image_exists ? 'border: 2px dashed #ccc;' : '' ?>" />
-                    <div class="order-item-info">
-                        <div class="order-item-name"><?= htmlspecialchars($item['nama']) ?></div>
-                        <div class="order-item-price">Rp <?= number_format($item['harga'], 0, ',', '.') ?></div>
+            <div id="order-list" class="order-items-container">
+                <?php if (count($order_items) > 0): ?>
+                    <?php foreach ($order_items as $item): ?>
+                    <div class="order-item">
+                        <?php 
+                        $image_path = $item['gambar'];
+                        $image_exists = file_exists($image_path);
+                        ?>
+                        <img src="<?= htmlspecialchars($image_path) ?>" 
+                             alt="<?= htmlspecialchars($item['nama']) ?>" 
+                             class="order-item-img"
+                             onerror="this.src='Assets/default-menu.png'; this.onerror=null;"
+                             style="<?= !$image_exists ? 'border: 2px dashed #ccc;' : '' ?>" />
+                        <div class="order-item-info">
+                            <div class="order-item-name"><?= htmlspecialchars($item['nama']) ?></div>
+                            <div class="order-item-price">Rp <?= number_format($item['harga'], 0, ',', '.') ?></div>
+                        </div>
+                        <div class="order-item-actions">
+                            <form method="post" action="update_cart.php" style="display:inline;">
+                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                <button class="btn-kurang btn-decrease" type="submit" name="action" value="decrease">-</button>
+                            </form>
+                            <input type="number" class="order-item-qty quantity" value="<?= $item['jumlah'] ?>" min="1" readonly />
+                            <form method="post" action="update_cart.php" style="display:inline;">
+                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                <button class="btn-tambah btn-increase" type="submit" name="action" value="increase">+</button>
+                            </form>
+                            <form method="post" action="update_cart.php" style="display:inline;">
+                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                <button class="btn-hapus" type="submit" name="action" value="delete"><i data-feather="trash-2"></i></button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="order-item-actions">
-                        <form method="post" action="update_cart.php" style="display:inline;">
-                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                            <button class="btn-kurang btn-decrease" type="submit" name="action" value="decrease">-</button>
-                        </form>
-                        <input type="number" class="order-item-qty quantity" value="<?= $item['jumlah'] ?>" min="1" readonly />
-                        <form method="post" action="update_cart.php" style="display:inline;">
-                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                            <button class="btn-tambah btn-increase" type="submit" name="action" value="increase">+</button>
-                        </form>
-                        <form method="post" action="update_cart.php" style="display:inline;">
-                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                            <button class="btn-hapus" type="submit" name="action" value="delete"><i data-feather="trash-2"></i></button>
-                        </form>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Keranjang kosong.</p>
-            <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Keranjang kosong.</p>
+                <?php endif; ?>
+            </div>
         </div>
 
-        <!-- Class 2: Form nama dan nomor meja -->
-        <div class="order-form">
-            <h2>Data Pemesan</h2>
-            <form method="post" action="checkout.php">
-            <table>
-                <tbody>
-                    <tr>
-                        <td><label for="nama">Nama:</label></td>
-                        <td><input type="text" id="nama" name="nama" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="meja">Nomor Meja:</label></td>
-                        <td><input type="number" id="meja" name="meja" min="1" required /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- Right side container for form and summary -->
+        <div class="right-side-container">
+            <!-- Class 2: Form nama dan nomor meja -->
+            <div class="order-form">
+                <h2>Data Pemesan</h2>
+                <form method="post" action="checkout.php">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><label for="nama">Nama:</label></td>
+                            <td><input type="text" id="nama" name="nama" required /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="meja">Nomor Meja:</label></td>
+                            <td><input type="number" id="meja" name="meja" min="1" required /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Class 3: Total dan metode pembayaran -->
-        <div class="order-summary">
-            <h2>Ringkasan</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Total Harga:</td>
-                        <td><span id="total-harga">Rp <?= number_format($total_harga, 0, ',', '.') ?></span></td>
-                    </tr>
-                    <tr>
-                        <td><label for="pembayaran">Metode Pembayaran:</label></td>
-                        <td>
-                            <select id="pembayaran" name="pembayaran" required>
-                                <option value="">Pilih metode pembayaran</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Qris">QRIS</option>
-                                <option value="Transfer">Transfer</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button id="btn-checkout" type="submit" <?= count($order_items) == 0 ? 'disabled' : '' ?>>Checkout</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="hidden" name="pesanan_id" value="<?= $pesanan_id ?>">
-            </form>
+            <!-- Class 3: Total dan metode pembayaran -->
+            <div class="order-summary">
+                <h2>Ringkasan</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Total Harga:</td>
+                            <td><span id="total-harga">Rp <?= number_format($total_harga, 0, ',', '.') ?></span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="pembayaran">Metode Pembayaran:</label></td>
+                            <td>
+                                <select id="pembayaran" name="pembayaran" required>
+                                    <option value="">Pilih metode pembayaran</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Qris">QRIS</option>
+                                    <option value="Transfer">Transfer</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button id="btn-checkout" type="submit" <?= count($order_items) == 0 ? 'disabled' : '' ?>>Checkout</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" name="pesanan_id" value="<?= $pesanan_id ?>">
+                </form>
+            </div>
         </div>
     </main>
 
